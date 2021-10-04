@@ -11,8 +11,8 @@
     <groupId>com.github</groupId>
     <artifactId>doctor-scheduler</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>doctor-scheduler</name>
-    <description>doctor-scheduler</description>
+    <name>Doctor Scheduler</name>
+    <description>Schedule doctors' service days to fit their requirements as much as possible.</description>
 
     <properties>
         <java.version>11</java.version>
