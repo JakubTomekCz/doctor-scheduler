@@ -5,17 +5,17 @@
     <title>Doctor Scheduler</title>
 </head>
 <body>
+
 <p th:text="#{file.to.upload}" />
 <form method="post" enctype="multipart/form-data">
     <input type="file" name="fileToUpload" />
     <input type="submit" value="OK" name="submit">
 </form>
 <p th:text="#{example.input.datasets}" />
-<br/>
-<a th:text="'preference-table-example-en.xlsx'"
-   th:href="@{'download/preference-table-example-en.xlsx'}" />
-<br/>
-<a th:text="'preference-table-example-cz.xlsx'"
-   th:href="@{'download/preference-table-example-cz.xlsx'}" />
+<div th:each="exampleFile: ${T(com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile).values()}">
+    <a th:text="${exampleFile.getFilename()}"
+       th:href="'download/' + ${exampleFile.getFilename()}" />
+    <br/>
+</div>
 </body>
 </html>
