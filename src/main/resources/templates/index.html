@@ -10,5 +10,12 @@
     <input type="file" name="fileToUpload" />
     <input type="submit" value="OK" name="submit">
 </form>
+<p th:text="#{example.input.datasets}" />
+<br/>
+<a th:text="'preference-table-example-en.xlsx'"
+   th:href="@{'download/preference-table-example-en.xlsx'}" />
+<br/>
+<a th:text="'preference-table-example-cz.xlsx'"
+   th:href="@{'download/preference-table-example-cz.xlsx'}" />
 </body>
 </html>
