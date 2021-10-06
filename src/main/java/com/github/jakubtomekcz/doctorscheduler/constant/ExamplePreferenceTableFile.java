@@ -12,4 +12,9 @@ public enum ExamplePreferenceTableFile {
 
     private final String filename;
 
+    public String getContentType() {
+        String suffix = filename.substring(filename.lastIndexOf('.') + 1);
+        return "application/" + suffix;
+    }
+
 }

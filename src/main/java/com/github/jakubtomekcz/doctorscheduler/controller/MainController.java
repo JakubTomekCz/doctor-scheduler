@@ -1,6 +1,5 @@
 package com.github.jakubtomekcz.doctorscheduler.controller;
 
-import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +15,14 @@ public class MainController {
         return "index";
     }
 
+
     @PostMapping("/")
     public ModelAndView uploadPreferenceTable(@RequestParam("fileToUpload") MultipartFile fileToUpload) {
         ModelAndView modelAndView = new ModelAndView("index");
+        // TODO
         return modelAndView;
     }
+
+
 
 }
