@@ -5,7 +5,9 @@
 
 <module name="Checker">
 
-    <module name="NewlineAtEndOfFile"/>
+    <module name="NewlineAtEndOfFile">
+        <property name="lineSeparator" value="lf"/>
+    </module>
 
     <!-- Checks that property files contain the same keys.         -->
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
@@ -29,7 +31,6 @@
         <!-- see http://checkstyle.sourceforge.net/config_annotation.html#SuppressWarningsHolder -->
         <module name="SuppressWarningsHolder"/>
 
-
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
         <module name="ConstantName"/>
@@ -49,7 +50,6 @@
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
-
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="LineLength">
@@ -57,7 +57,6 @@
         </module>
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
-
 
         <!-- Checks for whitespace                               -->
         <!-- See http://checkstyle.sf.net/config_whitespace.html -->
@@ -71,12 +70,10 @@
         <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround"/>
 
-
         <!-- Modifier Checks                                    -->
         <!-- See http://checkstyle.sf.net/config_modifiers.html -->
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>
-
 
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
@@ -85,7 +82,6 @@
         <module name="LeftCurly"/>
         <module name="NeedBraces"/>
         <module name="RightCurly"/>
-
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
@@ -102,7 +98,6 @@
         <module name="FinalClass"/>
         <module name="InterfaceIsType"/>
         <module name="VisibilityModifier"/>
-
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
