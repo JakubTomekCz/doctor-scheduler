@@ -43,5 +43,4 @@ class DownloadControllerTest {
 
         assertThat(actualContent).isEqualTo(expectedContent);
     }
-
 }
