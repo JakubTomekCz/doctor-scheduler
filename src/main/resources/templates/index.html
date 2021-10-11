@@ -11,6 +11,12 @@
     <input type="file" name="fileToUpload" />
     <input type="submit" value="OK" name="submit">
 </form>
+
+<div th:if="${isUploadError==true}" style="color: red">
+    <p th:if="${errorMessageCode!=null && errorMessageParams!=null}"
+       th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
+</div>
+
 <p th:text="#{example.input.datasets}" />
 <div th:each="exampleFile: ${T(com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile).values()}">
     <a th:text="${exampleFile.getFilename()}"

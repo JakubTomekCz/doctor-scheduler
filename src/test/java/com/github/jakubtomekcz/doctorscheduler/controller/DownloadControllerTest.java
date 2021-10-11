@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -30,9 +31,7 @@ class DownloadControllerTest {
     @ParameterizedTest
     @EnumSource(ExamplePreferenceTableFile.class)
     void downloadExamplePreferenceTableFile(ExamplePreferenceTableFile file) throws Exception {
-        Path path = Path.of("datasets", file.getFilename());
-        ClassPathResource resource = new ClassPathResource(path.toString());
-        byte[] expectedContent = Files.readAllBytes(resource.getFile().toPath());
+        byte[] expectedContent = readBytesOfExampleFile(file);
 
         MvcResult result = mockMvc.perform(get("/download/" + file.getFilename()))
                 .andExpect(status().isOk())
@@ -44,5 +43,11 @@ class DownloadControllerTest {
         byte[] actualContent = result.getResponse().getContentAsByteArray();
 
         assertThat(actualContent).isEqualTo(expectedContent);
+    }
+
+    private byte[] readBytesOfExampleFile(ExamplePreferenceTableFile file) throws IOException {
+        Path path = Path.of("datasets", file.getFilename());
+        ClassPathResource resource = new ClassPathResource(path.toString());
+        return Files.readAllBytes(resource.getFile().toPath());
     }
 }
