@@ -14,8 +14,8 @@ public class PreferenceTableParser {
 
     private final DataSize maxFileSize;
 
-    public PreferenceTableParser(@Value("${max.upload.file.size}") String maxFileSizeString) {
-        this.maxFileSize = DataSize.parse(maxFileSizeString);
+    public PreferenceTableParser(@Value("${max.upload.file.size}") DataSize maxFileSizeString) {
+        this.maxFileSize = maxFileSizeString;
     }
 
     public PreferenceTable buildPreferenceTable(MultipartFile inputFile) {
