@@ -25,15 +25,17 @@ public class MainController {
     @PostMapping("/")
     public ModelAndView uploadPreferenceTable(@RequestParam("fileToUpload") MultipartFile uploadedFile) {
         ModelAndView modelAndView = new ModelAndView("index");
-        try {
-            PreferenceTable preferenceTable = preferenceTableParser.buildPreferenceTable(uploadedFile);
-            modelAndView.addObject("preferenceTable", preferenceTable);
-        } catch (UiMessageException e) {
-            String messageCode = e.getMessageCode().getMessageCode();
-            String[] messageParams = e.getMessageParams();
-            modelAndView.addObject("isUploadError", true);
-            modelAndView.addObject("errorMessageCode", messageCode);
-            modelAndView.addObject("errorMessageParams", messageParams);
+        if (!uploadedFile.isEmpty()) {
+            try {
+                PreferenceTable preferenceTable = preferenceTableParser.buildPreferenceTable(uploadedFile);
+                modelAndView.addObject("preferenceTable", preferenceTable);
+            } catch (UiMessageException e) {
+                String messageCode = e.getMessageCode().getMessageCode();
+                String[] messageParams = e.getMessageParams();
+                modelAndView.addObject("isUploadError", true);
+                modelAndView.addObject("errorMessageCode", messageCode);
+                modelAndView.addObject("errorMessageParams", messageParams);
+            }
         }
         return modelAndView;
     }

@@ -19,7 +19,6 @@ public class PreferenceTableParser {
     }
 
     public PreferenceTable buildPreferenceTable(MultipartFile inputFile) {
-
         checkFileSize(inputFile);
 
         return null;

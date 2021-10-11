@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -47,6 +48,16 @@ class MainControllerTest {
 
         mockMvc.perform(multipart("/").file(multipartFile))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void uploadPreferenceTableMissingFile() throws Exception {
+        var multipartFile = new MockMultipartFile("fileToUpload", "", "", new byte[0]);
+
+        mockMvc.perform(multipart("/").file(multipartFile))
+                .andExpect(status().isOk());
+
+        verifyNoInteractions(preferenceTableParser);
     }
 
     @Test
