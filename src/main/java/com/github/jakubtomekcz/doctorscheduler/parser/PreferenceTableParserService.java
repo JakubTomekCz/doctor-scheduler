@@ -1,4 +1,4 @@
-package com.github.jakubtomekcz.doctorscheduler.service;
+package com.github.jakubtomekcz.doctorscheduler.parser;
 
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
@@ -8,20 +8,31 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.UPLOAD_FILE_TOO_BIG;
+import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.UPLOAD_FILE_UNKNOWN_TYPE;
 
 @Service
-public class PreferenceTableParser {
+public class PreferenceTableParserService {
 
     private final DataSize maxFileSize;
 
-    public PreferenceTableParser(@Value("${max.upload.file.size}") DataSize maxFileSizeString) {
+    private final PreferenceTableParserFactory parserFactory;
+
+    public PreferenceTableParserService(@Value("${max.upload.file.size}") DataSize maxFileSizeString,
+                                        PreferenceTableParserFactory parserFactory) {
         this.maxFileSize = maxFileSizeString;
+        this.parserFactory = parserFactory;
     }
 
-    public PreferenceTable buildPreferenceTable(MultipartFile inputFile) {
+    public PreferenceTable parseMultipartFile(MultipartFile inputFile) {
         checkFileSize(inputFile);
+        PreferenceTableParser parser;
+        try {
+            parser = parserFactory.getParserForContentType(inputFile.getContentType());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new UiMessageException(UPLOAD_FILE_UNKNOWN_TYPE);
+        }
 
-        return null;
+        return parser.parseMultipartFile(inputFile);
     }
 
     private void checkFileSize(MultipartFile inputFile) {
@@ -30,5 +41,4 @@ public class PreferenceTableParser {
             throw new UiMessageException(UPLOAD_FILE_TOO_BIG, uploadedFileSize.toString(), maxFileSize.toString());
         }
     }
-
 }

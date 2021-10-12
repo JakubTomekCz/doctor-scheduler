@@ -2,7 +2,7 @@ package com.github.jakubtomekcz.doctorscheduler.controller;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
-import com.github.jakubtomekcz.doctorscheduler.service.PreferenceTableParser;
+import com.github.jakubtomekcz.doctorscheduler.parser.PreferenceTableParserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -32,7 +32,7 @@ class MainControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PreferenceTableParser preferenceTableParser;
+    private PreferenceTableParserService preferenceTableParserService;
 
     @Test
     void getIndex() throws Exception {
@@ -57,13 +57,13 @@ class MainControllerTest {
         mockMvc.perform(multipart("/").file(multipartFile))
                 .andExpect(status().isOk());
 
-        verifyNoInteractions(preferenceTableParser);
+        verifyNoInteractions(preferenceTableParserService);
     }
 
     @Test
     void uploadPreferenceTableErrorMessageWithParameters() throws Exception {
         var multipartFile = new MockMultipartFile("fileToUpload", "a.txt", "text/txt", "a".getBytes());
-        when(preferenceTableParser.buildPreferenceTable(multipartFile))
+        when(preferenceTableParserService.parseMultipartFile(multipartFile))
                 .thenThrow(new UiMessageException(UiMessageException.MessageCode.UPLOAD_FILE_TOO_BIG, "20KB", "10KB"));
 
         mockMvc.perform(multipart("/").file(multipartFile))

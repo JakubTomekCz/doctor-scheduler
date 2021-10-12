@@ -19,7 +19,7 @@ public class UiMessageException extends RuntimeException {
     public enum MessageCode {
 
         UPLOAD_FILE_TOO_BIG("error.upload.file.too.big"),
-        UPLOAD_FILE_WRONG_FORMAT("error.upload.file.wrong.format");
+        UPLOAD_FILE_UNKNOWN_TYPE("error.upload.file.unknown.type");
 
         private final String messageCode;
     }
