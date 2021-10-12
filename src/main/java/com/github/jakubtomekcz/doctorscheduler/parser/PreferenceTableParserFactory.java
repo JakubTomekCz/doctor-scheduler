@@ -7,10 +7,10 @@ import static java.lang.String.format;
 @Service
 public class PreferenceTableParserFactory {
 
-    public PreferenceTableParser getParserForContentType(String contentType) {
-        switch (contentType) {
+    public PreferenceTableParser getParserForFileExtension(String fileExtension) {
+        switch (fileExtension) {
             default:
-                throw new IllegalArgumentException(format("Unknown content type: %s", contentType));
+                throw new IllegalArgumentException(format("Unknown file extension: %s", fileExtension));
         }
     }
 }

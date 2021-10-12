@@ -25,14 +25,20 @@ public class PreferenceTableParserService {
 
     public PreferenceTable parseMultipartFile(MultipartFile inputFile) {
         checkFileSize(inputFile);
+        String filename = inputFile.getOriginalFilename();
+        String suffix = filename == null ? "" : getSuffix(inputFile.getOriginalFilename());
         PreferenceTableParser parser;
         try {
-            parser = parserFactory.getParserForContentType(inputFile.getContentType());
-        } catch (IllegalArgumentException | NullPointerException e) {
+            parser = parserFactory.getParserForFileExtension(suffix);
+        } catch (IllegalArgumentException e) {
             throw new UiMessageException(UPLOAD_FILE_UNKNOWN_TYPE);
         }
 
         return parser.parseMultipartFile(inputFile);
+    }
+
+    private String getSuffix(String filename) {
+        return filename.substring(filename.lastIndexOf('.') + 1);
     }
 
     private void checkFileSize(MultipartFile inputFile) {

@@ -40,8 +40,8 @@ class PreferenceTableParserServiceTest {
 
     @Test
     void parseMultipartFile() {
-        when(multipartFile.getContentType()).thenReturn("application/xlsx");
-        when(parserFactory.getParserForContentType("application/xlsx")).thenReturn(parser);
+        when(multipartFile.getOriginalFilename()).thenReturn("file.xlsx");
+        when(parserFactory.getParserForFileExtension("xlsx")).thenReturn(parser);
         when(parser.parseMultipartFile(multipartFile)).thenReturn(preferenceTable);
 
         PreferenceTable actualResult = parserService.parseMultipartFile(multipartFile);
@@ -50,9 +50,9 @@ class PreferenceTableParserServiceTest {
     }
 
     @Test
-    void unknownContentType() {
-        when(multipartFile.getContentType()).thenReturn("image/png");
-        when(parserFactory.getParserForContentType("image/png")).thenThrow(IllegalArgumentException.class);
+    void unknownFileExtension() {
+        when(multipartFile.getOriginalFilename()).thenReturn("file.png");
+        when(parserFactory.getParserForFileExtension("png")).thenThrow(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> parserService.parseMultipartFile(multipartFile))
                 .isInstanceOf(UiMessageException.class)
@@ -60,9 +60,19 @@ class PreferenceTableParserServiceTest {
     }
 
     @Test
-    void missingContentType() {
-        when(multipartFile.getContentType()).thenReturn(null);
-        when(parserFactory.getParserForContentType(null)).thenThrow(NullPointerException.class);
+    void missingFileExtension() {
+        when(multipartFile.getOriginalFilename()).thenReturn("");
+        when(parserFactory.getParserForFileExtension("")).thenThrow(IllegalArgumentException.class);
+
+        assertThatThrownBy(() -> parserService.parseMultipartFile(multipartFile))
+                .isInstanceOf(UiMessageException.class)
+                .hasFieldOrPropertyWithValue("messageCode", UPLOAD_FILE_UNKNOWN_TYPE);
+    }
+
+    @Test
+    void missingFileName() {
+        when(multipartFile.getOriginalFilename()).thenReturn(null);
+        when(parserFactory.getParserForFileExtension("")).thenThrow(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> parserService.parseMultipartFile(multipartFile))
                 .isInstanceOf(UiMessageException.class)
