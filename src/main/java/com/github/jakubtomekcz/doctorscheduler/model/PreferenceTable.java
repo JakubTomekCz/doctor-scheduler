@@ -2,16 +2,47 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
+import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
 @EqualsAndHashCode
-public class PreferenceTable {
+public final class PreferenceTable {
 
-    private final Map<String, Map<String, PreferenceType>> data = new HashMap<>();
+    private PreferenceTable(ImmutableMap<String, ImmutableMap<String, PreferenceType>> data) {
+        this.data = data;
+    }
 
+    private final ImmutableMap<String, ImmutableMap<String, PreferenceType>> data;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public PreferenceType getPreference(String person, String date) {
+        return data.get(date).get(person);
+    }
+
+    public static class Builder {
+
+        private final Map<String, ImmutableMap.Builder<String, PreferenceType>> data = new HashMap<>();
+
+        public Builder put(String person, String date, PreferenceType preference) {
+            if (!data.containsKey(date)) {
+                data.put(date, ImmutableMap.builder());
+            }
+            data.get(date).put(person, preference);
+            return this;
+        }
+
+        public PreferenceTable build() {
+            ImmutableMap.Builder<String, ImmutableMap<String, PreferenceType>> builder = ImmutableMap.builder();
+            for (Map.Entry<String, ImmutableMap.Builder<String, PreferenceType>> entry : data.entrySet()) {
+                builder.put(entry.getKey(), entry.getValue().build());
+            }
+            return new PreferenceTable(builder.build());
+        }
+    }
 }
