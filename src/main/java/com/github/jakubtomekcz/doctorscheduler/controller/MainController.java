@@ -31,7 +31,7 @@ public class MainController {
                 modelAndView.addObject("preferenceTable", preferenceTable);
             } catch (UiMessageException e) {
                 String messageCode = e.getMessageCode().getMessageCode();
-                String[] messageParams = e.getMessageParams();
+                Object[] messageParams = e.getMessageParams();
                 modelAndView.addObject("isUploadError", true);
                 modelAndView.addObject("errorMessageCode", messageCode);
                 modelAndView.addObject("errorMessageParams", messageParams);
