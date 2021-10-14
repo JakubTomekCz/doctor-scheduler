@@ -52,7 +52,7 @@ public class XlsxParser implements PreferenceTableParser {
                     String cellValue = row.getCell(columnIndex).getStringCellValue();
                     PreferenceType preference;
                     try {
-                        preference = PreferenceType.valueOf(cellValue);
+                        preference = PreferenceType.fromString(cellValue);
                     } catch (IllegalArgumentException | NullPointerException e) {
                         throw new UiMessageException(XLSX_FILE_PREFERENCE_EXPECTED, columnIndex, row.getRowNum());
                     }
