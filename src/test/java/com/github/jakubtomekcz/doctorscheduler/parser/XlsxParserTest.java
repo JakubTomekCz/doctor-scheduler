@@ -43,5 +43,4 @@ class XlsxParserTest {
                     assertThat(table.getPreference("Sleepy", "Sat 04 Sept 2021")).isEqualTo(PREFER);
                 });
     }
-
 }
