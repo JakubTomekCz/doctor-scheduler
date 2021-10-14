@@ -1,5 +1,6 @@
 package com.github.jakubtomekcz.doctorscheduler.parser;
 
+import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +20,15 @@ import java.util.Map;
 
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.ERROR_READING_XLSX_FILE;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_DATE_EXPECTED;
-import static java.lang.String.valueOf;
+import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_PERSON_NAME_TOO_LONG;
+import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_PREFERENCE_EXPECTED;
+import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
 @Slf4j
 public class XlsxParser implements PreferenceTableParser {
 
+    private static final int PERSON_MAX_LENGTH = 100;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
 
     @Override
@@ -32,16 +36,37 @@ public class XlsxParser implements PreferenceTableParser {
 
         Workbook workbook = createWorkBook(multipartFile);
         Sheet sheet = workbook.getSheetAt(0);
+        PreferenceTable.Builder builder = PreferenceTable.builder();
         Map<Integer, String> datesRow = null;
         for (Row row : sheet) {
             if (datesRow == null) {
                 datesRow = readDatesRow(row);
             } else {
-                continue;
+                Cell personCell = row.getCell(0);
+                String person = personCell.getStringCellValue();
+                if (isBlank(person)) {
+                    break;
+                }
+                if (person.length() > PERSON_MAX_LENGTH) {
+                    throw new UiMessageException(XLSX_FILE_PERSON_NAME_TOO_LONG, PERSON_MAX_LENGTH, person.length(),
+                            personCell.getRowIndex(), personCell.getColumnIndex());
+                }
+                for (Map.Entry<Integer, String> entry : datesRow.entrySet()) {
+                    int columnIndex = entry.getKey();
+                    String date = entry.getValue();
+                    String cellValue = row.getCell(columnIndex).getStringCellValue();
+                    PreferenceType preference;
+                    try {
+                        preference = PreferenceType.valueOf(cellValue);
+                    } catch (IllegalArgumentException | NullPointerException e) {
+                        throw new UiMessageException(XLSX_FILE_PREFERENCE_EXPECTED, columnIndex, row.getRowNum());
+                    }
+                    builder.put(person, date, preference);
+                }
             }
         }
 
-        return null;
+        return builder.build();
     }
 
     private Map<Integer, String> readDatesRow(Row row) {
@@ -57,7 +82,7 @@ public class XlsxParser implements PreferenceTableParser {
                 datesRow.put(cell.getColumnIndex(), formattedDate);
             } else {
                 throw new UiMessageException(XLSX_FILE_DATE_EXPECTED,
-                        valueOf(cell.getRowIndex()), valueOf(cell.getColumnIndex()));
+                        cell.getRowIndex(), cell.getColumnIndex());
             }
         }
         return datesRow;
