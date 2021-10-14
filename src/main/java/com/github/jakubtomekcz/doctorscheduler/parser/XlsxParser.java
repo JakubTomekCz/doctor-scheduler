@@ -33,7 +33,6 @@ public class XlsxParser implements PreferenceTableParser {
 
     @Override
     public PreferenceTable parseMultipartFile(MultipartFile multipartFile) {
-
         Workbook workbook = createWorkBook(multipartFile);
         Sheet sheet = workbook.getSheetAt(0);
         PreferenceTable.Builder builder = PreferenceTable.builder();
@@ -46,11 +45,7 @@ public class XlsxParser implements PreferenceTableParser {
                 if (personCell == null || isBlank(personCell.getStringCellValue())) {
                     break;
                 }
-                String person = personCell.getStringCellValue();
-                if (person.length() > PERSON_MAX_LENGTH) {
-                    throw new UiMessageException(XLSX_FILE_PERSON_NAME_TOO_LONG, PERSON_MAX_LENGTH, person.length(),
-                            personCell.getRowIndex(), personCell.getColumnIndex());
-                }
+                String person = validateAndGetPerson(personCell);
                 for (Map.Entry<Integer, String> entry : datesRow.entrySet()) {
                     int columnIndex = entry.getKey();
                     String date = entry.getValue();
@@ -65,8 +60,16 @@ public class XlsxParser implements PreferenceTableParser {
                 }
             }
         }
-
         return builder.build();
+    }
+
+    private Workbook createWorkBook(MultipartFile multipartFile) {
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            return new XSSFWorkbook(inputStream);
+        } catch (IOException e) {
+            log.error("Failed to parse xlsx file.", e);
+            throw new UiMessageException(ERROR_READING_XLSX_FILE);
+        }
     }
 
     private Map<Integer, String> readDatesRow(Row row) {
@@ -88,12 +91,12 @@ public class XlsxParser implements PreferenceTableParser {
         return datesRow;
     }
 
-    private Workbook createWorkBook(MultipartFile multipartFile) {
-        try (InputStream inputStream = multipartFile.getInputStream()) {
-            return new XSSFWorkbook(inputStream);
-        } catch (IOException e) {
-            log.error("Failed to parse xlsx file.", e);
-            throw new UiMessageException(ERROR_READING_XLSX_FILE);
+    private String validateAndGetPerson(Cell personCell) {
+        String person = personCell.getStringCellValue();
+        if (person.length() > PERSON_MAX_LENGTH) {
+            throw new UiMessageException(XLSX_FILE_PERSON_NAME_TOO_LONG, PERSON_MAX_LENGTH, person.length(),
+                    personCell.getRowIndex(), personCell.getColumnIndex());
         }
+        return person;
     }
 }
