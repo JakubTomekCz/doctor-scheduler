@@ -43,10 +43,10 @@ public class XlsxParser implements PreferenceTableParser {
                 datesRow = readDatesRow(row);
             } else {
                 Cell personCell = row.getCell(0);
-                String person = personCell.getStringCellValue();
-                if (isBlank(person)) {
+                if (personCell == null || isBlank(personCell.getStringCellValue())) {
                     break;
                 }
+                String person = personCell.getStringCellValue();
                 if (person.length() > PERSON_MAX_LENGTH) {
                     throw new UiMessageException(XLSX_FILE_PERSON_NAME_TOO_LONG, PERSON_MAX_LENGTH, person.length(),
                             personCell.getRowIndex(), personCell.getColumnIndex());
