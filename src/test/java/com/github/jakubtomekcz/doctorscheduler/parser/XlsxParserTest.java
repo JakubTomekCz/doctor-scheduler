@@ -37,7 +37,6 @@ class XlsxParserTest {
                 .satisfies(table -> {
                     assertThat(table.getDates()).hasSize(30);
                     assertThat(table.getPersons())
-                            .hasSize(7)
                             .containsExactly("Doc", "Grumpy", "Happy", "Sleepy", "Bashful", "Sneezy", "Dopey");
                     assertThat(table.getPreference("Doc", "Wed 01 Sept 2021")).isEqualTo(NO);
                     assertThat(table.getPreference("Grumpy", "Thu 02 Sept 2021")).isEqualTo(YES);

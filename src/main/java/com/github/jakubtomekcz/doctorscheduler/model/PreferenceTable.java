@@ -4,13 +4,11 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
-import org.apache.el.stream.Optional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
