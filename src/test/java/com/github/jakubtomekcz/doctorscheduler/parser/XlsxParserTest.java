@@ -43,4 +43,25 @@ class XlsxParserTest {
                     assertThat(table.getPreference("Sleepy", "Sat 04 Sept 2021")).isEqualTo(PREFER);
                 });
     }
+
+    @Test
+    void parseXlsxCzExampleFile() throws IOException {
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        Path path = Path.of("datasets", ExamplePreferenceTableFile.XSLX_CZ.getFilename());
+        ClassPathResource resource = new ClassPathResource(path.toString());
+        when(multipartFile.getInputStream()).thenReturn(resource.getInputStream());
+
+        PreferenceTable actualResult = xlsxParser.parseMultipartFile(multipartFile);
+
+        assertThat(actualResult)
+                .isNotNull()
+                .satisfies(table -> {
+                    assertThat(table.getDates()).hasSize(30);
+                    assertThat(table.getPersons())
+                            .containsExactly("Prófa", "Rejpal", "Štístko", "Dřímal", "Stydlín", "Kejchal", "Šmudla");
+                    assertThat(table.getPreference("Prófa", "Wed 01 Sept 2021")).isEqualTo(NO);
+                    assertThat(table.getPreference("Rejpal", "Thu 02 Sept 2021")).isEqualTo(YES);
+                    assertThat(table.getPreference("Dřímal", "Sat 04 Sept 2021")).isEqualTo(PREFER);
+                });
+    }
 }
