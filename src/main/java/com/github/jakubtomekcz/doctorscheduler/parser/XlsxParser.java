@@ -1,12 +1,71 @@
 package com.github.jakubtomekcz.doctorscheduler.parser;
 
+import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.ERROR_READING_XLSX_FILE;
+import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_DATE_EXPECTED;
+import static java.lang.String.valueOf;
+import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
+
+@Slf4j
 public class XlsxParser implements PreferenceTableParser {
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
 
     @Override
     public PreferenceTable parseMultipartFile(MultipartFile multipartFile) {
+
+        Workbook workbook = createWorkBook(multipartFile);
+        Sheet sheet = workbook.getSheetAt(0);
+        Map<Integer, String> datesRow = null;
+        for (Row row : sheet) {
+            if (datesRow == null) {
+                datesRow = readDatesRow(row);
+            } else {
+                continue;
+            }
+        }
+
         return null;
+    }
+
+    private Map<Integer, String> readDatesRow(Row row) {
+        Map<Integer, String> datesRow;
+        datesRow = new HashMap<>();
+        for (Cell cell : row) {
+            if (cell.getColumnIndex() == 0) {
+                continue;
+            }
+            if (isCellDateFormatted(cell)) {
+                String formattedDate = dateFormat.format(cell.getDateCellValue());
+                datesRow.put(cell.getColumnIndex(), formattedDate);
+            } else {
+                throw new UiMessageException(XLSX_FILE_DATE_EXPECTED,
+                        valueOf(cell.getRowIndex()), valueOf(cell.getColumnIndex()));
+            }
+        }
+        return datesRow;
+    }
+
+    private Workbook createWorkBook(MultipartFile multipartFile) {
+        try {
+            return new XSSFWorkbook(multipartFile.getInputStream());
+        } catch (IOException e) {
+            log.error("Failed to parse xlsx file.", e);
+            throw new UiMessageException(ERROR_READING_XLSX_FILE);
+        }
     }
 }

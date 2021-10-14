@@ -19,7 +19,9 @@ public class UiMessageException extends RuntimeException {
     public enum MessageCode {
 
         UPLOAD_FILE_TOO_BIG("error.upload.file.too.big"),
-        UPLOAD_FILE_UNKNOWN_TYPE("error.upload.file.unknown.type");
+        UPLOAD_FILE_UNKNOWN_TYPE("error.upload.file.unknown.type"),
+        ERROR_READING_XLSX_FILE("error.reading.xlsx.file"),
+        XLSX_FILE_DATE_EXPECTED("error.reading.xlsx.file.date.expected");
 
         private final String messageCode;
     }
