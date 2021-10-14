@@ -93,7 +93,6 @@
         <module name="MissingSwitchDefault"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
-        <module name="FinalClass"/>
         <module name="InterfaceIsType"/>
         <module name="VisibilityModifier"/>
 

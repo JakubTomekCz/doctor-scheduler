@@ -30,7 +30,7 @@ class XlsxParserTest {
         PreferenceTable actualResult = xlsxParser.parseMultipartFile(multipartFile);
 
         assertThat(actualResult)
-                .isNull();
+                .isNotNull();
     }
 
 }

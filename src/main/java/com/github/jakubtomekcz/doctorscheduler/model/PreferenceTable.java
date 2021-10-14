@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @EqualsAndHashCode
-public final class PreferenceTable {
+public class PreferenceTable {
 
     private PreferenceTable(ImmutableMap<String, ImmutableMap<String, PreferenceType>> data) {
         this.data = data;
