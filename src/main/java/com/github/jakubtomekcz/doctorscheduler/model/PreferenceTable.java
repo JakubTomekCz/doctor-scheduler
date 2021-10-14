@@ -4,9 +4,15 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
+import org.apache.el.stream.Optional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @EqualsAndHashCode
 public class PreferenceTable {
@@ -23,6 +29,21 @@ public class PreferenceTable {
 
     public PreferenceType getPreference(String person, String date) {
         return data.get(date).get(person);
+    }
+
+    public List<String> getDates() {
+        return data.keySet().asList();
+    }
+
+    public List<String> getPersons() {
+        return data.entrySet().stream()
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .map(Map::entrySet)
+                .orElse(Set.of())
+                .stream()
+                .map(Map.Entry::getKey)
+                .collect(toList());
     }
 
     public static class Builder {
