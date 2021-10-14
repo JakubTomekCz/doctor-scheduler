@@ -4,6 +4,7 @@ import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -11,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,8 +50,9 @@ public class XlsxParser implements PreferenceTableParser {
         for (Cell cell : row) {
             if (cell.getColumnIndex() == 0) {
                 continue;
-            }
-            if (isCellDateFormatted(cell)) {
+            } else if (cell.getCellType() == CellType.BLANK) {
+                break;
+            } else if (cell.getCellType() == CellType.NUMERIC && isCellDateFormatted(cell)) {
                 String formattedDate = dateFormat.format(cell.getDateCellValue());
                 datesRow.put(cell.getColumnIndex(), formattedDate);
             } else {
@@ -61,8 +64,8 @@ public class XlsxParser implements PreferenceTableParser {
     }
 
     private Workbook createWorkBook(MultipartFile multipartFile) {
-        try {
-            return new XSSFWorkbook(multipartFile.getInputStream());
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            return new XSSFWorkbook(inputStream);
         } catch (IOException e) {
             log.error("Failed to parse xlsx file.", e);
             throw new UiMessageException(ERROR_READING_XLSX_FILE);
