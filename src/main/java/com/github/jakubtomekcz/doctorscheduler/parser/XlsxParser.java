@@ -66,7 +66,7 @@ public class XlsxParser implements PreferenceTableParser {
     private Workbook createWorkBook(MultipartFile multipartFile) {
         try (InputStream inputStream = multipartFile.getInputStream()) {
             return new XSSFWorkbook(inputStream);
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             log.error("Failed to parse xlsx file.", e);
             throw new UiMessageException(ERROR_READING_XLSX_FILE);
         }
