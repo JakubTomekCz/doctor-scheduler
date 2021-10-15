@@ -19,6 +19,7 @@ class PreferenceTableTest {
                 .put("Carl", "Tuesday", NO)
                 .put("Carl", "Wednesday", NO)
                 .build();
+
         assertThat(preferenceTable).satisfies(table -> {
             assertThat(table.getPreference("Lenny", "Monday")).isEqualTo(YES);
             assertThat(table.getPreference("Lenny", "Tuesday")).isEqualTo(NO);
@@ -27,5 +28,17 @@ class PreferenceTableTest {
             assertThat(table.getPreference("Carl", "Tuesday")).isEqualTo(NO);
             assertThat(table.getPreference("Carl", "Wednesday")).isEqualTo(NO);
         });
+    }
+
+    @Test
+    void datesAreReturnedInOrderOfInsertion() {
+        PreferenceTable preferenceTable = PreferenceTable.builder()
+                .put("Homer", "Monday", YES)
+                .put("Homer", "Tuesday", YES)
+                .put("Homer", "Wednesday", YES)
+                .put("Homer", "Thursday", YES)
+                .build();
+
+        assertThat(preferenceTable.getDates()).containsExactly("Monday", "Tuesday", "Wednesday", "Thursday");
     }
 }

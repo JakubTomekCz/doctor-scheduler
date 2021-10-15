@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class PreferenceTable {
 
     public static class Builder {
 
-        private final Map<String, ImmutableMap.Builder<String, PreferenceType>> data = new HashMap<>();
+        private final Map<String, ImmutableMap.Builder<String, PreferenceType>> data = new LinkedHashMap<>();
 
         public Builder put(String person, String date, PreferenceType preference) {
             if (!data.containsKey(date)) {
