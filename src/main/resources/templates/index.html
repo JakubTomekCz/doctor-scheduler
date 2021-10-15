@@ -23,5 +23,10 @@
        th:href="'download/' + ${exampleFile.getFilename()}" />
     <br/>
 </div>
+
+<div th:if="${preferenceTable!=null}">
+    <div th:replace="fragments/preference-table :: preference-table" />
+</div>
+
 </body>
 </html>
