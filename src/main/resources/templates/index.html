@@ -12,8 +12,8 @@
     <input type="submit" value="OK" name="submit">
 </form>
 
-<div th:if="${isUploadError==true}" style="color: red">
-    <p th:if="${errorMessageCode!=null && errorMessageParams!=null}"
+<div th:if="${isUploadError == true}" style="color: red">
+    <p th:if="${errorMessageCode != null && errorMessageParams != null}"
        th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
 </div>
 
@@ -24,8 +24,8 @@
     <br/>
 </div>
 
-<div th:if="${preferenceTable!=null}">
-    <div th:replace="fragments/preference-table :: preference-table" />
+<div th:if="${preferenceTable != null}">
+    <div th:replace="fragments/preference-table :: preference-table(preferenceTable = ${preferenceTable})" />
 </div>
 
 </body>
