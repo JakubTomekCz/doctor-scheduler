@@ -18,10 +18,10 @@ import com.github.jakubtomekcz.doctorscheduler.model.Schedule;
  * (maximize number of 1x satisfied, then 2x satisfied etc.)
  * <p>
  * Priority 3
- * Minimize the maximum number of services per person (nobody is overloaded)
+ * Minimize overwork measured by overwork index ~ sum((individual-overwork - average work)^2)
  * <p>
  * Priority 4
- * Maximize the minimal number of services per person (nobody is slacking off)
+ * Minimize slacking off measured by slack off index ~ sum((individual-underwork - average work)^2)
  */
 public class SimpleHeuristicScheduler implements Scheduler {
 
