@@ -1,6 +1,5 @@
-package com.github.jakubtomekcz.doctorscheduler.converter;
+package com.github.jakubtomekcz.doctorscheduler.constant;
 
-import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

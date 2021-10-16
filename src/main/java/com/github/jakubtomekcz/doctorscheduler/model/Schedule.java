@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @EqualsAndHashCode
-public class ScheduleSuggestion {
+public class Schedule {
 
     private final Map<String, String> data = new HashMap<>();
 
