@@ -14,7 +14,7 @@ class ScheduleTest {
         for (int i = 1; i <= 8; i++) {
             builder.put("Lenny", String.valueOf(i), YES);
         }
-        Schedule schedule = Schedule.builderForPreferenceTable(builder.build())
+        Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
                 .put("1", "Lenny")
                 .put("2", "Carl")
                 .put("3", "Lenny")

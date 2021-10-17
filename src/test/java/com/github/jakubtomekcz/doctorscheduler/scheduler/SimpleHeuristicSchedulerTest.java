@@ -3,6 +3,7 @@ package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.model.Schedule;
+import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -74,7 +75,7 @@ class SimpleHeuristicSchedulerTest {
         musketeers.forEach(person -> builder.put(person, "4", person.equals("Aramis") ? YES : NO));
         PreferenceTable preferenceTable = builder.build();
         Schedule actualResult = scheduler.createSchedule(preferenceTable);
-        Schedule expectedResult = Schedule.builderForPreferenceTable(preferenceTable)
+        Schedule expectedResult = ScheduleBuilder.forPreferenceTable(preferenceTable)
                 .put("1", "d'Artagnan")
                 .put("2", "Atos")
                 .put("3", "Portos")
@@ -93,7 +94,7 @@ class SimpleHeuristicSchedulerTest {
         musketeers.forEach(person -> builder.put(person, "4", person.equals("Aramis") ? PREFER : YES));
         PreferenceTable preferenceTable = builder.build();
         Schedule actualResult = scheduler.createSchedule(preferenceTable);
-        Schedule expectedResult = Schedule.builderForPreferenceTable(preferenceTable)
+        Schedule expectedResult = ScheduleBuilder.forPreferenceTable(preferenceTable)
                 .put("1", "d'Artagnan")
                 .put("2", "Atos")
                 .put("3", "Portos")
