@@ -27,6 +27,8 @@ public class SimpleHeuristicScheduler implements Scheduler {
 
     @Override
     public Schedule createSchedule(PreferenceTable preferenceTable) {
-        return null;
+        Schedule.Builder builder = Schedule.builderForDates(preferenceTable.getDates());
+
+        return builder.build();
     }
 }

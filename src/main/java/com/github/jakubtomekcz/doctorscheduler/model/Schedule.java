@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 @EqualsAndHashCode
 public class Schedule {
 
@@ -66,7 +68,12 @@ public class Schedule {
 
         public Schedule build() {
             ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-            dates.forEach(date -> builder.put(date, data.get(date)));
+            dates.forEach(date -> {
+                if (data.get(date) == null) {
+                    throw new NullPointerException(format("Cannot build Schedule. Missing person for date %s", date));
+                }
+                builder.put(date, data.get(date));
+            });
             return new Schedule(builder.build());
         }
 
