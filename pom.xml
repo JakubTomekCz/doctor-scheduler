@@ -15,7 +15,7 @@
     <description>Schedule doctors' service days to fit their requirements as much as possible.</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>16</java.version>
     </properties>
 
     <dependencies>
