@@ -36,6 +36,14 @@ public class Schedule {
                 .toList();
     }
 
+    public List<String> getDates() {
+        return data.keySet().asList();
+    }
+
+    public int size() {
+        return data.size();
+    }
+
     public int getServiceDaysCountForPerson(String person) {
         long longCount = data.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(person))
