@@ -74,7 +74,7 @@ class SimpleHeuristicSchedulerTest {
         musketeers.forEach(person -> builder.put(person, "4", person.equals("Aramis") ? YES : NO));
         PreferenceTable preferenceTable = builder.build();
         Schedule actualResult = scheduler.createSchedule(preferenceTable);
-        Schedule expectedResult = Schedule.builderForDates("1", "2", "3", "4")
+        Schedule expectedResult = Schedule.builderForPreferenceTable(preferenceTable)
                 .put("1", "d'Artagnan")
                 .put("2", "Atos")
                 .put("3", "Portos")
@@ -93,7 +93,7 @@ class SimpleHeuristicSchedulerTest {
         musketeers.forEach(person -> builder.put(person, "4", person.equals("Aramis") ? PREFER : YES));
         PreferenceTable preferenceTable = builder.build();
         Schedule actualResult = scheduler.createSchedule(preferenceTable);
-        Schedule expectedResult = Schedule.builderForDates("1", "2", "3", "4")
+        Schedule expectedResult = Schedule.builderForPreferenceTable(preferenceTable)
                 .put("1", "d'Artagnan")
                 .put("2", "Atos")
                 .put("3", "Portos")

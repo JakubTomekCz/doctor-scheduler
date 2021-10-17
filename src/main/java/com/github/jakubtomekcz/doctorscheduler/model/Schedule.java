@@ -17,12 +17,8 @@ public class Schedule {
      */
     private final ImmutableMap<String, String> data;
 
-    public static Builder builderForDates(List<String> dates) {
-        return new Builder(dates);
-    }
-
-    public static Builder builderForDates(String... dates) {
-        return builderForDates(List.of(dates));
+    public static Builder builderForPreferenceTable(PreferenceTable preferenceTable) {
+        return new Builder(preferenceTable);
     }
 
     private Schedule(ImmutableMap<String, String> data) {
@@ -55,20 +51,20 @@ public class Schedule {
 
     public static class Builder {
 
-        private final List<String> dates;
+        private final PreferenceTable preferenceTable;
 
         /**
          * date -> person
          */
         private final Map<String, String> data = new HashMap<>();
 
-        private Builder(List<String> dates) {
-            this.dates = dates.stream().toList();
+        private Builder(PreferenceTable preferenceTable) {
+            this.preferenceTable = preferenceTable;
         }
 
         public Schedule build() {
             ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-            dates.forEach(date -> {
+            preferenceTable.getDates().forEach(date -> {
                 if (data.get(date) == null) {
                     throw new NullPointerException(format("Cannot build Schedule. Missing person for date %s", date));
                 }

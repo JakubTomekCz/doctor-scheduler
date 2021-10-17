@@ -3,20 +3,18 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
+import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ScheduleTest {
 
     @Test
     void getServiceDaysCountForPerson() {
-        List<String> dates = IntStream.rangeClosed(1, 8)
-                .boxed()
-                .map(String::valueOf)
-                .toList();
-        Schedule schedule = Schedule.builderForDates(dates)
+        PreferenceTable.Builder builder = PreferenceTable.builder();
+        for (int i = 1; i <= 8; i++) {
+            builder.put("Lenny", String.valueOf(i), YES);
+        }
+        Schedule schedule = Schedule.builderForPreferenceTable(builder.build())
                 .put("1", "Lenny")
                 .put("2", "Carl")
                 .put("3", "Lenny")
