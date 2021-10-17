@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
-
 @EqualsAndHashCode
 public class PreferenceTable {
 
@@ -41,7 +39,7 @@ public class PreferenceTable {
                 .orElse(Set.of())
                 .stream()
                 .map(Map.Entry::getKey)
-                .collect(toList());
+                .toList();
     }
 
     public static class Builder {
