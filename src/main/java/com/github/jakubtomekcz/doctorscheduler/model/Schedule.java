@@ -22,7 +22,7 @@ public class Schedule {
     }
 
     public static Builder builderForDates(String... dates) {
-        return new Builder(List.of(dates));
+        return builderForDates(List.of(dates));
     }
 
     private Schedule(ImmutableMap<String, String> data) {
