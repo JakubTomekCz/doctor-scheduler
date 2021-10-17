@@ -2,14 +2,12 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @EqualsAndHashCode
-@Getter
 public class Schedule {
 
     /**
@@ -31,6 +29,11 @@ public class Schedule {
 
     public String get(String date) {
         return data.get(date);
+    }
+
+    public List<String> getPersonsOnlySchedule() {
+        return data.values().stream()
+                .toList();
     }
 
     public int getServiceDaysCountForPerson(String person) {

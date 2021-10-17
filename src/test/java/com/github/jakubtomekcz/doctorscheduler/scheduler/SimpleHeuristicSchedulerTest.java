@@ -30,7 +30,7 @@ class SimpleHeuristicSchedulerTest {
     }
 
     @Test
-    void noPreferenceIsRespected() {
+    void refusalIsRespected() {
         List<String> musketeers = List.of("Atos", "Portos", "Aramis", "d'Artagnan");
         PreferenceTable.Builder builder = PreferenceTable.builder();
         musketeers.forEach(person -> builder.put(person, "1", person.equals("Atos") ? YES : NO));
@@ -46,5 +46,29 @@ class SimpleHeuristicSchedulerTest {
                 .put("4", "d'Artagnan")
                 .build();
         assertThat(actualResult).isEqualTo(expectedResult);
+    }
+
+    @Test
+    void twoDaysRestBetweenServiceDays() {
+        List<String> musketeers = List.of("Atos", "Portos", "Aramis", "d'Artagnan");
+        PreferenceTable.Builder builder = PreferenceTable.builder();
+        for (int i = 1; i <= 16; i++) {
+            String date = String.valueOf(i);
+            musketeers.forEach(person -> builder.put(person, date, YES));
+        }
+        PreferenceTable preferenceTable = builder.build();
+        Schedule result = scheduler.createSchedule(preferenceTable);
+        assertTwoDaysRestBetweenServiceDays(result);
+    }
+
+    private void assertTwoDaysRestBetweenServiceDays(Schedule schedule) {
+        List<String> personsSchedule = schedule.getPersonsOnlySchedule();
+        for (int i = 0; i < personsSchedule.size() - 1; i++) {
+            assertThat(personsSchedule.get(i)).isNotEqualTo(personsSchedule.get(i + 1));
+            if (i < personsSchedule.size() - 2) {
+                assertThat(personsSchedule.get(i)).isNotEqualTo(personsSchedule.get(i + 2));
+                assertThat(personsSchedule.get(i + 1)).isNotEqualTo(personsSchedule.get(i + 2));
+            }
+        }
     }
 }
