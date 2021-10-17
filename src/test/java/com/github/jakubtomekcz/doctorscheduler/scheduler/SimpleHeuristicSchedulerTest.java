@@ -120,7 +120,7 @@ class SimpleHeuristicSchedulerTest {
     void equalDistributionOfPreferredDays() {
         List<String> musketeers = List.of("Atos", "Portos", "Aramis", "d'Artagnan");
         PreferenceTable.Builder builder = PreferenceTable.builder();
-        for (int i = 1; i <= 16; i++) {
+        for (int i = 1; i <= 32; i++) {
             String date = String.valueOf(i);
             musketeers.forEach(person -> builder.put(person, date, PREFER));
         }
