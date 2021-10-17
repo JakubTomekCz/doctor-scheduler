@@ -21,6 +21,10 @@ public class Schedule {
         return new Builder(dates);
     }
 
+    public static Builder builderForDates(String... dates) {
+        return new Builder(List.of(dates));
+    }
+
     private Schedule(ImmutableMap<String, String> data) {
         this.data = data;
     }
