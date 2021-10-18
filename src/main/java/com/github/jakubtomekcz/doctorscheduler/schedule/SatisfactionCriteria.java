@@ -15,7 +15,7 @@ import java.util.List;
  * Priority 3
  * Minimize slacking off measured by slack off index ~ sum((individual-underwork - average work)^2)
  */
-public class SatisfactionCriteria {
+public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
 
     /**
      * Number of people that were granted the number of preferred days equal to the list index+1
@@ -53,6 +53,11 @@ public class SatisfactionCriteria {
     }
 
     private static int calculateSlackOffIndex(ScheduleBuilder scheduleBuilder) {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(SatisfactionCriteria o) {
         return 0;
     }
 }
