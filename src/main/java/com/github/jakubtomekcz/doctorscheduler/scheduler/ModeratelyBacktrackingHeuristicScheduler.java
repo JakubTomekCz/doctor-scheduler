@@ -8,7 +8,7 @@ import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
  * Creates a schedule based on given preferences.
  * Attempts to maximize satisfaction.
  */
-public class SimpleHeuristicScheduler implements Scheduler {
+public class ModeratelyBacktrackingHeuristicScheduler implements Scheduler {
 
     @Override
     public Schedule createSchedule(PreferenceTable preferenceTable) {

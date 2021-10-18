@@ -23,7 +23,8 @@ public class UiMessageException extends RuntimeException {
         ERROR_READING_XLSX_FILE("error.reading.xlsx.file"),
         XLSX_FILE_DATE_EXPECTED("error.reading.xlsx.file.date.expected"),
         XLSX_FILE_PERSON_NAME_TOO_LONG("error.reading.xlsx.file.person.name.too.long"),
-        XLSX_FILE_PREFERENCE_EXPECTED("error.reading.xlsx.file.preference.expected");
+        XLSX_FILE_PREFERENCE_EXPECTED("error.reading.xlsx.file.preference.expected"),
+        CANNOT_BUILD_SCHEDULE("error.building.schedule");
 
         private final String messageCode;
     }
