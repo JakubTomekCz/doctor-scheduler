@@ -1,4 +1,4 @@
-package com.github.jakubtomekcz.doctorscheduler.model;
+package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import org.junit.jupiter.api.Test;

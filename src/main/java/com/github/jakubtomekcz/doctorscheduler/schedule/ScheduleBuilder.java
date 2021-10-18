@@ -1,4 +1,4 @@
-package com.github.jakubtomekcz.doctorscheduler.model;
+package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 import com.google.common.collect.ImmutableMap;
 

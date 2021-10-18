@@ -3,7 +3,7 @@ package com.github.jakubtomekcz.doctorscheduler.parser;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
-import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.springframework.core.io.ClassPathResource;

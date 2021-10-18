@@ -1,7 +1,7 @@
 package com.github.jakubtomekcz.doctorscheduler.controller;
 
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
-import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.parser.PreferenceTableParserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

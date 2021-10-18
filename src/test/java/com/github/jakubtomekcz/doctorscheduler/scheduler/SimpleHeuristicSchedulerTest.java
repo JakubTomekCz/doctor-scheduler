@@ -1,9 +1,9 @@
 package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 
-import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
-import com.github.jakubtomekcz.doctorscheduler.model.Schedule;
-import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
+import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.schedule.Schedule;
+import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

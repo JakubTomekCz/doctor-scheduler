@@ -2,7 +2,7 @@ package com.github.jakubtomekcz.doctorscheduler.parser;
 
 
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
-import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

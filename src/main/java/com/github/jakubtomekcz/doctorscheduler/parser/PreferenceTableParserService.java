@@ -1,7 +1,7 @@
 package com.github.jakubtomekcz.doctorscheduler.parser;
 
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
-import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.unit.DataSize;
