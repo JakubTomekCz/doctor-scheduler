@@ -27,6 +27,15 @@ public class ScheduleBuilder {
         this.preferenceTable = preferenceTable;
     }
 
+    public ScheduleBuilder put(String date, String person) {
+        data.put(date, person);
+        return this;
+    }
+
+    public SatisfactionCriteria criteria() {
+        return SatisfactionCriteria.of(this);
+    }
+
     public Schedule build() {
         if (!isValid()) {
             throw new IllegalStateException("Cannot build schedule. Elementary schedule requirements are not met.");
@@ -39,11 +48,6 @@ public class ScheduleBuilder {
             builder.put(date, data.get(date));
         });
         return new Schedule(builder.build());
-    }
-
-    public ScheduleBuilder put(String date, String person) {
-        data.put(date, person);
-        return this;
     }
 
     /**
