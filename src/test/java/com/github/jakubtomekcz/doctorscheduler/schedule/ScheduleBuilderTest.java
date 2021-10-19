@@ -73,7 +73,7 @@ class ScheduleBuilderTest {
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
                 .put("1", "Lenny")
                 .put("2", "Lenny");
-        assertThat(builder.isValid()).isTrue();
+        assertThat(builder.isValid()).isFalse();
     }
 
     @Test

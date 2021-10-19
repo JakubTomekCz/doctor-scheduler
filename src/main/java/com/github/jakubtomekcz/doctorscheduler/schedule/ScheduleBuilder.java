@@ -4,8 +4,10 @@ import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static java.lang.String.format;
 
 public class ScheduleBuilder {
@@ -53,6 +55,7 @@ public class ScheduleBuilder {
      * <p>
      * 1. Refusal of service indicated by the {@link PreferenceType#NO} preference must be respected
      * 2. Each person must have at least two days rest between two service days
+     *
      * @return {@code true} if the requirements above are satisfied
      */
     public boolean isValid() {
@@ -60,10 +63,25 @@ public class ScheduleBuilder {
     }
 
     private boolean isRefusalOfServiceRespected() {
-        return false;
+        return data.entrySet().stream()
+                .noneMatch(entry -> preferenceTable.getPreference(entry.getValue(), entry.getKey()) == NO);
     }
 
     private boolean isThereAlwaysTwoDaysRestAfterService() {
-        return false;
+        for (int dateIndex = 0; dateIndex < preferenceTable.getDates().size() - 1; dateIndex++) {
+            if (isSamePersonScheduledOnDayIndexes(dateIndex, dateIndex + 1)
+                    || dateIndex < preferenceTable.getDates().size() - 2
+                    && isSamePersonScheduledOnDayIndexes(dateIndex, dateIndex + 2)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isSamePersonScheduledOnDayIndexes(int dateIndex1, int dateIndex2) {
+        List<String> dates = preferenceTable.getDates();
+        return data.containsKey(dates.get(dateIndex1))
+                && data.containsKey(dates.get(dateIndex2))
+                && data.get(dates.get(dateIndex1)).equals(data.get(dates.get(dateIndex2)));
     }
 }
