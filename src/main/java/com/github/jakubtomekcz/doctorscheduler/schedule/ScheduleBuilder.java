@@ -41,10 +41,6 @@ public class ScheduleBuilder {
         return new Schedule(builder.build());
     }
 
-    public String get(String date) {
-        return data.get(date);
-    }
-
     public ScheduleBuilder put(String date, String person) {
         data.put(date, person);
         return this;
