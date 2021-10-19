@@ -53,7 +53,7 @@ public class ScheduleBuilder {
      * <p>
      * 1. Refusal of service indicated by the {@link PreferenceType#NO} preference must be respected
      * 2. Each person must have at least two days rest between two service days
-     * @return {@true} if the requirements above are satisfied
+     * @return {@code true} if the requirements above are satisfied
      */
     public boolean isValid() {
         return isRefusalOfServiceRespected() && isThereAlwaysTwoDaysRestAfterService();
