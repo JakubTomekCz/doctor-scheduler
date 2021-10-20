@@ -66,7 +66,7 @@ class SatisfactionCriteriaTest {
                                 .put("6", "Homer")
                                 .put("7", "Carl")),
 
-                Arguments.of("Two preferred days are better when split between two people",
+                Arguments.of("Two preferred days granted are better when split between two people",
                         ScheduleBuilder.forPreferenceTable(table)
                                 .put("1", "Carl")
                                 .put("2", "Barney")
@@ -82,8 +82,43 @@ class SatisfactionCriteriaTest {
                                 .put("4", "Lenny")
                                 .put("5", "Barney")
                                 .put("6", "Homer")
-                                .put("7", "Carl"))
-        );
+                                .put("7", "Carl")),
+
+                Arguments.of("It's better when nobody is overworking",
+                        ScheduleBuilder.forPreferenceTable(table)
+                                .put("1", "Barney")
+                                .put("2", "Lenny")
+                                .put("3", "Carl")
+                                .put("4", "Barney")
+                                .put("5", "Lenny")
+                                .put("6", "Carl")
+                                .put("7", "Homer"),
+                        ScheduleBuilder.forPreferenceTable(table)
+                                .put("1", "Barney")
+                                .put("2", "Lenny")
+                                .put("3", "Carl")
+                                .put("4", "Barney")
+                                .put("5", "Homer")
+                                .put("6", "Carl")
+                                .put("7", "Barney")),
+
+                Arguments.of("It's better when nobody is slacking off",
+                        ScheduleBuilder.forPreferenceTable(table)
+                                .put("1", "Barney")
+                                .put("2", "Lenny")
+                                .put("3", "Carl")
+                                .put("4", "Barney")
+                                .put("5", "Homer")
+                                .put("6", "Lenny")
+                                .put("7", "Barney"),
+                        ScheduleBuilder.forPreferenceTable(table)
+                                .put("1", "Barney")
+                                .put("2", "Lenny")
+                                .put("3", "Carl")
+                                .put("4", "Barney")
+                                .put("5", "Lenny")
+                                .put("6", "Carl")
+                                .put("7", "Barney")));
     }
 
     private static PreferenceTable preferenceTable() {
