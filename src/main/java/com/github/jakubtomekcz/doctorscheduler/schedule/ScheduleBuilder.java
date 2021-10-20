@@ -2,6 +2,7 @@ package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.google.common.collect.ImmutableMap;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Map;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static java.lang.String.format;
 
+@Getter
 public class ScheduleBuilder {
 
     public static ScheduleBuilder forPreferenceTable(PreferenceTable preferenceTable) {

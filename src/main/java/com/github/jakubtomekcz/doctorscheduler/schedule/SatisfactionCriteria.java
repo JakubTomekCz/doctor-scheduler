@@ -1,6 +1,14 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.LongStream;
+
+import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Defines which schedule is better and which is worse by comparing the following criteria:
@@ -45,7 +53,20 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
     }
 
     private static List<Integer> calculatePreferredDaysGranted(ScheduleBuilder scheduleBuilder) {
-        return List.of();
+        // person -> number of days granted
+        Map<String, Long> daysGrantedPerPersonMap = scheduleBuilder.getData().entrySet().stream()
+                .filter(e -> scheduleBuilder.getPreferenceTable().getPreference(e.getValue(), e.getKey()) == PREFER)
+                .collect(groupingBy(Entry::getValue, counting()));
+
+        // number of days granted -> number of people with this score
+        Map<Long, Long> daysGrantedPeopleCountMap = daysGrantedPerPersonMap.values().stream()
+                .collect(groupingBy(identity(), counting()));
+
+        long maxDaysGranted = daysGrantedPerPersonMap.values().stream().max(Long::compare).orElse(0L);
+        return LongStream.rangeClosed(1, maxDaysGranted).boxed()
+                .map(lng -> daysGrantedPeopleCountMap.getOrDefault(lng, 0L))
+                .map(Math::toIntExact)
+                .toList();
     }
 
     private static int calculateOverworkIndex(ScheduleBuilder scheduleBuilder) {

@@ -8,12 +8,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-
 class SatisfactionCriteriaTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("isBetterMethodSource")
-    void isBetter(String ignoredTestName, ScheduleBuilder betterSchedule, ScheduleBuilder worseSchedule) {
+    void isBetter(String testName, ScheduleBuilder betterSchedule, ScheduleBuilder worseSchedule) {
         SatisfactionCriteria betterCriteria = SatisfactionCriteria.of(betterSchedule);
         SatisfactionCriteria worseCriteria = SatisfactionCriteria.of(worseSchedule);
 
