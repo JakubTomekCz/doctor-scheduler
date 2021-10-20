@@ -60,4 +60,8 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
     public int compareTo(SatisfactionCriteria o) {
         return 0;
     }
+
+    public boolean isBetterThan(SatisfactionCriteria other) {
+        return this.compareTo(other) > 0;
+    }
 }
