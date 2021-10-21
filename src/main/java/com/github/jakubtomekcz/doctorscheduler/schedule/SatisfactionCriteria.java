@@ -70,15 +70,60 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
     }
 
     private static int calculateOverworkIndex(ScheduleBuilder scheduleBuilder) {
-        return 0;
+        int numberOfDays = scheduleBuilder.getPreferenceTable().getDates().size();
+        int numberOfPeople = scheduleBuilder.getPreferenceTable().getPersons().size();
+        int avgLow = numberOfDays / numberOfPeople;
+        int avgHigh = numberOfPeople * avgLow == numberOfDays ? avgLow : avgLow + 1;
+
+        return scheduleBuilder.getData().entrySet().stream()
+                .collect(groupingBy(Entry::getValue, counting()))
+                .values().stream()
+                .map(Math::toIntExact)
+                .filter(i -> i > avgHigh)
+                .map(i -> i - avgHigh)
+                .map(i -> i * i)
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 
     private static int calculateSlackOffIndex(ScheduleBuilder scheduleBuilder) {
-        return 0;
+        int numberOfDays = scheduleBuilder.getPreferenceTable().getDates().size();
+        int numberOfPeople = scheduleBuilder.getPreferenceTable().getPersons().size();
+        int avgLow = numberOfDays / numberOfPeople;
+
+        return scheduleBuilder.getData().entrySet().stream()
+                .collect(groupingBy(Entry::getValue, counting()))
+                .values().stream()
+                .map(Math::toIntExact)
+                .filter(i -> i < avgLow)
+                .map(i -> avgLow - i)
+                .map(i -> i * i)
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 
     @Override
-    public int compareTo(SatisfactionCriteria o) {
+    public int compareTo(SatisfactionCriteria other) {
+        int preferredDaysComparison = comparePreferredDaysGranted(preferredDaysGranted, other.preferredDaysGranted);
+        if (preferredDaysComparison != 0) {
+            return preferredDaysComparison;
+        }
+
+        if (overworkIndex != other.overworkIndex) {
+            return overworkIndex - other.overworkIndex;
+        }
+
+        return slackOffIndex - other.slackOffIndex;
+    }
+
+    private int comparePreferredDaysGranted(List<Integer> daysGranted1, List<Integer> daysGranted2) {
+        for (int i = 0; i < Math.max(daysGranted1.size(), daysGranted2.size()); i++) {
+            int score1 = i < daysGranted1.size() ? daysGranted1.get(i) : 0;
+            int score2 = i < daysGranted2.size() ? daysGranted2.get(i) : 0;
+            if (score1 != score2) {
+                return score1 - score2;
+            }
+        }
         return 0;
     }
 
