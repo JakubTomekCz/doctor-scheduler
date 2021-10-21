@@ -95,9 +95,10 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
         int numberOfPeople = scheduleBuilder.getPreferenceTable().getPersons().size();
         int avgLow = numberOfDays / numberOfPeople;
 
-        return scheduleBuilder.getData().entrySet().stream()
-                .collect(groupingBy(Entry::getValue, counting()))
-                .values().stream()
+        return scheduleBuilder.getPreferenceTable().getPersons().stream()
+                .map(person -> scheduleBuilder.getData().values().stream()
+                        .filter(person::equals)
+                        .count())
                 .map(Math::toIntExact)
                 .filter(i -> i < avgLow)
                 .map(i -> avgLow - i)
