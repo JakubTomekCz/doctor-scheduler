@@ -114,10 +114,10 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
         }
 
         if (overworkIndex != other.overworkIndex) {
-            return overworkIndex - other.overworkIndex;
+            return other.overworkIndex - overworkIndex;
         }
 
-        return slackOffIndex - other.slackOffIndex;
+        return other.slackOffIndex - slackOffIndex;
     }
 
     private int comparePreferredDaysGranted(List<Integer> daysGranted1, List<Integer> daysGranted2) {
