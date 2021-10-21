@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.groupingBy;
  * <p>
  * Priority 1
  * Maximize total number of preferred days satisfied giving priority to less satisfied persons
- * (maximize number of 1x satisfied, then 2x satisfied etc.)
+ * (maximize number of (1+)x satisfied, then (2+)x satisfied etc.)
  * <p>
  * Priority 2
  * Minimize overwork measured by overwork index ~ sum((individual-overwork - average work)^2)
@@ -26,12 +26,12 @@ import static java.util.stream.Collectors.groupingBy;
 public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
 
     /**
-     * Number of people that were granted the number of preferred days equal to the list index+1
+     * Number of people that were granted the at least number of preferred days equal to the list index+1
      * Example:
      * [7, 2, 1] means:
-     * 7 people were granted 1 preferred day
-     * 2 people were granted 2 preferred days
-     * 1 person was granted 3 preferred days
+     * 7 people were granted 1 or more preferred day
+     * 2 people were granted 2 or more preferred days
+     * 1 person was granted 3 or more preferred days
      */
     private final List<Integer> preferredDaysGranted;
 
@@ -64,7 +64,11 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
 
         long maxDaysGranted = daysGrantedPerPersonMap.values().stream().max(Long::compare).orElse(0L);
         return LongStream.rangeClosed(1, maxDaysGranted).boxed()
-                .map(lng -> daysGrantedPeopleCountMap.getOrDefault(lng, 0L))
+                .map(lng -> daysGrantedPeopleCountMap.entrySet().stream()
+                        .filter(entry -> entry.getKey() >= lng)
+                        .map(Entry::getValue)
+                        .reduce(Long::sum)
+                        .orElse(0L))
                 .map(Math::toIntExact)
                 .toList();
     }
