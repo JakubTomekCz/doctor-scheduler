@@ -3,6 +3,9 @@ package com.github.jakubtomekcz.doctorscheduler.schedule;
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -116,5 +119,33 @@ class ScheduleBuilderTest {
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
                 .put("1", "Lenny");
         assertThat(builder.isComplete()).isFalse();
+    }
+
+    @Test
+    void assignablePersonsEmptySchedule() {
+        PreferenceTable table = PreferenceTable.builder()
+                .put("Lenny", "1", PreferenceType.YES)
+                .put("Carl", "1", PreferenceType.YES)
+                .put("Lenny", "2", PreferenceType.YES)
+                .put("Carl", "2", PreferenceType.YES)
+                .build();
+        ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table);
+        assertThat(builder.getAssignablePersons()).containsExactlyInAnyOrderEntriesOf(Map.of(
+                "1", Set.of("Lenny", "Carl"),
+                "2", Set.of("Lenny", "Carl")));
+    }
+
+    @Test
+    void assignablePersonsUpdated() {
+        PreferenceTable table = PreferenceTable.builder()
+                .put("Lenny", "1", PreferenceType.YES)
+                .put("Carl", "1", PreferenceType.YES)
+                .put("Lenny", "2", PreferenceType.YES)
+                .put("Carl", "2", PreferenceType.YES)
+                .build();
+        ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
+                        .put("1", "Lenny");
+        assertThat(builder.getAssignablePersons()).containsExactlyInAnyOrderEntriesOf(Map.of(
+                "2", Set.of("Carl")));
     }
 }
