@@ -39,7 +39,7 @@ public class ScheduleBuilder {
     }
 
     public Schedule build() {
-        if (!isValid()) {
+        if (!isConsistent()) {
             throw new IllegalStateException("Cannot build schedule. Elementary schedule requirements are not met.");
         }
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
@@ -60,7 +60,7 @@ public class ScheduleBuilder {
      *
      * @return {@code true} if the requirements above are satisfied
      */
-    public boolean isValid() {
+    public boolean isConsistent() {
         return isRefusalOfServiceRespected() && isThereAlwaysTwoDaysRestAfterService();
     }
 

@@ -35,7 +35,7 @@ class ScheduleBuilderTest {
     }
 
     @Test
-    void isValid() {
+    void isConsistent() {
         PreferenceTable table = PreferenceTable.builder()
                 .put("Lenny", "1", PreferenceType.YES)
                 .put("Carl", "1", PreferenceType.YES)
@@ -45,11 +45,11 @@ class ScheduleBuilderTest {
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
                 .put("1", "Lenny")
                 .put("2", "Carl");
-        assertThat(builder.isValid()).isTrue();
+        assertThat(builder.isConsistent()).isTrue();
     }
 
     @Test
-    void isNotValidDisrespectsRefusal() {
+    void isNotConsistentDisrespectsRefusal() {
         PreferenceTable table = PreferenceTable.builder()
                 .put("Lenny", "1", PreferenceType.YES)
                 .put("Carl", "1", PreferenceType.YES)
@@ -59,11 +59,11 @@ class ScheduleBuilderTest {
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
                 .put("1", "Lenny")
                 .put("2", "Carl");
-        assertThat(builder.isValid()).isFalse();
+        assertThat(builder.isConsistent()).isFalse();
     }
 
     @Test
-    void isNotValidViolatesTwoDaysRest() {
+    void isNotConsistentViolatesTwoDaysRest() {
         PreferenceTable table = PreferenceTable.builder()
                 .put("Lenny", "1", PreferenceType.YES)
                 .put("Carl", "1", PreferenceType.YES)
@@ -73,11 +73,11 @@ class ScheduleBuilderTest {
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
                 .put("1", "Lenny")
                 .put("2", "Lenny");
-        assertThat(builder.isValid()).isFalse();
+        assertThat(builder.isConsistent()).isFalse();
     }
 
     @Test
-    void cannotBuildInvalidSchedule() {
+    void cannotBuildInconsistentSchedule() {
         PreferenceTable table = PreferenceTable.builder()
                 .put("Lenny", "1", PreferenceType.YES)
                 .put("Carl", "1", PreferenceType.YES)
