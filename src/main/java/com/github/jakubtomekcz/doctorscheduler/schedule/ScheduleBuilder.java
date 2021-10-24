@@ -120,15 +120,13 @@ public class ScheduleBuilder {
     private void reduceAssignablePersons(String assignedDate, String assignedPerson) {
         assignablePersons.remove(assignedDate);
         List<String> dates = preferenceTable.getDates();
-        for (int i = 0; i < dates.size(); i++) {
-            if (dates.get(i).equals(assignedDate)) {
-                for (int j : List.of(i - 2, i - 1, i + 1, i + 2)) {
-                    if (j >= 0 && j < dates.size()) {
-                        String day = dates.get(j);
-                        assignablePersons.get(day).remove(assignedPerson);
-                    }
+        int assignedDateIdx = dates.indexOf(assignedDate);
+        for (int i : List.of(assignedDateIdx - 2, assignedDateIdx - 1, assignedDateIdx + 1, assignedDateIdx + 2)) {
+            if (i >= 0 && i < dates.size()) {
+                String day = dates.get(i);
+                if (assignablePersons.containsKey(day)) {
+                    assignablePersons.get(day).remove(assignedPerson);
                 }
-                break;
             }
         }
     }
