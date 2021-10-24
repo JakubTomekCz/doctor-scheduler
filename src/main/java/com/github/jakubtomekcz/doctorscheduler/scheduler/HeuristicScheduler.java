@@ -1,5 +1,6 @@
 package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
+import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.schedule.Schedule;
@@ -25,6 +26,19 @@ public class HeuristicScheduler implements Scheduler {
     }
 
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
+        String date = selectDateToBeAssignedAPerson(builder);
+
         return Optional.empty();
+    }
+
+    /**
+     * Heuristic method of selecting the next date to be assigned a person
+     * Priorities:
+     * 1. Date with only one possible person
+     * 2. Date where at least one possible person has {@link PreferenceType#PREFER} (prefer fewer)
+     * 3. Other dates, prefer fewer possible persons
+     */
+    private String selectDateToBeAssignedAPerson(ScheduleBuilder builder) {
+        return null;
     }
 }
