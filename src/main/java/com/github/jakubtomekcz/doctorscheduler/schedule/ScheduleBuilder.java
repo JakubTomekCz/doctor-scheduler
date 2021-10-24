@@ -24,14 +24,14 @@ public class ScheduleBuilder {
     /**
      * date -> person
      */
-    private final Map<String, String> data = new HashMap<>();
+    private final Map<String, String> schedule = new HashMap<>();
 
     private ScheduleBuilder(PreferenceTable preferenceTable) {
         this.preferenceTable = preferenceTable;
     }
 
     public ScheduleBuilder put(String date, String person) {
-        data.put(date, person);
+        schedule.put(date, person);
         return this;
     }
 
@@ -45,10 +45,10 @@ public class ScheduleBuilder {
         }
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         preferenceTable.getDates().forEach(date -> {
-            if (data.get(date) == null) {
+            if (schedule.get(date) == null) {
                 throw new NullPointerException(format("Cannot build Schedule. Missing person for date %s", date));
             }
-            builder.put(date, data.get(date));
+            builder.put(date, schedule.get(date));
         });
         return new Schedule(builder.build());
     }
@@ -58,7 +58,7 @@ public class ScheduleBuilder {
      */
     public boolean isComplete() {
         return preferenceTable.getDates().stream()
-                .map(data::get)
+                .map(schedule::get)
                 .allMatch(Objects::nonNull);
     }
 
@@ -75,7 +75,7 @@ public class ScheduleBuilder {
     }
 
     private boolean isRefusalOfServiceRespected() {
-        return data.entrySet().stream()
+        return schedule.entrySet().stream()
                 .noneMatch(entry -> preferenceTable.getPreference(entry.getValue(), entry.getKey()) == NO);
     }
 
@@ -92,8 +92,8 @@ public class ScheduleBuilder {
 
     private boolean isSamePersonScheduledOnDayIndexes(int dateIndex1, int dateIndex2) {
         List<String> dates = preferenceTable.getDates();
-        return data.containsKey(dates.get(dateIndex1))
-                && data.containsKey(dates.get(dateIndex2))
-                && data.get(dates.get(dateIndex1)).equals(data.get(dates.get(dateIndex2)));
+        return schedule.containsKey(dates.get(dateIndex1))
+                && schedule.containsKey(dates.get(dateIndex2))
+                && schedule.get(dates.get(dateIndex1)).equals(schedule.get(dates.get(dateIndex2)));
     }
 }

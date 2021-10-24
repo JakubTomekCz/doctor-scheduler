@@ -54,7 +54,7 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
 
     private static List<Integer> calculatePreferredDaysGranted(ScheduleBuilder scheduleBuilder) {
         // person -> number of days granted
-        Map<String, Long> daysGrantedPerPersonMap = scheduleBuilder.getData().entrySet().stream()
+        Map<String, Long> daysGrantedPerPersonMap = scheduleBuilder.getSchedule().entrySet().stream()
                 .filter(e -> scheduleBuilder.getPreferenceTable().getPreference(e.getValue(), e.getKey()) == PREFER)
                 .collect(groupingBy(Entry::getValue, counting()));
 
@@ -79,7 +79,7 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
         int avgLow = numberOfDays / numberOfPeople;
         int avgHigh = numberOfPeople * avgLow == numberOfDays ? avgLow : avgLow + 1;
 
-        return scheduleBuilder.getData().entrySet().stream()
+        return scheduleBuilder.getSchedule().entrySet().stream()
                 .collect(groupingBy(Entry::getValue, counting()))
                 .values().stream()
                 .map(Math::toIntExact)
@@ -96,7 +96,7 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
         int avgLow = numberOfDays / numberOfPeople;
 
         return scheduleBuilder.getPreferenceTable().getPersons().stream()
-                .map(person -> scheduleBuilder.getData().values().stream()
+                .map(person -> scheduleBuilder.getSchedule().values().stream()
                         .filter(person::equals)
                         .count())
                 .map(Math::toIntExact)
