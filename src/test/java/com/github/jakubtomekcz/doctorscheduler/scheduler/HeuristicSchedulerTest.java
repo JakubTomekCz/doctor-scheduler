@@ -22,9 +22,9 @@ import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.M
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ModeratelyBacktrackingHeuristicSchedulerTest {
+class HeuristicSchedulerTest {
 
-    private final ModeratelyBacktrackingHeuristicScheduler scheduler = new ModeratelyBacktrackingHeuristicScheduler();
+    private final HeuristicScheduler scheduler = new HeuristicScheduler();
 
     @Test
     void scheduleIsComplete() {
