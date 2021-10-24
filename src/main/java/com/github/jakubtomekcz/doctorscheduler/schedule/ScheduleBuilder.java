@@ -8,9 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static java.lang.String.format;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 @Getter
 public class ScheduleBuilder {
@@ -26,12 +31,20 @@ public class ScheduleBuilder {
      */
     private final Map<String, String> schedule = new HashMap<>();
 
+    /**
+     * date -> Set of persons that can be assigned without violating requirements
+     */
+    private final Map<String, Set<String>> assignablePersons;
+
     private ScheduleBuilder(PreferenceTable preferenceTable) {
         this.preferenceTable = preferenceTable;
+        assignablePersons = preferenceTable.getDates().stream()
+                .collect(toMap(date -> date, date -> assignablePersonsForDate(preferenceTable, date)));
     }
 
     public ScheduleBuilder put(String date, String person) {
         schedule.put(date, person);
+        reduceAssignablePersons(date, person);
         return this;
     }
 
@@ -95,5 +108,28 @@ public class ScheduleBuilder {
         return schedule.containsKey(dates.get(dateIndex1))
                 && schedule.containsKey(dates.get(dateIndex2))
                 && schedule.get(dates.get(dateIndex1)).equals(schedule.get(dates.get(dateIndex2)));
+    }
+
+    private Set<String> assignablePersonsForDate(PreferenceTable preferenceTable, String date) {
+        return preferenceTable.getPersons().stream()
+                .filter(person -> preferenceTable.getPreference(person, date) == YES
+                        || preferenceTable.getPreference(person, date) == PREFER)
+                .collect(toSet());
+    }
+
+    private void reduceAssignablePersons(String assignedDate, String assignedPerson) {
+        assignablePersons.remove(assignedDate);
+        List<String> dates = preferenceTable.getDates();
+        for (int i = 0; i < dates.size(); i++) {
+            if (dates.get(i).equals(assignedDate)) {
+                for (int j : List.of(i - 2, i - 1, i + 1, i + 2)) {
+                    if (j >= 0 && j < dates.size()) {
+                        String day = dates.get(j);
+                        assignablePersons.get(day).remove(assignedPerson);
+                    }
+                }
+                break;
+            }
+        }
     }
 }
