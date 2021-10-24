@@ -26,8 +26,10 @@ public class HeuristicScheduler implements Scheduler {
     }
 
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
+        if (builder.isComplete()) {
+            return Optional.of(builder);
+        }
         String date = selectDateToBeAssignedAPerson(builder);
-
         return Optional.empty();
     }
 
