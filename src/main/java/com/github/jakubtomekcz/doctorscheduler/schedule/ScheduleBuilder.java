@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static java.lang.String.format;
@@ -50,6 +51,15 @@ public class ScheduleBuilder {
             builder.put(date, data.get(date));
         });
         return new Schedule(builder.build());
+    }
+
+    /**
+     * @return {@code true} if each date has assigned a person
+     */
+    public boolean isComplete() {
+        return preferenceTable.getDates().stream()
+                .map(data::get)
+                .allMatch(Objects::nonNull);
     }
 
     /**
