@@ -6,6 +6,7 @@ import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.schedule.Schedule;
 import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,8 +34,18 @@ public class HeuristicScheduler implements Scheduler {
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
         if (builder.isComplete()) {
             return Optional.of(builder);
+        } else if (builder.getAssignablePersons().values().stream().anyMatch(Set::isEmpty)) {
+            return Optional.empty();
         }
         String date = selectDateToBeAssignedAPerson(builder);
+        List<String> sortedCandidates = sortCandidates(builder.getAssignablePersons().get(date));
+        for (String person : sortedCandidates) {
+            ScheduleBuilder extendedBuilder = builder.copy().put(date, person);
+            Optional<ScheduleBuilder> solution = findSolutionFor(extendedBuilder);
+            if (solution.isPresent()) {
+                return solution;
+            }
+        }
         return Optional.empty();
     }
 

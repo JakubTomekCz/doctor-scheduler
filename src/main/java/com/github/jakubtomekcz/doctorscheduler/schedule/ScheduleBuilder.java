@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,26 +21,35 @@ import static java.util.stream.Collectors.toSet;
 @Getter
 public class ScheduleBuilder {
 
-    public static ScheduleBuilder forPreferenceTable(PreferenceTable preferenceTable) {
-        return new ScheduleBuilder(preferenceTable);
-    }
-
     private final PreferenceTable preferenceTable;
 
     /**
      * date -> person
      */
-    private final Map<String, String> schedule = new HashMap<>();
+    private final Map<String, String> schedule;
 
     /**
      * date -> Set of persons that can be assigned without violating requirements
      */
     private final Map<String, Set<String>> assignablePersons;
 
+    public static ScheduleBuilder forPreferenceTable(PreferenceTable preferenceTable) {
+        return new ScheduleBuilder(preferenceTable);
+    }
+
     private ScheduleBuilder(PreferenceTable preferenceTable) {
         this.preferenceTable = preferenceTable;
+        this.schedule = new HashMap<>();
         assignablePersons = preferenceTable.getDates().stream()
                 .collect(toMap(date -> date, date -> assignablePersonsForDate(preferenceTable, date)));
+    }
+
+    private ScheduleBuilder(PreferenceTable preferenceTable,
+                            Map<String, String> schedule,
+                            Map<String, Set<String>> assignablePersons) {
+        this.preferenceTable = preferenceTable;
+        this.schedule = schedule;
+        this.assignablePersons = assignablePersons;
     }
 
     public ScheduleBuilder put(String date, String person) {
@@ -73,6 +83,13 @@ public class ScheduleBuilder {
         return preferenceTable.getDates().stream()
                 .map(schedule::get)
                 .allMatch(Objects::nonNull);
+    }
+
+    public ScheduleBuilder copy() {
+        Map<String, String> scheduleClone = new HashMap<>(schedule);
+        Map<String, Set<String>> assignablePersonsClone = assignablePersons.entrySet().stream()
+                .collect(toMap(Map.Entry::getKey, entry -> new HashSet<>(entry.getValue())));
+        return new ScheduleBuilder(preferenceTable, scheduleClone, assignablePersonsClone);
     }
 
     /**
