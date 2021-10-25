@@ -6,8 +6,13 @@ import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.schedule.Schedule;
 import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
+import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
 
 /**
@@ -41,6 +46,36 @@ public class HeuristicScheduler implements Scheduler {
      * 3. Other dates, prefer fewer possible persons
      */
     private String selectDateToBeAssignedAPerson(ScheduleBuilder builder) {
-        return null;
+
+        String bestCandidatePreferredByFewestPeople = null;
+        int fewestNumberOfPeoplePreferringTheBestCandidate = Integer.MAX_VALUE;
+        String bestCandidateWithFewestAssignablePeople = null;
+        int fewestNumberOfAssignablePeople = Integer.MAX_VALUE;
+
+        for (Map.Entry<String, Set<String>> entry : builder.getAssignablePersons().entrySet()) {
+            String date = entry.getKey();
+            Set<String> assignablePersons = entry.getValue();
+
+            if (assignablePersons.size() == 1) {
+                return date;
+            }
+
+            int numberOfAssignablePeopleThatPreferThisDay = Math.toIntExact(assignablePersons.stream()
+                    .filter(person -> builder.getPreferenceTable().getPreference(person, date) == PREFER)
+                    .count());
+            if (numberOfAssignablePeopleThatPreferThisDay > 0
+                    && numberOfAssignablePeopleThatPreferThisDay < fewestNumberOfPeoplePreferringTheBestCandidate) {
+                fewestNumberOfPeoplePreferringTheBestCandidate = numberOfAssignablePeopleThatPreferThisDay;
+                bestCandidatePreferredByFewestPeople = date;
+            } else if (assignablePersons.size() < fewestNumberOfAssignablePeople) {
+                fewestNumberOfAssignablePeople = assignablePersons.size();
+                bestCandidateWithFewestAssignablePeople = date;
+            }
+        }
+
+        return Stream.of(bestCandidatePreferredByFewestPeople, bestCandidateWithFewestAssignablePeople)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Failed to find the next date to be assigned a person."));
     }
 }
