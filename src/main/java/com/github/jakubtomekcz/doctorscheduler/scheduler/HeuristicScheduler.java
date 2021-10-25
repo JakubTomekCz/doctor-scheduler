@@ -5,6 +5,8 @@ import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.schedule.Schedule;
 import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,12 @@ import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.M
  * Creates a schedule based on given preferences.
  * Attempts to maximize satisfaction.
  */
+@Slf4j
+@RequiredArgsConstructor
 public class HeuristicScheduler implements Scheduler {
+
+    private final int maxIterations;
+    private int iterationCounter = 0;
 
     @Override
     public Schedule createSchedule(PreferenceTable preferenceTable) {
@@ -32,7 +39,11 @@ public class HeuristicScheduler implements Scheduler {
     }
 
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
-        if (builder.isComplete()) {
+        iterationCounter++;
+        if (iterationCounter > maxIterations) {
+            log.debug("Max number of iterations exceeded. Giving up. Sorry.");
+            return Optional.empty();
+        } else if (builder.isComplete()) {
             return Optional.of(builder);
         } else if (builder.getAssignablePersons().values().stream().anyMatch(Set::isEmpty)) {
             return Optional.empty();

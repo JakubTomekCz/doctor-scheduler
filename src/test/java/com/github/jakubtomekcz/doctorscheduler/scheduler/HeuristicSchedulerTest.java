@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class HeuristicSchedulerTest {
 
-    private final HeuristicScheduler scheduler = new HeuristicScheduler();
+    private final HeuristicScheduler scheduler = new HeuristicScheduler(10_000);
 
     @Test
     void scheduleIsComplete() {
