@@ -144,8 +144,27 @@ class ScheduleBuilderTest {
                 .put("Carl", "2", PreferenceType.YES)
                 .build();
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
-                        .put("1", "Lenny");
+                .put("1", "Lenny");
         assertThat(builder.getAssignablePersons()).containsExactlyInAnyOrderEntriesOf(Map.of(
                 "2", Set.of("Carl")));
+    }
+
+    @Test
+    void modifyingCopyDoesNotAffectOriginal() {
+        PreferenceTable table = PreferenceTable.builder()
+                .put("Lenny", "1", PreferenceType.YES)
+                .put("Carl", "1", PreferenceType.YES)
+                .put("Lenny", "2", PreferenceType.YES)
+                .put("Carl", "2", PreferenceType.YES)
+                .build();
+        ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table);
+        ScheduleBuilder clone = builder.copy();
+
+        builder.put("1", "Lenny");
+
+        assertThat(clone.getSchedule()).isEmpty();
+        assertThat(clone.getAssignablePersons()).containsExactlyInAnyOrderEntriesOf(Map.of(
+                "1", Set.of("Lenny", "Carl"),
+                "2", Set.of("Lenny", "Carl")));
     }
 }
