@@ -38,7 +38,7 @@ public class HeuristicScheduler implements Scheduler {
             return Optional.empty();
         }
         String date = selectDateToBeAssignedAPerson(builder);
-        List<String> sortedCandidates = sortCandidates(builder.getAssignablePersons().get(date));
+        List<String> sortedCandidates = getSortedCandidates(builder, date);
         for (String person : sortedCandidates) {
             ScheduleBuilder extendedBuilder = builder.copy().put(date, person);
             Optional<ScheduleBuilder> solution = findSolutionFor(extendedBuilder);
