@@ -89,4 +89,15 @@ public class HeuristicScheduler implements Scheduler {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Failed to find the next date to be assigned a person."));
     }
+
+    /**
+     * Sort the candidate persons for given date into an order in which they will get a chance to build a solution
+     * Priorities:
+     * TODO
+     */
+    private List<String> getSortedCandidates(ScheduleBuilder builder, String date) {
+        Set<String> candidateSet = builder.getAssignablePersons().get(date);
+        // TODO
+        return null;
+    }
 }
