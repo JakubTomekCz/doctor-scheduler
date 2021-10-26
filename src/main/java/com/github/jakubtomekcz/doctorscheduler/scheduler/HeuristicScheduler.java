@@ -2,6 +2,8 @@ package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
+import com.github.jakubtomekcz.doctorscheduler.model.Date;
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.schedule.Schedule;
 import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
@@ -50,11 +52,11 @@ public class HeuristicScheduler implements Scheduler {
         } else if (builder.getAssignablePersons().values().stream().anyMatch(Set::isEmpty)) {
             return Optional.empty();
         }
-        String date = selectDateToBeAssignedAPerson(builder);
-        List<String> sortedCandidates = builder.getAssignablePersons().get(date).stream()
+        Date date = selectDateToBeAssignedAPerson(builder);
+        List<Person> sortedCandidates = builder.getAssignablePersons().get(date).stream()
                 .sorted(HeuristicCandidatePersonComparator.with(builder))
                 .toList();
-        for (String person : sortedCandidates) {
+        for (Person person : sortedCandidates) {
             ScheduleBuilder extendedBuilder = builder.copy().put(date, person);
             Optional<ScheduleBuilder> solution = findSolutionFor(extendedBuilder);
             if (solution.isPresent()) {
@@ -71,16 +73,16 @@ public class HeuristicScheduler implements Scheduler {
      * 2. Date where at least one possible person has {@link PreferenceType#PREFER} (prefer fewer)
      * 3. Other dates, prefer fewer possible persons
      */
-    private String selectDateToBeAssignedAPerson(ScheduleBuilder builder) {
+    private Date selectDateToBeAssignedAPerson(ScheduleBuilder builder) {
 
-        String bestCandidatePreferredByFewestPeople = null;
+        Date bestCandidatePreferredByFewestPeople = null;
         int fewestNumberOfPeoplePreferringTheBestCandidate = Integer.MAX_VALUE;
-        String bestCandidateWithFewestAssignablePeople = null;
+        Date bestCandidateWithFewestAssignablePeople = null;
         int fewestNumberOfAssignablePeople = Integer.MAX_VALUE;
 
-        for (Map.Entry<String, Set<String>> entry : builder.getAssignablePersons().entrySet()) {
-            String date = entry.getKey();
-            Set<String> assignablePersons = entry.getValue();
+        for (Map.Entry<Date, Set<Person>> entry : builder.getAssignablePersons().entrySet()) {
+            Date date = entry.getKey();
+            Set<Person> assignablePersons = entry.getValue();
 
             if (assignablePersons.size() == 1) {
                 return date;

@@ -1,5 +1,6 @@
 package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +15,7 @@ import java.util.Comparator;
  * 2. candidate with the fewest service days assigned
  */
 @RequiredArgsConstructor
-public class HeuristicCandidatePersonComparator implements Comparator<String> {
+public class HeuristicCandidatePersonComparator implements Comparator<Person> {
 
     private final ScheduleBuilder builder;
 
@@ -22,8 +23,9 @@ public class HeuristicCandidatePersonComparator implements Comparator<String> {
         return new HeuristicCandidatePersonComparator(builder);
     }
 
+
     @Override
-    public int compare(String o1, String o2) {
+    public int compare(Person person1, Person person2) {
         return 0;
     }
 }
