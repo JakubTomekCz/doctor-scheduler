@@ -2,6 +2,8 @@ package com.github.jakubtomekcz.doctorscheduler.parser;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
+import com.github.jakubtomekcz.doctorscheduler.model.Date;
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -45,10 +47,10 @@ public class XlsxParser implements PreferenceTableParser {
                 if (personCell == null || isBlank(personCell.getStringCellValue())) {
                     break;
                 }
-                String person = validateAndGetPerson(personCell);
+                Person person = validateAndGetPerson(personCell);
                 for (Map.Entry<Integer, String> entry : datesRow.entrySet()) {
                     int columnIndex = entry.getKey();
-                    String date = entry.getValue();
+                    Date date = new Date(entry.getValue());
                     String cellValue = row.getCell(columnIndex).getStringCellValue();
                     PreferenceType preference;
                     try {
@@ -91,12 +93,12 @@ public class XlsxParser implements PreferenceTableParser {
         return datesRow;
     }
 
-    private String validateAndGetPerson(Cell personCell) {
-        String person = personCell.getStringCellValue();
-        if (person.length() > PERSON_MAX_LENGTH) {
-            throw new UiMessageException(XLSX_FILE_PERSON_NAME_TOO_LONG, PERSON_MAX_LENGTH, person.length(),
+    private Person validateAndGetPerson(Cell personCell) {
+        String personName = personCell.getStringCellValue();
+        if (personName.length() > PERSON_MAX_LENGTH) {
+            throw new UiMessageException(XLSX_FILE_PERSON_NAME_TOO_LONG, PERSON_MAX_LENGTH, personName.length(),
                     personCell.getRowIndex(), personCell.getColumnIndex());
         }
-        return person;
+        return new Person(personName);
     }
 }
