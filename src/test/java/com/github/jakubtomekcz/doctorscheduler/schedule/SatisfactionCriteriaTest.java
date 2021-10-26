@@ -1,6 +1,8 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
+import com.github.jakubtomekcz.doctorscheduler.model.Date;
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,6 +12,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 class SatisfactionCriteriaTest {
+
+    private static final Person LENNY = new Person("Lenny");
+    private static final Person CARL = new Person("Carl");
+    private static final Person HOMER = new Person("Homer");
+    private static final Person BARNEY = new Person("Barney");
+
+    private static final Date MONDAY = new Date("Monday");
+    private static final Date TUESDAY = new Date("Tuesday");
+    private static final Date WEDNESDAY = new Date("Wednesday");
+    private static final Date THURSDAY = new Date("Thursday");
+    private static final Date FRIDAY = new Date("Friday");
+    private static final Date SATURDAY = new Date("Saturday");
+    private static final Date SUNDAY = new Date("Sunday");
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("isBetterMethodSource")
@@ -32,131 +47,131 @@ class SatisfactionCriteriaTest {
         return Stream.of(
                 Arguments.of("One preferred day granted is better than none",
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Lenny")
-                                .put("2", "Homer")
-                                .put("3", "Carl")
-                                .put("4", "Barney")
-                                .put("5", "Lenny")
-                                .put("6", "Homer")
-                                .put("7", "Carl"),
+                                .put(MONDAY, LENNY)
+                                .put(TUESDAY, HOMER)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, BARNEY)
+                                .put(FRIDAY, LENNY)
+                                .put(SATURDAY, HOMER)
+                                .put(SUNDAY, CARL),
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Barney")
-                                .put("2", "Homer")
-                                .put("3", "Carl")
-                                .put("4", "Barney")
-                                .put("5", "Lenny")
-                                .put("6", "Homer")
-                                .put("7", "Carl")),
+                                .put(MONDAY, BARNEY)
+                                .put(TUESDAY, HOMER)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, BARNEY)
+                                .put(FRIDAY, LENNY)
+                                .put(SATURDAY, HOMER)
+                                .put(SUNDAY, CARL)),
 
                 Arguments.of("Two preferred days granted are better than one",
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Lenny")
-                                .put("2", "Homer")
-                                .put("3", "Carl")
-                                .put("4", "Lenny")
-                                .put("5", "Barney")
-                                .put("6", "Homer")
-                                .put("7", "Carl"),
+                                .put(MONDAY, LENNY)
+                                .put(TUESDAY, HOMER)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, LENNY)
+                                .put(FRIDAY, BARNEY)
+                                .put(SATURDAY, HOMER)
+                                .put(SUNDAY, CARL),
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Lenny")
-                                .put("2", "Homer")
-                                .put("3", "Carl")
-                                .put("4", "Barney")
-                                .put("5", "Lenny")
-                                .put("6", "Homer")
-                                .put("7", "Carl")),
+                                .put(MONDAY, LENNY)
+                                .put(TUESDAY, HOMER)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, BARNEY)
+                                .put(FRIDAY, LENNY)
+                                .put(SATURDAY, HOMER)
+                                .put(SUNDAY, CARL)),
 
                 Arguments.of("Two preferred days granted are better when split between two people",
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Carl")
-                                .put("2", "Barney")
-                                .put("3", "Homer")
-                                .put("4", "Lenny")
-                                .put("5", "Barney")
-                                .put("6", "Homer")
-                                .put("7", "Carl"),
+                                .put(MONDAY, CARL)
+                                .put(TUESDAY, BARNEY)
+                                .put(WEDNESDAY, HOMER)
+                                .put(THURSDAY, LENNY)
+                                .put(FRIDAY, BARNEY)
+                                .put(SATURDAY, HOMER)
+                                .put(SUNDAY, CARL),
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Lenny")
-                                .put("2", "Homer")
-                                .put("3", "Carl")
-                                .put("4", "Lenny")
-                                .put("5", "Barney")
-                                .put("6", "Homer")
-                                .put("7", "Carl")),
+                                .put(MONDAY, LENNY)
+                                .put(TUESDAY, HOMER)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, LENNY)
+                                .put(FRIDAY, BARNEY)
+                                .put(SATURDAY, HOMER)
+                                .put(SUNDAY, CARL)),
 
                 Arguments.of("It's better when nobody is overworking",
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Barney")
-                                .put("2", "Lenny")
-                                .put("3", "Carl")
-                                .put("4", "Barney")
-                                .put("5", "Lenny")
-                                .put("6", "Carl")
-                                .put("7", "Homer"),
+                                .put(MONDAY, BARNEY)
+                                .put(TUESDAY, LENNY)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, BARNEY)
+                                .put(FRIDAY, LENNY)
+                                .put(SATURDAY, CARL)
+                                .put(SUNDAY, HOMER),
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Barney")
-                                .put("2", "Lenny")
-                                .put("3", "Carl")
-                                .put("4", "Barney")
-                                .put("5", "Homer")
-                                .put("6", "Carl")
-                                .put("7", "Barney")),
+                                .put(MONDAY, BARNEY)
+                                .put(TUESDAY, LENNY)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, BARNEY)
+                                .put(FRIDAY, HOMER)
+                                .put(SATURDAY, CARL)
+                                .put(SUNDAY, BARNEY)),
 
                 Arguments.of("It's better when nobody is slacking off",
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Barney")
-                                .put("2", "Lenny")
-                                .put("3", "Carl")
-                                .put("4", "Barney")
-                                .put("5", "Homer")
-                                .put("6", "Lenny")
-                                .put("7", "Barney"),
+                                .put(MONDAY, BARNEY)
+                                .put(TUESDAY, LENNY)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, BARNEY)
+                                .put(FRIDAY, HOMER)
+                                .put(SATURDAY, LENNY)
+                                .put(SUNDAY, BARNEY),
                         ScheduleBuilder.forPreferenceTable(table)
-                                .put("1", "Barney")
-                                .put("2", "Lenny")
-                                .put("3", "Carl")
-                                .put("4", "Barney")
-                                .put("5", "Lenny")
-                                .put("6", "Carl")
-                                .put("7", "Barney")));
+                                .put(MONDAY, BARNEY)
+                                .put(TUESDAY, LENNY)
+                                .put(WEDNESDAY, CARL)
+                                .put(THURSDAY, BARNEY)
+                                .put(FRIDAY, LENNY)
+                                .put(SATURDAY, CARL)
+                                .put(SUNDAY, BARNEY)));
     }
 
     private static PreferenceTable preferenceTable() {
         return PreferenceTable.builder()
-                .put("Homer", "1", PreferenceType.YES)
-                .put("Lenny", "1", PreferenceType.PREFER)
-                .put("Carl", "1", PreferenceType.PREFER)
-                .put("Barney", "1", PreferenceType.YES)
+                .put(HOMER, MONDAY, PreferenceType.YES)
+                .put(LENNY, MONDAY, PreferenceType.PREFER)
+                .put(CARL, MONDAY, PreferenceType.PREFER)
+                .put(BARNEY, MONDAY, PreferenceType.YES)
 
-                .put("Homer", "2", PreferenceType.YES)
-                .put("Lenny", "2", PreferenceType.YES)
-                .put("Carl", "2", PreferenceType.YES)
-                .put("Barney", "2", PreferenceType.YES)
+                .put(HOMER, TUESDAY, PreferenceType.YES)
+                .put(LENNY, TUESDAY, PreferenceType.YES)
+                .put(CARL, TUESDAY, PreferenceType.YES)
+                .put(BARNEY, TUESDAY, PreferenceType.YES)
 
-                .put("Homer", "3", PreferenceType.YES)
-                .put("Lenny", "3", PreferenceType.YES)
-                .put("Carl", "3", PreferenceType.YES)
-                .put("Barney", "3", PreferenceType.YES)
+                .put(HOMER, WEDNESDAY, PreferenceType.YES)
+                .put(LENNY, WEDNESDAY, PreferenceType.YES)
+                .put(CARL, WEDNESDAY, PreferenceType.YES)
+                .put(BARNEY, WEDNESDAY, PreferenceType.YES)
 
-                .put("Homer", "4", PreferenceType.YES)
-                .put("Lenny", "4", PreferenceType.PREFER)
-                .put("Carl", "4", PreferenceType.YES)
-                .put("Barney", "4", PreferenceType.YES)
+                .put(HOMER, THURSDAY, PreferenceType.YES)
+                .put(LENNY, THURSDAY, PreferenceType.PREFER)
+                .put(CARL, THURSDAY, PreferenceType.YES)
+                .put(BARNEY, THURSDAY, PreferenceType.YES)
 
-                .put("Homer", "5", PreferenceType.YES)
-                .put("Lenny", "5", PreferenceType.YES)
-                .put("Carl", "5", PreferenceType.YES)
-                .put("Barney", "5", PreferenceType.YES)
+                .put(HOMER, FRIDAY, PreferenceType.YES)
+                .put(LENNY, FRIDAY, PreferenceType.YES)
+                .put(CARL, FRIDAY, PreferenceType.YES)
+                .put(BARNEY, FRIDAY, PreferenceType.YES)
 
-                .put("Homer", "6", PreferenceType.YES)
-                .put("Lenny", "6", PreferenceType.YES)
-                .put("Carl", "6", PreferenceType.YES)
-                .put("Barney", "6", PreferenceType.YES)
+                .put(HOMER, SATURDAY, PreferenceType.YES)
+                .put(LENNY, SATURDAY, PreferenceType.YES)
+                .put(CARL, SATURDAY, PreferenceType.YES)
+                .put(BARNEY, SATURDAY, PreferenceType.YES)
 
-                .put("Homer", "7", PreferenceType.YES)
-                .put("Lenny", "7", PreferenceType.YES)
-                .put("Carl", "7", PreferenceType.YES)
-                .put("Barney", "7", PreferenceType.YES)
+                .put(HOMER, SUNDAY, PreferenceType.YES)
+                .put(LENNY, SUNDAY, PreferenceType.YES)
+                .put(CARL, SUNDAY, PreferenceType.YES)
+                .put(BARNEY, SUNDAY, PreferenceType.YES)
                 .build();
     }
 }

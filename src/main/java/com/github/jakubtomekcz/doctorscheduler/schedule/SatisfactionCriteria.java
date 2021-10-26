@@ -1,5 +1,7 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -54,7 +56,7 @@ public class SatisfactionCriteria implements Comparable<SatisfactionCriteria> {
 
     private static List<Integer> calculatePreferredDaysGranted(ScheduleBuilder scheduleBuilder) {
         // person -> number of days granted
-        Map<String, Long> daysGrantedPerPersonMap = scheduleBuilder.getSchedule().entrySet().stream()
+        Map<Person, Long> daysGrantedPerPersonMap = scheduleBuilder.getSchedule().entrySet().stream()
                 .filter(e -> scheduleBuilder.getPreferenceTable().getPreference(e.getValue(), e.getKey()) == PREFER)
                 .collect(groupingBy(Entry::getValue, counting()));
 
