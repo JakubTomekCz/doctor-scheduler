@@ -44,7 +44,7 @@ public class HeuristicScheduler implements Scheduler {
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
         iterationCounter++;
         if (iterationCounter > maxIterations) {
-            log.debug(format("Max number of %d iterations exceeded. Giving up. Sorry.", maxIterations));
+            log.debug(format("Max limit of %d iterations exceeded. Giving up. Sorry.", maxIterations));
             return Optional.empty();
         } else if (builder.isComplete()) {
             log.debug(format("Hurray! A solution was found after mere %d iterations!", iterationCounter));
