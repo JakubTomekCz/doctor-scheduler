@@ -1,7 +1,7 @@
 package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 import com.github.jakubtomekcz.doctorscheduler.model.Person;
-import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
+import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Comparator;

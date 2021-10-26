@@ -1,6 +1,4 @@
-package com.github.jakubtomekcz.doctorscheduler.schedule;
-
-import com.github.jakubtomekcz.doctorscheduler.model.Person;
+package com.github.jakubtomekcz.doctorscheduler.model;
 
 import java.util.List;
 import java.util.Map;

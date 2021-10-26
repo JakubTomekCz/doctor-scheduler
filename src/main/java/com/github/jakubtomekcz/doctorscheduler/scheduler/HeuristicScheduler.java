@@ -5,8 +5,8 @@ import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.Date;
 import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
-import com.github.jakubtomekcz.doctorscheduler.schedule.Schedule;
-import com.github.jakubtomekcz.doctorscheduler.schedule.ScheduleBuilder;
+import com.github.jakubtomekcz.doctorscheduler.model.Schedule;
+import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

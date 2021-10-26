@@ -1,9 +1,6 @@
-package com.github.jakubtomekcz.doctorscheduler.schedule;
+package com.github.jakubtomekcz.doctorscheduler.model;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
-import com.github.jakubtomekcz.doctorscheduler.model.Date;
-import com.github.jakubtomekcz.doctorscheduler.model.Person;
-import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 
