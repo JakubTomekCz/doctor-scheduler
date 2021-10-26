@@ -2,7 +2,7 @@ package com.github.jakubtomekcz.doctorscheduler.parser;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
-import com.github.jakubtomekcz.doctorscheduler.schedule.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;

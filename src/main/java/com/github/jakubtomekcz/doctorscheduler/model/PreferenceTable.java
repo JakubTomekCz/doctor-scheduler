@@ -1,4 +1,4 @@
-package com.github.jakubtomekcz.doctorscheduler.schedule;
+package com.github.jakubtomekcz.doctorscheduler.model;
 
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
@@ -13,25 +13,25 @@ import java.util.Set;
 @EqualsAndHashCode
 public class PreferenceTable {
 
-    private PreferenceTable(ImmutableMap<String, ImmutableMap<String, PreferenceType>> data) {
+    private PreferenceTable(ImmutableMap<Date, ImmutableMap<Person, PreferenceType>> data) {
         this.data = data;
     }
 
-    private final ImmutableMap<String, ImmutableMap<String, PreferenceType>> data;
+    private final ImmutableMap<Date, ImmutableMap<Person, PreferenceType>> data;
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public PreferenceType getPreference(String person, String date) {
+    public PreferenceType getPreference(Person person, Date date) {
         return data.get(date).get(person);
     }
 
-    public List<String> getDates() {
+    public List<Date> getDates() {
         return data.keySet().asList();
     }
 
-    public List<String> getPersons() {
+    public List<Person> getPersons() {
         return data.entrySet().stream()
                 .findFirst()
                 .map(Map.Entry::getValue)
@@ -44,9 +44,9 @@ public class PreferenceTable {
 
     public static class Builder {
 
-        private final Map<String, ImmutableMap.Builder<String, PreferenceType>> data = new LinkedHashMap<>();
+        private final Map<Date, ImmutableMap.Builder<Person, PreferenceType>> data = new LinkedHashMap<>();
 
-        public Builder put(String person, String date, PreferenceType preference) {
+        public Builder put(Person person, Date date, PreferenceType preference) {
             if (!data.containsKey(date)) {
                 data.put(date, ImmutableMap.builder());
             }
@@ -55,8 +55,8 @@ public class PreferenceTable {
         }
 
         public PreferenceTable build() {
-            ImmutableMap.Builder<String, ImmutableMap<String, PreferenceType>> builder = ImmutableMap.builder();
-            for (Map.Entry<String, ImmutableMap.Builder<String, PreferenceType>> entry : data.entrySet()) {
+            ImmutableMap.Builder<Date, ImmutableMap<Person, PreferenceType>> builder = ImmutableMap.builder();
+            for (Map.Entry<Date, ImmutableMap.Builder<Person, PreferenceType>> entry : data.entrySet()) {
                 builder.put(entry.getKey(), entry.getValue().build());
             }
             return new PreferenceTable(builder.build());

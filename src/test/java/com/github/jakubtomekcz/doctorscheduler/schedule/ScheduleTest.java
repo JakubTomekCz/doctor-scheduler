@@ -1,6 +1,7 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 
+import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import org.junit.jupiter.api.Test;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;

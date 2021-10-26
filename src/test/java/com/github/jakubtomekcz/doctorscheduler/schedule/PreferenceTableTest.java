@@ -1,5 +1,8 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
+import com.github.jakubtomekcz.doctorscheduler.model.Date;
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
+import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import org.junit.jupiter.api.Test;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
@@ -9,36 +12,44 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class PreferenceTableTest {
 
+    private static final Person LENNY = new Person("Lenny");
+    private static final Person CARL = new Person("Carl");
+    private static final Person HOMER = new Person("Homer");
+    private static final Date MONDAY = new Date("Monday");
+    private static final Date TUESDAY = new Date("Tuesday");
+    private static final Date WEDNESDAY = new Date("Wednesday");
+    private static final Date THURSDAY = new Date("Thursday");
+
     @Test
     void preferenceTableContainsInsertedElements() {
         PreferenceTable preferenceTable = PreferenceTable.builder()
-                .put("Lenny", "Monday", YES)
-                .put("Lenny", "Tuesday", NO)
-                .put("Lenny", "Wednesday", PREFER)
-                .put("Carl", "Monday", NO)
-                .put("Carl", "Tuesday", NO)
-                .put("Carl", "Wednesday", NO)
+                .put(LENNY, MONDAY, YES)
+                .put(LENNY, TUESDAY, NO)
+                .put(LENNY, WEDNESDAY, PREFER)
+                .put(CARL, MONDAY, NO)
+                .put(CARL, TUESDAY, NO)
+                .put(CARL, WEDNESDAY, NO)
                 .build();
 
         assertThat(preferenceTable).satisfies(table -> {
-            assertThat(table.getPreference("Lenny", "Monday")).isEqualTo(YES);
-            assertThat(table.getPreference("Lenny", "Tuesday")).isEqualTo(NO);
-            assertThat(table.getPreference("Lenny", "Wednesday")).isEqualTo(PREFER);
-            assertThat(table.getPreference("Carl", "Monday")).isEqualTo(NO);
-            assertThat(table.getPreference("Carl", "Tuesday")).isEqualTo(NO);
-            assertThat(table.getPreference("Carl", "Wednesday")).isEqualTo(NO);
+            assertThat(table.getPreference(LENNY, MONDAY)).isEqualTo(YES);
+            assertThat(table.getPreference(LENNY, TUESDAY)).isEqualTo(NO);
+            assertThat(table.getPreference(LENNY, WEDNESDAY)).isEqualTo(PREFER);
+            assertThat(table.getPreference(CARL, MONDAY)).isEqualTo(NO);
+            assertThat(table.getPreference(CARL, TUESDAY)).isEqualTo(NO);
+            assertThat(table.getPreference(CARL, WEDNESDAY)).isEqualTo(NO);
         });
     }
 
     @Test
     void datesAreReturnedInOrderOfInsertion() {
         PreferenceTable preferenceTable = PreferenceTable.builder()
-                .put("Homer", "Monday", YES)
-                .put("Homer", "Tuesday", YES)
-                .put("Homer", "Wednesday", YES)
-                .put("Homer", "Thursday", YES)
+                .put(HOMER, MONDAY, YES)
+                .put(HOMER, TUESDAY, YES)
+                .put(HOMER, WEDNESDAY, YES)
+                .put(HOMER, THURSDAY, YES)
                 .build();
 
-        assertThat(preferenceTable.getDates()).containsExactly("Monday", "Tuesday", "Wednesday", "Thursday");
+        assertThat(preferenceTable.getDates()).containsExactly(MONDAY, TUESDAY, WEDNESDAY, THURSDAY);
     }
 }
