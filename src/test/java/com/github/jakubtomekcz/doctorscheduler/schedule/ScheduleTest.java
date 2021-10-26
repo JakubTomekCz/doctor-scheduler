@@ -25,17 +25,17 @@ class ScheduleTest {
         Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
                 .put(date("1"), LENNY)
                 .put(date("2"), CARL)
-                .put(date("3"), LENNY)
-                .put(date("4"), CARL)
-                .put(date("5"), HOMER)
-                .put(date("6"), CARL)
+                .put(date("3"), HOMER)
+                .put(date("4"), LENNY)
+                .put(date("5"), CARL)
+                .put(date("6"), HOMER)
                 .put(date("7"), LENNY)
                 .put(date("8"), CARL)
                 .build();
         assertThat(schedule).satisfies(s -> {
             assertThat(s.getServiceDaysCountForPerson(LENNY)).isEqualTo(3);
-            assertThat(s.getServiceDaysCountForPerson(CARL)).isEqualTo(4);
-            assertThat(s.getServiceDaysCountForPerson(HOMER)).isEqualTo(1);
+            assertThat(s.getServiceDaysCountForPerson(CARL)).isEqualTo(3);
+            assertThat(s.getServiceDaysCountForPerson(HOMER)).isEqualTo(2);
             assertThat(s.getServiceDaysCountForPerson(person("Marge"))).isEqualTo(0);
         });
     }
