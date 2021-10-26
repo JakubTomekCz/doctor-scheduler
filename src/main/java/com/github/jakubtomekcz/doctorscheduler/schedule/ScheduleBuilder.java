@@ -1,6 +1,8 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
+import com.github.jakubtomekcz.doctorscheduler.model.Date;
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -24,15 +26,12 @@ public class ScheduleBuilder {
 
     private final PreferenceTable preferenceTable;
 
-    /**
-     * date -> person
-     */
-    private final Map<String, String> schedule;
+    private final Map<Date, Person> schedule;
 
     /**
      * date -> Set of persons that can be assigned without violating requirements
      */
-    private final Map<String, Set<String>> assignablePersons;
+    private final Map<Date, Set<Person>> assignablePersons;
 
     public static ScheduleBuilder forPreferenceTable(PreferenceTable preferenceTable) {
         return new ScheduleBuilder(preferenceTable);
@@ -46,14 +45,14 @@ public class ScheduleBuilder {
     }
 
     private ScheduleBuilder(PreferenceTable preferenceTable,
-                            Map<String, String> schedule,
-                            Map<String, Set<String>> assignablePersons) {
+                            Map<Date, Person> schedule,
+                            Map<Date, Set<Person>> assignablePersons) {
         this.preferenceTable = preferenceTable;
         this.schedule = schedule;
         this.assignablePersons = assignablePersons;
     }
 
-    public ScheduleBuilder put(String date, String person) {
+    public ScheduleBuilder put(Date date, Person person) {
         schedule.put(date, person);
         reduceAssignablePersons(date, person);
         return this;
@@ -67,7 +66,7 @@ public class ScheduleBuilder {
         if (!isConsistent()) {
             throw new IllegalStateException("Cannot build schedule. Elementary schedule requirements are not met.");
         }
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<Date, Person> builder = ImmutableMap.builder();
         preferenceTable.getDates().forEach(date -> {
             if (schedule.get(date) == null) {
                 throw new NullPointerException(format("Cannot build Schedule. Missing person for date %s", date));
@@ -87,8 +86,8 @@ public class ScheduleBuilder {
     }
 
     public ScheduleBuilder copy() {
-        Map<String, String> scheduleClone = new HashMap<>(schedule);
-        Map<String, Set<String>> assignablePersonsClone = assignablePersons.entrySet().stream()
+        Map<Date, Person> scheduleClone = new HashMap<>(schedule);
+        Map<Date, Set<Person>> assignablePersonsClone = assignablePersons.entrySet().stream()
                 .collect(toMap(Map.Entry::getKey, entry -> new HashSet<>(entry.getValue())));
         return new ScheduleBuilder(preferenceTable, scheduleClone, assignablePersonsClone);
     }
@@ -122,26 +121,26 @@ public class ScheduleBuilder {
     }
 
     private boolean isSamePersonScheduledOnDayIndexes(int dateIndex1, int dateIndex2) {
-        List<String> dates = preferenceTable.getDates();
+        List<Date> dates = preferenceTable.getDates();
         return schedule.containsKey(dates.get(dateIndex1))
                 && schedule.containsKey(dates.get(dateIndex2))
                 && schedule.get(dates.get(dateIndex1)).equals(schedule.get(dates.get(dateIndex2)));
     }
 
-    private Set<String> assignablePersonsForDate(PreferenceTable preferenceTable, String date) {
+    private Set<Person> assignablePersonsForDate(PreferenceTable preferenceTable, Date date) {
         return preferenceTable.getPersons().stream()
                 .filter(person -> preferenceTable.getPreference(person, date) == YES
                         || preferenceTable.getPreference(person, date) == PREFER)
                 .collect(toSet());
     }
 
-    private void reduceAssignablePersons(String assignedDate, String assignedPerson) {
+    private void reduceAssignablePersons(Date assignedDate, Person assignedPerson) {
         assignablePersons.remove(assignedDate);
-        List<String> dates = preferenceTable.getDates();
+        List<Date> dates = preferenceTable.getDates();
         int assignedDateIdx = dates.indexOf(assignedDate);
         for (int i : List.of(assignedDateIdx - 2, assignedDateIdx - 1, assignedDateIdx + 1, assignedDateIdx + 2)) {
             if (i >= 0 && i < dates.size()) {
-                String day = dates.get(i);
+                Date day = dates.get(i);
                 if (assignablePersons.containsKey(day)) {
                     assignablePersons.get(day).remove(assignedPerson);
                 }

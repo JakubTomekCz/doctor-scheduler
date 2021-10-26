@@ -1,5 +1,7 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
+import com.github.jakubtomekcz.doctorscheduler.model.Date;
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 
@@ -11,22 +13,22 @@ public class Schedule {
     /**
      * date -> person
      */
-    private final ImmutableMap<String, String> data;
+    private final ImmutableMap<Date, Person> data;
 
-    Schedule(ImmutableMap<String, String> data) {
+    Schedule(ImmutableMap<Date, Person> data) {
         this.data = data;
     }
 
-    public String get(String date) {
+    public Person get(Date date) {
         return data.get(date);
     }
 
-    public List<String> getPersonsOnlySchedule() {
+    public List<Person> getPersonsOnlySchedule() {
         return data.values().stream()
                 .toList();
     }
 
-    public List<String> getDates() {
+    public List<Date> getDates() {
         return data.keySet().asList();
     }
 
@@ -34,7 +36,7 @@ public class Schedule {
         return data.size();
     }
 
-    public int getServiceDaysCountForPerson(String person) {
+    public int getServiceDaysCountForPerson(Person person) {
         long longCount = data.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(person))
                 .count();

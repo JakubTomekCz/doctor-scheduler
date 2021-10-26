@@ -1,35 +1,42 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import org.junit.jupiter.api.Test;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
+import static com.github.jakubtomekcz.doctorscheduler.model.Date.date;
+import static com.github.jakubtomekcz.doctorscheduler.model.Person.person;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ScheduleTest {
+
+    private static final Person LENNY = new Person("Lenny");
+    private static final Person CARL = new Person("Carl");
+    private static final Person HOMER = new Person("Homer");
 
     @Test
     void getServiceDaysCountForPerson() {
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 8; i++) {
-            builder.put("Lenny", String.valueOf(i), YES);
+            builder.put(LENNY, date(String.valueOf(i)), YES);
         }
         Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
-                .put("1", "Lenny")
-                .put("2", "Carl")
-                .put("3", "Lenny")
-                .put("4", "Carl")
-                .put("5", "Homer")
-                .put("6", "Carl")
-                .put("7", "Lenny")
-                .put("8", "Carl")
+                .put(date("1"), LENNY)
+                .put(date("2"), CARL)
+                .put(date("3"), LENNY)
+                .put(date("4"), CARL)
+                .put(date("5"), HOMER)
+                .put(date("6"), CARL)
+                .put(date("7"), LENNY)
+                .put(date("8"), CARL)
                 .build();
         assertThat(schedule).satisfies(s -> {
-            assertThat(s.getServiceDaysCountForPerson("Lenny")).isEqualTo(3);
-            assertThat(s.getServiceDaysCountForPerson("Carl")).isEqualTo(4);
-            assertThat(s.getServiceDaysCountForPerson("Homer")).isEqualTo(1);
-            assertThat(s.getServiceDaysCountForPerson("Marge")).isEqualTo(0);
+            assertThat(s.getServiceDaysCountForPerson(LENNY)).isEqualTo(3);
+            assertThat(s.getServiceDaysCountForPerson(CARL)).isEqualTo(4);
+            assertThat(s.getServiceDaysCountForPerson(HOMER)).isEqualTo(1);
+            assertThat(s.getServiceDaysCountForPerson(person("Marge"))).isEqualTo(0);
         });
     }
 }
