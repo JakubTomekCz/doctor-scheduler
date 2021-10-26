@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
+import static java.lang.String.format;
 
 /**
  * Creates a schedule based on given preferences.
@@ -41,15 +42,18 @@ public class HeuristicScheduler implements Scheduler {
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
         iterationCounter++;
         if (iterationCounter > maxIterations) {
-            log.debug("Max number of iterations exceeded. Giving up. Sorry.");
+            log.debug(format("Max number of %d iterations exceeded. Giving up. Sorry.", maxIterations));
             return Optional.empty();
         } else if (builder.isComplete()) {
+            log.debug(format("Hurray! A solution was found after mere %d iterations!", iterationCounter));
             return Optional.of(builder);
         } else if (builder.getAssignablePersons().values().stream().anyMatch(Set::isEmpty)) {
             return Optional.empty();
         }
         String date = selectDateToBeAssignedAPerson(builder);
-        List<String> sortedCandidates = getSortedCandidates(builder, date);
+        List<String> sortedCandidates = builder.getAssignablePersons().get(date).stream()
+                .sorted(HeuristicCandidatePersonComparator.with(builder))
+                .toList();
         for (String person : sortedCandidates) {
             ScheduleBuilder extendedBuilder = builder.copy().put(date, person);
             Optional<ScheduleBuilder> solution = findSolutionFor(extendedBuilder);
@@ -99,16 +103,5 @@ public class HeuristicScheduler implements Scheduler {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Failed to find the next date to be assigned a person."));
-    }
-
-    /**
-     * Sort the candidate persons for given date into an order in which they will get a chance to build a solution
-     * Priorities:
-     * TODO
-     */
-    private List<String> getSortedCandidates(ScheduleBuilder builder, String date) {
-        Set<String> candidateSet = builder.getAssignablePersons().get(date);
-        // TODO
-        return null;
     }
 }
