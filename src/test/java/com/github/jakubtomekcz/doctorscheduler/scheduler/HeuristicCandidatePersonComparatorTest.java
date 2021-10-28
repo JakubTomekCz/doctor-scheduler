@@ -30,6 +30,23 @@ class HeuristicCandidatePersonComparatorTest {
         assertThat(comparator.compare(LENNY, CARL)).isNegative();
     }
 
+    @Test
+    void preferCandidateWithPreferenceAndFewerPreferenceRequestsAmongNonAssignedDates() {
+        ScheduleBuilder scheduleBuilder = ScheduleBuilder.forPreferenceTable(preferenceTable());
+        var comparator = HeuristicCandidatePersonComparator.forScheduleAndDate(scheduleBuilder, MONDAY);
+        assertThat(comparator.compare(CARL, LENNY)).isPositive();
+        assertThat(comparator.compare(LENNY, CARL)).isNegative();
+    }
+
+    @Test
+    void preferCandidateWithFewerDaysAssigned() {
+        ScheduleBuilder scheduleBuilder = ScheduleBuilder.forPreferenceTable(preferenceTable());
+        scheduleBuilder.put(TUESDAY, LENNY);
+        var comparator = HeuristicCandidatePersonComparator.forScheduleAndDate(scheduleBuilder, SUNDAY);
+        assertThat(comparator.compare(CARL, LENNY)).isPositive();
+        assertThat(comparator.compare(LENNY, CARL)).isNegative();
+    }
+
     private static PreferenceTable preferenceTable() {
         return PreferenceTable.builder()
                 .put(HOMER, MONDAY, PreferenceType.YES)
