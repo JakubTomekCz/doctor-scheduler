@@ -17,6 +17,7 @@ import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YE
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
+import static org.springframework.util.Assert.isTrue;
 
 @Getter
 public class ScheduleBuilder {
@@ -50,6 +51,8 @@ public class ScheduleBuilder {
     }
 
     public ScheduleBuilder put(Date date, Person person) {
+        isTrue(assignablePersons.get(date).contains(person),
+                format("Person %s cannot be assigned the date %s.", person.name(), date.value()));
         schedule.put(date, person);
         reduceAssignablePersons(date, person);
         return this;

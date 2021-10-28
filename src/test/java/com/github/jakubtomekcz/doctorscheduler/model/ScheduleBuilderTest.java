@@ -57,7 +57,7 @@ class ScheduleBuilderTest {
     }
 
     @Test
-    void isNotConsistentDisrespectsRefusal() {
+    void disrespectsRefusal() {
         PreferenceTable table = PreferenceTable.builder()
                 .put(LENNY, MONDAY, YES)
                 .put(CARL, MONDAY, YES)
@@ -65,13 +65,14 @@ class ScheduleBuilderTest {
                 .put(CARL, TUESDAY, NO)
                 .build();
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
-                .put(MONDAY, LENNY)
-                .put(TUESDAY, CARL);
-        assertThat(builder.isConsistent()).isFalse();
+                .put(MONDAY, LENNY);
+
+        assertThatThrownBy(() -> builder.put(TUESDAY, CARL))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void isNotConsistentViolatesTwoDaysRest() {
+    void violatesTwoDaysRest() {
         PreferenceTable table = PreferenceTable.builder()
                 .put(LENNY, MONDAY, YES)
                 .put(CARL, MONDAY, YES)
@@ -79,24 +80,10 @@ class ScheduleBuilderTest {
                 .put(CARL, TUESDAY, YES)
                 .build();
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
-                .put(MONDAY, LENNY)
-                .put(TUESDAY, LENNY);
-        assertThat(builder.isConsistent()).isFalse();
-    }
+                .put(MONDAY, LENNY);
 
-    @Test
-    void cannotBuildInconsistentSchedule() {
-        PreferenceTable table = PreferenceTable.builder()
-                .put(LENNY, MONDAY, YES)
-                .put(CARL, MONDAY, YES)
-                .put(LENNY, TUESDAY, YES)
-                .put(CARL, TUESDAY, YES)
-                .build();
-        ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
-                .put(MONDAY, LENNY)
-                .put(TUESDAY, LENNY);
-        assertThatThrownBy(builder::build)
-                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> builder.put(TUESDAY, LENNY))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -109,7 +96,7 @@ class ScheduleBuilderTest {
                 .build();
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
                 .put(MONDAY, LENNY)
-                .put(TUESDAY, LENNY);
+                .put(TUESDAY, CARL);
         assertThat(builder.isComplete()).isTrue();
     }
 
