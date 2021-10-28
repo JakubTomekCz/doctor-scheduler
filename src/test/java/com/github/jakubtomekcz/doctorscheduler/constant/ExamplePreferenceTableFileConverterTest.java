@@ -1,8 +1,6 @@
-package com.github.jakubtomekcz.doctorscheduler.converter;
+package com.github.jakubtomekcz.doctorscheduler.constant;
 
 
-import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile;
-import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFileConverter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.core.convert.converter.Converter;

@@ -1,9 +1,6 @@
-package com.github.jakubtomekcz.doctorscheduler.schedule;
+package com.github.jakubtomekcz.doctorscheduler.model;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
-import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
-import com.github.jakubtomekcz.doctorscheduler.model.SatisfactionCriteria;
-import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
