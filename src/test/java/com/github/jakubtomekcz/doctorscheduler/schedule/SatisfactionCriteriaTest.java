@@ -1,8 +1,6 @@
 package com.github.jakubtomekcz.doctorscheduler.schedule;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
-import com.github.jakubtomekcz.doctorscheduler.model.Date;
-import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.model.SatisfactionCriteria;
 import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
@@ -13,20 +11,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.BARNEY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.CARL;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.FRIDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.HOMER;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.LENNY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.MONDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.SATURDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.SUNDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.THURSDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.TUESDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.WEDNESDAY;
+
 class SatisfactionCriteriaTest {
-
-    private static final Person LENNY = new Person("Lenny");
-    private static final Person CARL = new Person("Carl");
-    private static final Person HOMER = new Person("Homer");
-    private static final Person BARNEY = new Person("Barney");
-
-    private static final Date MONDAY = new Date("Monday");
-    private static final Date TUESDAY = new Date("Tuesday");
-    private static final Date WEDNESDAY = new Date("Wednesday");
-    private static final Date THURSDAY = new Date("Thursday");
-    private static final Date FRIDAY = new Date("Friday");
-    private static final Date SATURDAY = new Date("Saturday");
-    private static final Date SUNDAY = new Date("Sunday");
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("isBetterMethodSource")
