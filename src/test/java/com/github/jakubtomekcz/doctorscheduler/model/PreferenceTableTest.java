@@ -2,20 +2,19 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 
 import org.junit.jupiter.api.Test;
 
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.CARL;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.HOMER;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.LENNY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.MONDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.THURSDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.TUESDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.WEDNESDAY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PreferenceTableTest {
-
-    private static final Person LENNY = new Person("Lenny");
-    private static final Person CARL = new Person("Carl");
-    private static final Person HOMER = new Person("Homer");
-    private static final Date MONDAY = new Date("Monday");
-    private static final Date TUESDAY = new Date("Tuesday");
-    private static final Date WEDNESDAY = new Date("Wednesday");
-    private static final Date THURSDAY = new Date("Thursday");
 
     @Test
     void preferenceTableContainsInsertedElements() {
