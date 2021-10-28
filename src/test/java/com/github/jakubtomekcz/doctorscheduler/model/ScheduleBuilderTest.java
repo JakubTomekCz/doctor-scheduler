@@ -5,18 +5,16 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.Set;
 
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.CARL;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.LENNY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.MONDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.TUESDAY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ScheduleBuilderTest {
-
-    private static final Person LENNY = new Person("Lenny");
-    private static final Person CARL = new Person("Carl");
-
-    private static final Date MONDAY = new Date("Monday");
-    private static final Date TUESDAY = new Date("Tuesday");
 
     @Test
     void build() {
