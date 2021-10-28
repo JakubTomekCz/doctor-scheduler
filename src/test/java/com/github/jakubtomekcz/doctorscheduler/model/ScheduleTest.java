@@ -3,16 +3,15 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 
 import org.junit.jupiter.api.Test;
 
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.CARL;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.HOMER;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.LENNY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static com.github.jakubtomekcz.doctorscheduler.model.Date.date;
 import static com.github.jakubtomekcz.doctorscheduler.model.Person.person;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ScheduleTest {
-
-    private static final Person LENNY = new Person("Lenny");
-    private static final Person CARL = new Person("Carl");
-    private static final Person HOMER = new Person("Homer");
 
     @Test
     void getServiceDaysCountForPerson() {
