@@ -54,7 +54,7 @@ public class HeuristicScheduler implements Scheduler {
         }
         Date date = selectDateToBeAssignedAPerson(builder);
         List<Person> sortedCandidates = builder.getAssignablePersons().get(date).stream()
-                .sorted(HeuristicCandidatePersonComparator.with(builder))
+                .sorted(HeuristicCandidatePersonComparator.forScheduleAndDate(builder, date))
                 .toList();
         for (Person person : sortedCandidates) {
             ScheduleBuilder extendedBuilder = builder.copy().put(date, person);

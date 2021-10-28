@@ -1,5 +1,6 @@
 package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
+import com.github.jakubtomekcz.doctorscheduler.model.Date;
 import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,10 @@ public class HeuristicCandidatePersonComparator implements Comparator<Person> {
 
     private final ScheduleBuilder builder;
 
-    public static HeuristicCandidatePersonComparator with(ScheduleBuilder builder) {
-        return new HeuristicCandidatePersonComparator(builder);
+    private final Date date;
+
+    public static HeuristicCandidatePersonComparator forScheduleAndDate(ScheduleBuilder builder, Date date) {
+        return new HeuristicCandidatePersonComparator(builder, date);
     }
 
     @Override
