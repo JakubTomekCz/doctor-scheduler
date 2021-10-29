@@ -2,6 +2,7 @@ package com.github.jakubtomekcz.doctorscheduler.controller;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
+import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.parser.PreferenceTableParserService;
 import com.github.jakubtomekcz.doctorscheduler.scheduler.SchedulerService;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -74,6 +78,21 @@ class MainControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("The given file cannot be processed because "
                         + "it has a size of 20KB which exceeds the maximum allowed size of 10KB.")));
+    }
+
+    @Test
+    void cannotBuildSchedule() throws Exception {
+        byte[] bytes = {0};
+        var multipartFile = new MockMultipartFile("fileToUpload", "file.xlsx", "application/xlsx", bytes);
+        PreferenceTable preferenceTable = PreferenceTable.builder().build();
+        doReturn(preferenceTable).when(preferenceTableParserService).parseMultipartFile(multipartFile);
+        doThrow(new UiMessageException(CANNOT_BUILD_SCHEDULE)).when(schedulerService).createSchedule(preferenceTable);
+
+
+        mockMvc.perform(multipart("/").file(multipartFile))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Cannot find a schedule "
+                        + "that would satisfy the given requirements. Sorry.")));
     }
 
     private byte[] readBytesOfExampleFile(ExamplePreferenceTableFile file) throws IOException {
