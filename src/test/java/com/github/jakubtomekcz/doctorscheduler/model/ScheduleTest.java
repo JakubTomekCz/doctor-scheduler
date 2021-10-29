@@ -18,6 +18,8 @@ class ScheduleTest {
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 8; i++) {
             builder.put(LENNY, date(String.valueOf(i)), YES);
+            builder.put(CARL, date(String.valueOf(i)), YES);
+            builder.put(HOMER, date(String.valueOf(i)), YES);
         }
         Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
                 .put(date("1"), LENNY)
