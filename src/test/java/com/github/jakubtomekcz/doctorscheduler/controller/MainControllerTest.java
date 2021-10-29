@@ -3,6 +3,7 @@ package com.github.jakubtomekcz.doctorscheduler.controller;
 import com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.parser.PreferenceTableParserService;
+import com.github.jakubtomekcz.doctorscheduler.scheduler.SchedulerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -33,6 +34,9 @@ class MainControllerTest {
 
     @MockBean
     private PreferenceTableParserService preferenceTableParserService;
+
+    @MockBean
+    private SchedulerService schedulerService;
 
     @Test
     void getIndex() throws Exception {
