@@ -47,6 +47,14 @@ class HeuristicCandidatePersonComparatorTest {
         assertThat(comparator.compare(LENNY, CARL)).isNegative();
     }
 
+    @Test
+    void equallyGoodCandidates() {
+        ScheduleBuilder scheduleBuilder = ScheduleBuilder.forPreferenceTable(preferenceTable());
+        var comparator = HeuristicCandidatePersonComparator.forScheduleAndDate(scheduleBuilder, TUESDAY);
+        assertThat(comparator.compare(HOMER, LENNY)).isZero();
+        assertThat(comparator.compare(LENNY, HOMER)).isZero();
+    }
+
     private static PreferenceTable preferenceTable() {
         return PreferenceTable.builder()
                 .put(HOMER, MONDAY, PreferenceType.YES)
