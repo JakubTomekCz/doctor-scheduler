@@ -2,9 +2,13 @@ package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
+import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.BARNEY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.CARL;
@@ -26,24 +30,36 @@ class HeuristicCandidatePersonComparatorTest {
         ScheduleBuilder scheduleBuilder = ScheduleBuilder.forPreferenceTable(preferenceTable());
         scheduleBuilder.put(THURSDAY, LENNY);
         var comparator = HeuristicCandidatePersonComparator.forScheduleAndDate(scheduleBuilder, MONDAY);
-        assertThat(comparator.compare(CARL, LENNY)).isPositive();
-        assertThat(comparator.compare(LENNY, CARL)).isNegative();
+
+        List<Person> sortedCandidates = Stream.of(LENNY, CARL).sorted(comparator).toList();
+
+        assertThat(sortedCandidates).containsExactly(CARL, LENNY);
+        assertThat(comparator.compare(CARL, LENNY)).isNegative();
+        assertThat(comparator.compare(LENNY, CARL)).isPositive();
     }
 
     @Test
     void preferCandidateWithPreferenceAndFewerPreferenceRequestsAmongNonAssignedDates() {
         ScheduleBuilder scheduleBuilder = ScheduleBuilder.forPreferenceTable(preferenceTable());
         var comparator = HeuristicCandidatePersonComparator.forScheduleAndDate(scheduleBuilder, MONDAY);
-        assertThat(comparator.compare(CARL, LENNY)).isPositive();
-        assertThat(comparator.compare(LENNY, CARL)).isNegative();
+
+        List<Person> sortedCandidates = Stream.of(LENNY, CARL).sorted(comparator).toList();
+
+        assertThat(sortedCandidates).containsExactly(CARL, LENNY);
+        assertThat(comparator.compare(CARL, LENNY)).isNegative();
+        assertThat(comparator.compare(LENNY, CARL)).isPositive();
     }
 
     @Test
     void preferCandidateWithPreference() {
         ScheduleBuilder scheduleBuilder = ScheduleBuilder.forPreferenceTable(preferenceTable());
         var comparator = HeuristicCandidatePersonComparator.forScheduleAndDate(scheduleBuilder, THURSDAY);
-        assertThat(comparator.compare(LENNY, HOMER)).isPositive();
-        assertThat(comparator.compare(HOMER, LENNY)).isNegative();
+
+        List<Person> sortedCandidates = Stream.of(LENNY, HOMER).sorted(comparator).toList();
+
+        assertThat(sortedCandidates).containsExactly(LENNY, HOMER);
+        assertThat(comparator.compare(LENNY, HOMER)).isNegative();
+        assertThat(comparator.compare(HOMER, LENNY)).isPositive();
     }
 
     @Test
@@ -51,8 +67,12 @@ class HeuristicCandidatePersonComparatorTest {
         ScheduleBuilder scheduleBuilder = ScheduleBuilder.forPreferenceTable(preferenceTable());
         scheduleBuilder.put(TUESDAY, LENNY);
         var comparator = HeuristicCandidatePersonComparator.forScheduleAndDate(scheduleBuilder, SUNDAY);
-        assertThat(comparator.compare(CARL, LENNY)).isPositive();
-        assertThat(comparator.compare(LENNY, CARL)).isNegative();
+
+        List<Person> sortedCandidates = Stream.of(LENNY, CARL).sorted(comparator).toList();
+
+        assertThat(sortedCandidates).containsExactly(CARL, LENNY);
+        assertThat(comparator.compare(CARL, LENNY)).isNegative();
+        assertThat(comparator.compare(LENNY, CARL)).isPositive();
     }
 
     @Test

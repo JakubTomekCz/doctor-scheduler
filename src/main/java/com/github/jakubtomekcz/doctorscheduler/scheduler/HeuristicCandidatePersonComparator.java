@@ -41,11 +41,11 @@ public class HeuristicCandidatePersonComparator implements Comparator<Person> {
         if (person1Preference == PREFER && person2Preference == PREFER) {
             return compareTwoCandidatesWithPreference(person1, person2);
         } else if (person1Preference == PREFER) {
-            return 1;
-        } else if (person2Preference == PREFER) {
             return -1;
+        } else if (person2Preference == PREFER) {
+            return 1;
         } else {
-            return serviceDaysAssignedCount(person2) - serviceDaysAssignedCount(person1);
+            return serviceDaysAssignedCount(person1) - serviceDaysAssignedCount(person2);
         }
     }
 
@@ -53,9 +53,9 @@ public class HeuristicCandidatePersonComparator implements Comparator<Person> {
         int person1PreferredDaysGrantedCount = preferredDaysGrantedCount(person1);
         int person2PreferredDaysGrantedCount = preferredDaysGrantedCount(person2);
         if (person1PreferredDaysGrantedCount == person2PreferredDaysGrantedCount) {
-            return preferredDaysAmongAssignableDaysCount(person2) - preferredDaysAmongAssignableDaysCount(person1);
+            return preferredDaysAmongAssignableDaysCount(person1) - preferredDaysAmongAssignableDaysCount(person2);
         } else {
-            return person2PreferredDaysGrantedCount - person1PreferredDaysGrantedCount;
+            return person1PreferredDaysGrantedCount - person2PreferredDaysGrantedCount;
         }
     }
 
