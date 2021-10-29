@@ -12,7 +12,7 @@
     <input type="submit" value="OK" name="submit">
 </form>
 
-<div th:if="${isUploadError == true}" style="color: red">
+<div th:if="${isError == true && preferenceTable==null}" style="color: red">
     <p th:if="${errorMessageCode != null && errorMessageParams != null}"
        th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
 </div>

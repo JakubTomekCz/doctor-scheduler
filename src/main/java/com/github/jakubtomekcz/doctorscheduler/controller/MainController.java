@@ -2,7 +2,9 @@ package com.github.jakubtomekcz.doctorscheduler.controller;
 
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.model.Schedule;
 import com.github.jakubtomekcz.doctorscheduler.parser.PreferenceTableParserService;
+import com.github.jakubtomekcz.doctorscheduler.scheduler.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,8 @@ public class MainController {
 
     private final PreferenceTableParserService preferenceTableParserService;
 
+    private final SchedulerService schedulerService;
+
     @GetMapping("/")
     public String get() {
         return "index";
@@ -29,10 +33,12 @@ public class MainController {
             try {
                 PreferenceTable preferenceTable = preferenceTableParserService.parseMultipartFile(uploadedFile);
                 modelAndView.addObject("preferenceTable", preferenceTable);
+                Schedule schedule = schedulerService.createSchedule(preferenceTable);
+                modelAndView.addObject("schedule", schedule);
             } catch (UiMessageException e) {
                 String messageCode = e.getMessageCode().getMessageCode();
                 Object[] messageParams = e.getMessageParams();
-                modelAndView.addObject("isUploadError", true);
+                modelAndView.addObject("isError", true);
                 modelAndView.addObject("errorMessageCode", messageCode);
                 modelAndView.addObject("errorMessageParams", messageParams);
             }
