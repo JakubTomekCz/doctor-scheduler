@@ -8,7 +8,7 @@ public class SchedulerFactory {
 
     private final int maxIterations;
 
-    public SchedulerFactory(@Value("${algorithm.maxIterations}") int maxIterations) {
+    public SchedulerFactory(@Value("${algorithm.max.iterations}") int maxIterations) {
         this.maxIterations = maxIterations;
     }
 
