@@ -51,7 +51,7 @@ public class ScheduleBuilder {
     }
 
     public ScheduleBuilder put(Date date, Person person) {
-        isTrue(assignablePersons.get(date).contains(person),
+        isTrue(assignablePersons.containsKey(date) && assignablePersons.get(date).contains(person),
                 format("Person %s cannot be assigned the date %s.", person.name(), date.value()));
         schedule.put(date, person);
         reduceAssignablePersons(date, person);

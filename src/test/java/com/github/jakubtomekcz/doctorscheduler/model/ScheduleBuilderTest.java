@@ -57,6 +57,21 @@ class ScheduleBuilderTest {
     }
 
     @Test
+    void doubleInsert() {
+        PreferenceTable table = PreferenceTable.builder()
+                .put(LENNY, MONDAY, YES)
+                .put(CARL, MONDAY, YES)
+                .put(LENNY, TUESDAY, YES)
+                .put(CARL, TUESDAY, NO)
+                .build();
+        ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(table)
+                .put(MONDAY, LENNY);
+
+        assertThatThrownBy(() -> builder.put(MONDAY, CARL))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     void disrespectsRefusal() {
         PreferenceTable table = PreferenceTable.builder()
                 .put(LENNY, MONDAY, YES)
