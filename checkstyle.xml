@@ -5,6 +5,11 @@
 
 <module name="Checker">
 
+    <!-- Exclude record classes because 'record' token from Java 16 is not yet supported -->
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value="(Date\.java)|(Person\.java)$"/>
+    </module>
+
     <module name="NewlineAtEndOfFile">
         <property name="lineSeparator" value="lf"/>
     </module>

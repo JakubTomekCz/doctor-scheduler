@@ -1,7 +1,5 @@
 package com.github.jakubtomekcz.doctorscheduler.model;
 
-import com.github.jakubtomekcz.doctorscheduler.model.Date;
-import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 
