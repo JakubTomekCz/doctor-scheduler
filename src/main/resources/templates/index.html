@@ -28,5 +28,14 @@
     <div th:replace="fragments/preference-table :: preference-table(preferenceTable = ${preferenceTable})" />
 </div>
 
+<div th:if="${isError == true && preferenceTable!=null}" style="color: red">
+    <p th:if="${errorMessageCode != null && errorMessageParams != null}"
+       th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
+</div>
+
+<div th:if="${schedule != null}">
+    <div th:replace="fragments/schedule :: schedule(schedule = ${schedule})" />
+</div>
+
 </body>
 </html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<div th:fragment="schedule(schedule)" th:assert="${schedule != null}">
+    <hr/>
+    <p th:text="#{suggested.schedule}" />
+    <table>
+        <thead>
+        <tr>
+            <td>#{table.header.date}</td>
+            <td>#{table.header.service}</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="date : ${schedule.getDates()}">
+            <td th:text="${date}"/>
+            <td th:text="${schedule.get(date)}"/>
+        </tr>
+        </tbody>
+    </table>
+</div>
