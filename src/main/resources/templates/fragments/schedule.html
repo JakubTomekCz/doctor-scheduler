@@ -11,8 +11,8 @@
         </thead>
         <tbody>
         <tr th:each="date : ${schedule.getDates()}">
-            <td th:text="${date}"/>
-            <td th:text="${schedule.get(date)}"/>
+            <td th:text="${date.value()}"/>
+            <td th:text="${schedule.get(date).name()}"/>
         </tr>
         </tbody>
     </table>

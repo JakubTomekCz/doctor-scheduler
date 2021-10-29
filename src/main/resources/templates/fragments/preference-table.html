@@ -5,12 +5,12 @@
         <thead>
             <tr>
                 <td>&nbsp;</td>
-                <td th:each="date : ${preferenceTable.getDates()}" th:text="${date}"/>
+                <td th:each="date : ${preferenceTable.getDates()}" th:text="${date.value()}"/>
             </tr>
         </thead>
         <tbody>
             <tr th:each="person : ${preferenceTable.getPersons()}">
-                <td th:text="${person}"/>
+                <td th:text="${person.name()}"/>
                 <td th:each="date : ${preferenceTable.getDates()}" th:text="${preferenceTable.getPreference(person, date)}"/>
             </tr>
         </tbody>
