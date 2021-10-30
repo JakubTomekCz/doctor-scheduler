@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-3" th:if="${isError == true && preferenceTable==null}" style="color: red">
+            <div class="row mb-3" th:if="${isError == true && preferenceTable==null}">
                 <div th:if="${errorMessageCode != null && errorMessageParams != null}"
                      th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"
                      class="alert alert-danger" role="alert"/>
@@ -47,9 +47,10 @@
         <div th:replace="fragments/result-table :: result-table(preferenceTable = ${preferenceTable}, schedule = ${schedule})"/>
     </div>
 
-    <div th:if="${isError == true && preferenceTable!=null}" style="color: red">
-        <p th:if="${errorMessageCode != null && errorMessageParams != null}"
-           th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
+    <div th:if="${isError == true && preferenceTable!=null && schedule==null}">
+        <div th:if="${errorMessageCode != null && errorMessageParams != null}"
+             th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"
+             class="alert alert-danger" role="alert"/>
     </div>
 
     <div th:if="${schedule != null}">
