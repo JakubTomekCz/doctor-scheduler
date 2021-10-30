@@ -22,12 +22,14 @@
                     : (preferenceTable.getPreference(person, date).name() == 'PREFER' ? 'table-warning' : ''))}"
             th:text="${preferenceTable.getPreference(person, date)}"/>
       </tr>
-      <tr th:if="${schedule != null}">
-        <td th:text="#{table.header.assigned.doctor}">
-        <td th:each="date : ${preferenceTable.getDates()}"
-            th:text="${schedule.get(date).name()}"/>
-      </tr>
       </tbody>
+      <tfoot th:if="${schedule != null}">
+        <tr>
+          <td th:text="#{table.header.assigned.doctor}">
+          <td th:each="date : ${preferenceTable.getDates()}"
+              th:text="${schedule.get(date).name()}"/>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </div>
