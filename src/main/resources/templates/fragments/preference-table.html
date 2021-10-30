@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <div th:fragment="preference-table(preferenceTable)" th:assert="${preferenceTable != null}">
     <hr/>
-    <p th:text="#{given.preferences}" />
-    <table>
-        <thead>
+    <div class="container-fluid">
+        <h4 th:text="#{given.preferences}"/>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <td>&nbsp;</td>
                 <td th:each="date : ${preferenceTable.getDates()}" th:text="${date.value()}"/>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr th:each="person : ${preferenceTable.getPersons()}">
                 <td th:text="${person.name()}"/>
-                <td th:each="date : ${preferenceTable.getDates()}" th:text="${preferenceTable.getPreference(person, date)}"/>
+                <td th:each="date : ${preferenceTable.getDates()}"
+                    th:classappend="${preferenceTable.getPreference(person, date).name() == 'YES' ? 'table-success'
+                    : (preferenceTable.getPreference(person, date).name() == 'NO' ? 'table-danger'
+                    : (preferenceTable.getPreference(person, date).name() == 'PREFER' ? 'table-warning' : ''))}"
+                    th:text="${preferenceTable.getPreference(person, date)}"/>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
