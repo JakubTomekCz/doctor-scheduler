@@ -44,7 +44,7 @@
     </div>
 
     <div th:if="${preferenceTable != null}">
-        <div th:replace="fragments/preference-table :: preference-table(preferenceTable = ${preferenceTable})"/>
+        <div th:replace="fragments/result-table :: result-table(preferenceTable = ${preferenceTable}, schedule = ${schedule})"/>
     </div>
 
     <div th:if="${isError == true && preferenceTable!=null}" style="color: red">
