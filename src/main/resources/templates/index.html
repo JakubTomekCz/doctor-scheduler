@@ -9,52 +9,51 @@
 </head>
 <body>
 
-<!-- Jumbotron -->
 <div class="p-5 text-center bg-light">
     <h1 class="mb-3" th:text="#{page.title}"></h1>
 </div>
-<!-- Jumbotron -->
 
-<div class="container mt-3 p-4 border rounded">
-    <form method="post" enctype="multipart/form-data">
-        <div class="row mb-3">
-            <div class="col form-group">
-                <label for="fileToUploadInput" class="form-label" th:text="#{file.to.upload}" />
-                <input class="form-control" type="file" name="fileToUpload" id="fileToUploadInput" />
-            </div>
-            <div class="col form-group">
-                <span th:text="#{example.input.datasets}" />
-                <div th:each="exampleFile: ${T(com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile).values()}">
-                    <a th:text="${exampleFile.getFilename()}"
-                       th:href="'download/' + ${exampleFile.getFilename()}" />
-                    <br/>
+<div class="container-fluid m-3">
+    <div class="container mt-3 p-4 border rounded">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col form-group">
+                    <label for="fileToUploadInput" class="form-label" th:text="#{file.to.upload}"/>
+                    <input class="form-control" type="file" name="fileToUpload" id="fileToUploadInput"/>
+                </div>
+                <div class="col form-group">
+                    <span th:text="#{example.input.datasets}"/>
+                    <div th:each="exampleFile: ${T(com.github.jakubtomekcz.doctorscheduler.constant.ExamplePreferenceTableFile).values()}">
+                        <a th:text="${exampleFile.getFilename()}"
+                           th:href="'download/' + ${exampleFile.getFilename()}"/>
+                        <br/>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row mb-3" th:if="${isError == true && preferenceTable==null}" style="color: red">
+            <div class="row mb-3" th:if="${isError == true && preferenceTable==null}" style="color: red">
             <span th:if="${errorMessageCode != null && errorMessageParams != null}"
-               th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
-        </div>
-        <div class="row">
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" th:text="#{create.schedule}" />
+                  th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
             </div>
-        </div>
-    </form>
-</div>
+            <div class="row">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" th:text="#{create.schedule}"/>
+                </div>
+            </div>
+        </form>
+    </div>
 
-<div th:if="${preferenceTable != null}">
-    <div th:replace="fragments/preference-table :: preference-table(preferenceTable = ${preferenceTable})" />
-</div>
+    <div th:if="${preferenceTable != null}">
+        <div th:replace="fragments/preference-table :: preference-table(preferenceTable = ${preferenceTable})"/>
+    </div>
 
-<div th:if="${isError == true && preferenceTable!=null}" style="color: red">
-    <p th:if="${errorMessageCode != null && errorMessageParams != null}"
-       th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
-</div>
+    <div th:if="${isError == true && preferenceTable!=null}" style="color: red">
+        <p th:if="${errorMessageCode != null && errorMessageParams != null}"
+           th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"/>
+    </div>
 
-<div th:if="${schedule != null}">
-    <div th:replace="fragments/schedule :: schedule(schedule = ${schedule})" />
+    <div th:if="${schedule != null}">
+        <div th:replace="fragments/schedule :: schedule(schedule = ${schedule})"/>
+    </div>
 </div>
-
 </body>
 </html>
