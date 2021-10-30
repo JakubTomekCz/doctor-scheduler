@@ -15,7 +15,7 @@
       </thead>
       <tbody>
       <tr th:each="person : ${preferenceTable.getPersons()}">
-        <td th:text="${person.name()}"/>
+        <td th:text="${person.name()}" class="text-nowrap"/>
         <td th:each="date : ${preferenceTable.getDates()}"
             th:classappend="${preferenceTable.getPreference(person, date).name() == 'YES' ? 'table-success'
                     : (preferenceTable.getPreference(person, date).name() == 'NO' ? 'table-danger'
@@ -24,8 +24,8 @@
       </tr>
       </tbody>
       <tfoot th:if="${schedule != null}">
-        <tr>
-          <td th:text="#{table.header.assigned.doctor}">
+        <tr class="table-primary">
+          <td th:text="#{table.header.assigned.doctor}" class="text-nowrap" />
           <td th:each="date : ${preferenceTable.getDates()}"
               th:text="${schedule.get(date).name()}"/>
         </tr>
