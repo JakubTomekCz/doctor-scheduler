@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <div th:fragment="schedule(schedule)" th:assert="${schedule != null}">
     <div class="container mt-5">
-        <h4 th:text="#{suggested.schedule}"/>
         <table class="table table-striped table-hover">
             <thead>
+            <tr>
+                <td colspan="100%">
+                    <h4 th:text="#{suggested.schedule}"/>
+                </td>
+            </tr>
             <tr>
                 <td th:text="#{table.header.date}">
                 <td th:text="#{table.header.service}">
