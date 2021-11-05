@@ -10,7 +10,7 @@
 
     <groupId>com.github</groupId>
     <artifactId>doctor-scheduler</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.5</version>
     <name>Doctor Scheduler</name>
     <description>Schedule doctors' service days to fit their requirements as much as possible.</description>
 
