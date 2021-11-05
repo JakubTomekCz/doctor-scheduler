@@ -58,10 +58,6 @@ public class ScheduleBuilder {
         return this;
     }
 
-    public SatisfactionCriteria criteria() {
-        return SatisfactionCriteria.of(this);
-    }
-
     public Schedule build() {
         if (!isConsistent()) {
             throw new IllegalStateException("Cannot build schedule. Elementary schedule requirements are not met.");
