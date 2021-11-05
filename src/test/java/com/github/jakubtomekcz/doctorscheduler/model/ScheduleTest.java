@@ -7,7 +7,7 @@ import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTest
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.HOMER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.LENNY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
-import static com.github.jakubtomekcz.doctorscheduler.model.Date.date;
+import static com.github.jakubtomekcz.doctorscheduler.model.Date.dDayPlusNDays;
 import static com.github.jakubtomekcz.doctorscheduler.model.Person.person;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,19 +17,19 @@ class ScheduleTest {
     void getServiceDaysCountForPerson() {
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 8; i++) {
-            builder.put(LENNY, date(String.valueOf(i)), YES);
-            builder.put(CARL, date(String.valueOf(i)), YES);
-            builder.put(HOMER, date(String.valueOf(i)), YES);
+            builder.put(LENNY, dDayPlusNDays(i), YES);
+            builder.put(CARL, dDayPlusNDays(i), YES);
+            builder.put(HOMER, dDayPlusNDays(i), YES);
         }
         Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
-                .put(date("1"), LENNY)
-                .put(date("2"), CARL)
-                .put(date("3"), HOMER)
-                .put(date("4"), LENNY)
-                .put(date("5"), CARL)
-                .put(date("6"), HOMER)
-                .put(date("7"), LENNY)
-                .put(date("8"), CARL)
+                .put(dDayPlusNDays(1), LENNY)
+                .put(dDayPlusNDays(2), CARL)
+                .put(dDayPlusNDays(3), HOMER)
+                .put(dDayPlusNDays(4), LENNY)
+                .put(dDayPlusNDays(5), CARL)
+                .put(dDayPlusNDays(6), HOMER)
+                .put(dDayPlusNDays(7), LENNY)
+                .put(dDayPlusNDays(8), CARL)
                 .build();
         assertThat(schedule).satisfies(s -> {
             assertThat(s.getServiceDaysCountForPerson(LENNY)).isEqualTo(3);

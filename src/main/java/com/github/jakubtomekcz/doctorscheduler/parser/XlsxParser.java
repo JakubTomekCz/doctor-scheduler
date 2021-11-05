@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,14 +30,13 @@ import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 public class XlsxParser implements PreferenceTableParser {
 
     private static final int PERSON_MAX_LENGTH = 100;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
 
     @Override
     public PreferenceTable parseMultipartFile(MultipartFile multipartFile) {
         Workbook workbook = createWorkBook(multipartFile);
         Sheet sheet = workbook.getSheetAt(0);
         PreferenceTable.Builder builder = PreferenceTable.builder();
-        Map<Integer, String> datesRow = null;
+        Map<Integer, Date> datesRow = null;
         for (Row row : sheet) {
             if (datesRow == null) {
                 datesRow = readDatesRow(row);
@@ -48,9 +46,9 @@ public class XlsxParser implements PreferenceTableParser {
                     break;
                 }
                 Person person = validateAndGetPerson(personCell);
-                for (Map.Entry<Integer, String> entry : datesRow.entrySet()) {
+                for (Map.Entry<Integer, Date> entry : datesRow.entrySet()) {
                     int columnIndex = entry.getKey();
-                    Date date = new Date(entry.getValue());
+                    Date date = entry.getValue();
                     String cellValue = row.getCell(columnIndex).getStringCellValue();
                     PreferenceType preference;
                     try {
@@ -74,17 +72,16 @@ public class XlsxParser implements PreferenceTableParser {
         }
     }
 
-    private Map<Integer, String> readDatesRow(Row row) {
-        Map<Integer, String> datesRow;
-        datesRow = new HashMap<>();
+    private Map<Integer, Date> readDatesRow(Row row) {
+        Map<Integer, Date> datesRow = new HashMap<>();
         for (Cell cell : row) {
             if (cell.getColumnIndex() == 0) {
                 continue;
             } else if (cell.getCellType() == CellType.BLANK) {
                 break;
             } else if (cell.getCellType() == CellType.NUMERIC && isCellDateFormatted(cell)) {
-                String formattedDate = dateFormat.format(cell.getDateCellValue());
-                datesRow.put(cell.getColumnIndex(), formattedDate);
+                Date date = new Date(cell.getDateCellValue());
+                datesRow.put(cell.getColumnIndex(), date);
             } else {
                 throw new UiMessageException(XLSX_FILE_DATE_EXPECTED,
                         cell.getRowIndex(), cell.getColumnIndex());

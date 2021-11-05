@@ -60,9 +60,9 @@ class XlsxParserTest {
                     assertThat(table.getDates()).hasSize(30);
                     assertThat(table.getPersons())
                             .containsExactly(DOC, GRUMPY, HAPPY, SLEEPY, BASHFUL, SNEEZY, DOPEY);
-                    assertThat(table.getPreference(DOC, date("Wed 01 Sept 2021"))).isEqualTo(NO);
-                    assertThat(table.getPreference(GRUMPY, date("Thu 02 Sept 2021"))).isEqualTo(YES);
-                    assertThat(table.getPreference(SLEEPY, date("Sat 04 Sept 2021"))).isEqualTo(PREFER);
+                    assertThat(table.getPreference(DOC, date("2021-09-01"))).isEqualTo(NO);
+                    assertThat(table.getPreference(GRUMPY, date("2021-09-02"))).isEqualTo(YES);
+                    assertThat(table.getPreference(SLEEPY, date("2021-09-04"))).isEqualTo(PREFER);
                 });
     }
 
@@ -78,9 +78,9 @@ class XlsxParserTest {
                     assertThat(table.getDates()).hasSize(30);
                     assertThat(table.getPersons())
                             .containsExactly(PROFA, REJPAL, STISTKO, DRIMAL, STYDLIN, KEJCHAL, SMUDLA);
-                    assertThat(table.getPreference(PROFA, date("Wed 01 Sept 2021"))).isEqualTo(NO);
-                    assertThat(table.getPreference(REJPAL, date("Thu 02 Sept 2021"))).isEqualTo(YES);
-                    assertThat(table.getPreference(DRIMAL, date("Sat 04 Sept 2021"))).isEqualTo(PREFER);
+                    assertThat(table.getPreference(PROFA, date("2021-09-01"))).isEqualTo(NO);
+                    assertThat(table.getPreference(REJPAL, date("2021-09-02"))).isEqualTo(YES);
+                    assertThat(table.getPreference(DRIMAL, date("2021-09-04"))).isEqualTo(PREFER);
                 });
     }
 

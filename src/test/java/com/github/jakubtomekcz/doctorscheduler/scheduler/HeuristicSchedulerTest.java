@@ -29,7 +29,7 @@ import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
-import static com.github.jakubtomekcz.doctorscheduler.model.Date.date;
+import static com.github.jakubtomekcz.doctorscheduler.model.Date.dDayPlusNDays;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -42,7 +42,7 @@ class HeuristicSchedulerTest {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 32; i++) {
-            Date date = date(String.valueOf(i));
+            Date date = dDayPlusNDays(i);
             people.forEach(person -> builder.put(person, date, YES));
         }
         PreferenceTable preferenceTable = builder.build();
@@ -52,8 +52,7 @@ class HeuristicSchedulerTest {
             assertThat(schedule.getDates())
                     .isEqualTo(IntStream.rangeClosed(1, 32)
                             .boxed()
-                            .map(String::valueOf)
-                            .map(Date::new)
+                            .map(Date::dDayPlusNDays)
                             .toList());
             assertThat(new HashSet<>(schedule.getPersonsOnlySchedule()))
                     .isSubsetOf(LENNY, CARL, HOMER, BARNEY);
@@ -65,7 +64,7 @@ class HeuristicSchedulerTest {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 16; i++) {
-            Date date = date(String.valueOf(i));
+            Date date = Date.dDayPlusNDays(i);
             people.forEach(person -> builder.put(person, date, YES));
         }
         PreferenceTable preferenceTable = builder.build();
@@ -127,7 +126,7 @@ class HeuristicSchedulerTest {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 32; i++) {
-            Date date = date(String.valueOf(i));
+            Date date = dDayPlusNDays(i);
             people.forEach(person -> builder.put(person, date, YES));
         }
         PreferenceTable preferenceTable = builder.build();
@@ -141,7 +140,7 @@ class HeuristicSchedulerTest {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 32; i++) {
-            Date date = date(String.valueOf(i));
+            Date date = dDayPlusNDays(i);
             people.forEach(person -> builder.put(person, date, PREFER));
         }
         PreferenceTable preferenceTable = builder.build();
