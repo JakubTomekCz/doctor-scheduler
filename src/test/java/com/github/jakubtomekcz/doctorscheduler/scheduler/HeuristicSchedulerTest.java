@@ -1,6 +1,7 @@
 package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 
+import com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants;
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.Date;
 import com.github.jakubtomekcz.doctorscheduler.model.Person;
@@ -25,11 +26,11 @@ import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTest
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.THURSDAY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.TUESDAY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.WEDNESDAY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.dDayPlusNDays;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
-import static com.github.jakubtomekcz.doctorscheduler.model.Date.dDayPlusNDays;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -52,7 +53,7 @@ class HeuristicSchedulerTest {
             assertThat(schedule.getDates())
                     .isEqualTo(IntStream.rangeClosed(1, 32)
                             .boxed()
-                            .map(Date::dDayPlusNDays)
+                            .map(PersonAndDateTestConstants::dDayPlusNDays)
                             .toList());
             assertThat(new HashSet<>(schedule.getPersonsOnlySchedule()))
                     .isSubsetOf(LENNY, CARL, HOMER, BARNEY);
@@ -64,7 +65,7 @@ class HeuristicSchedulerTest {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 16; i++) {
-            Date date = Date.dDayPlusNDays(i);
+            Date date = dDayPlusNDays(i);
             people.forEach(person -> builder.put(person, date, YES));
         }
         PreferenceTable preferenceTable = builder.build();

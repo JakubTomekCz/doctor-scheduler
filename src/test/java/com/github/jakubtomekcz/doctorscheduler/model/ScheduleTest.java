@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.CARL;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.HOMER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.LENNY;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.dDayPlusNDays;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
-import static com.github.jakubtomekcz.doctorscheduler.model.Date.dDayPlusNDays;
 import static com.github.jakubtomekcz.doctorscheduler.model.Person.person;
 import static org.assertj.core.api.Assertions.assertThat;
 

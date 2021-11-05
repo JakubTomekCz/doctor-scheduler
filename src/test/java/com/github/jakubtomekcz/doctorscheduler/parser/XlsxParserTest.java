@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
+import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.date;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
@@ -21,7 +22,6 @@ import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.M
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_DATE_EXPECTED;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_PERSON_NAME_TOO_LONG;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_PREFERENCE_EXPECTED;
-import static com.github.jakubtomekcz.doctorscheduler.model.Date.date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
