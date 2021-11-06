@@ -8,6 +8,7 @@ import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
 import com.github.jakubtomekcz.doctorscheduler.model.Schedule;
 import com.github.jakubtomekcz.doctorscheduler.model.ScheduleBuilder;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -133,13 +134,13 @@ class HeuristicSchedulerTest {
         PreferenceTable preferenceTable = builder.build();
         Schedule result = scheduler.createSchedule(preferenceTable);
 
-        assertThat(preferenceTable.getDates()).hasSize(32);
-        assertThat(result).satisfies(schedule -> {
-            assertThat(schedule.getServiceDaysCountForPerson(LENNY)).isEqualTo(8);
-            assertThat(schedule.getServiceDaysCountForPerson(CARL)).isEqualTo(8);
-            assertThat(schedule.getServiceDaysCountForPerson(HOMER)).isEqualTo(8);
-            assertThat(schedule.getServiceDaysCountForPerson(BARNEY)).isEqualTo(8);
-        });
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(preferenceTable.getDates()).hasSize(32);
+        softly.assertThat(result.getServiceDaysCountForPerson(LENNY)).isEqualTo(8);
+        softly.assertThat(result.getServiceDaysCountForPerson(CARL)).isEqualTo(8);
+        softly.assertThat(result.getServiceDaysCountForPerson(HOMER)).isEqualTo(8);
+        softly.assertThat(result.getServiceDaysCountForPerson(BARNEY)).isEqualTo(8);
+        softly.assertAll();
     }
 
     @Test
