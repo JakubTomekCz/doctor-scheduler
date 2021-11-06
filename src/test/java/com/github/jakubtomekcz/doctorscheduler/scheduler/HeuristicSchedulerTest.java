@@ -132,8 +132,14 @@ class HeuristicSchedulerTest {
         }
         PreferenceTable preferenceTable = builder.build();
         Schedule result = scheduler.createSchedule(preferenceTable);
-        assertThat(result).satisfies(schedule ->
-                people.forEach(person -> assertThat(schedule.getServiceDaysCountForPerson(person)).isEqualTo(8)));
+
+        assertThat(preferenceTable.getDates()).hasSize(32);
+        assertThat(result).satisfies(schedule -> {
+            assertThat(schedule.getServiceDaysCountForPerson(LENNY)).isEqualTo(8);
+            assertThat(schedule.getServiceDaysCountForPerson(CARL)).isEqualTo(8);
+            assertThat(schedule.getServiceDaysCountForPerson(HOMER)).isEqualTo(8);
+            assertThat(schedule.getServiceDaysCountForPerson(BARNEY)).isEqualTo(8);
+        });
     }
 
     @Test
