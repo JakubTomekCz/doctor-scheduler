@@ -43,6 +43,7 @@ public class HeuristicScheduler implements Scheduler {
 
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
         iterationCounter++;
+        log.debug("Starting iteration #" + iterationCounter);
         if (iterationCounter > maxIterations) {
             log.debug(format("Max limit of %d iterations exceeded. Giving up. Sorry.", maxIterations));
             return Optional.empty();
@@ -50,13 +51,17 @@ public class HeuristicScheduler implements Scheduler {
             log.debug(format("Hurray! A solution was found after mere %d iterations!", iterationCounter));
             return Optional.of(builder);
         } else if (builder.getAssignablePersons().values().stream().anyMatch(Set::isEmpty)) {
+            log.debug("Nope, this setup is a dead end.");
             return Optional.empty();
         }
         Date date = selectDateToBeAssignedAPerson(builder);
+        log.debug(format("The next date to be assigned is %s", date));
         List<Person> sortedCandidates = builder.getAssignablePersons().get(date).stream()
                 .sorted(HeuristicCandidatePersonComparator.forScheduleAndDate(builder, date))
                 .toList();
+        log.debug(format("The candidates for date %s will come in this order: %s", date, sortedCandidates));
         for (Person person : sortedCandidates) {
+            log.debug(format("Trying candidate %s for the date %s", person, date));
             ScheduleBuilder extendedBuilder = builder.copy().put(date, person);
             Optional<ScheduleBuilder> solution = findSolutionFor(extendedBuilder);
             if (solution.isPresent()) {

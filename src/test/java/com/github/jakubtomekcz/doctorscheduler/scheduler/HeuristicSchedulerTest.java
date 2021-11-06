@@ -136,10 +136,10 @@ class HeuristicSchedulerTest {
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(preferenceTable.getDates()).hasSize(32);
-        softly.assertThat(result.getServiceDaysCountForPerson(LENNY)).isEqualTo(8);
-        softly.assertThat(result.getServiceDaysCountForPerson(CARL)).isEqualTo(8);
-        softly.assertThat(result.getServiceDaysCountForPerson(HOMER)).isEqualTo(8);
-        softly.assertThat(result.getServiceDaysCountForPerson(BARNEY)).isEqualTo(8);
+        softly.assertThat(result.getServiceDaysCountForPerson(LENNY)).as("Lenny").isEqualTo(8);
+        softly.assertThat(result.getServiceDaysCountForPerson(CARL)).as("Carl").isEqualTo(8);
+        softly.assertThat(result.getServiceDaysCountForPerson(HOMER)).as("Homer").isEqualTo(8);
+        softly.assertThat(result.getServiceDaysCountForPerson(BARNEY)).as("Barney").isEqualTo(8);
         softly.assertAll();
     }
 
