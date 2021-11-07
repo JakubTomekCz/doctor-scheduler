@@ -10,7 +10,7 @@
 
     <groupId>com.github</groupId>
     <artifactId>doctor-scheduler</artifactId>
-    <version>1.0.11-SNAPSHOT</version>
+    <version>1.0.11</version>
     <name>Doctor Scheduler</name>
     <description>Schedule doctors' service days to fit their requirements as much as possible.</description>
 
@@ -126,5 +126,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/jakubtomekcz/doctor-scheduler</url>
+        </repository>
+    </distributionManagement>
 
 </project>
