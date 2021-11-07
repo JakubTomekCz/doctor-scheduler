@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,7 +40,11 @@ public class ScheduleBuilder {
         this.preferenceTable = preferenceTable;
         this.schedule = new HashMap<>();
         assignablePersons = preferenceTable.getDates().stream()
-                .collect(toMap(date -> date, date -> assignablePersonsForDate(preferenceTable, date)));
+                .collect(toMap(
+                        date -> date,
+                        date -> assignablePersonsForDate(preferenceTable, date),
+                        (set1, set2) -> set1,
+                        LinkedHashMap::new));
     }
 
     private ScheduleBuilder(PreferenceTable preferenceTable,
