@@ -10,12 +10,18 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-<div class="p-4 text-center bg-light">
-    <div>
-        <img th:src="@{/img/cz-flag-icon-16.png}" alt="cz-flag"/>
-        <img th:src="@{/img/usa-flag-icon-16.png}" alt="usa-flag"/>
+<div class="row bg-light">
+    <div class="col p-4 text-center">
+        <h1 class="mb-3" th:text="#{page.title}"></h1>
     </div>
-    <h1 class="mb-3" th:text="#{page.title}"></h1>
+    <div class="col-sm-1 pull-right">
+        <a href="/?lang=cs">
+            <img th:src="@{/img/cz-flag-icon-32.png}" alt="cz-flag"/>
+        </a>
+        <a href="/?lang=en">
+            <img th:src="@{/img/usa-flag-icon-32.png}" alt="usa-flag"/>
+        </a>
+    </div>
 </div>
 
 <div class="container-fluid">
