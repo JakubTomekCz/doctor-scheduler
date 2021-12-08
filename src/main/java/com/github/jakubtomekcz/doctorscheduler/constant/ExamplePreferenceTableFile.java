@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum ExamplePreferenceTableFile {
 
     XSLX_EN("preference-table-example-en.xlsx"),
-    XSLX_CZ("preference-table-example-cz.xlsx");
+    XSLX_CZ("preference-table-example-cz.xlsx"),
+    XSLX_2TAB_CZ("preference-table-example-two-tables-cz.xlsx");
 
     private final String filename;
 
