@@ -13,7 +13,7 @@ public enum PreferenceType {
 
     YES("YES", "ANO"),
     NO("NO", "NE"),
-    PREFER("PREFER", "PREFERUJI");
+    PREFER("PREFER", "PREFERUJI", "CHCI");
 
     private final String[] matchingTokens;
 

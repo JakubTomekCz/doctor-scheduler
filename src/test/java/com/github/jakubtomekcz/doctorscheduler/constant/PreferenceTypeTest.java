@@ -37,7 +37,10 @@ class PreferenceTypeTest {
                 Arguments.of("ne", NO),
                 Arguments.of("prefer", PREFER),
                 Arguments.of("preferuji", PREFER),
-                Arguments.of("yEs", YES));
+                Arguments.of("yEs", YES),
+                Arguments.of("chci", PREFER),
+                Arguments.of("CHCI", PREFER)
+                );
     }
 
     @Test
