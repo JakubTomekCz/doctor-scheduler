@@ -85,6 +85,17 @@ class XlsxParserTest {
     }
 
     @Test
+    void parseXlsxCz2TabsExampleFile() throws IOException {
+        MultipartFile multipartFile = mockMultipartFile(ExamplePreferenceTableFile.XSLX_2TAB_CZ.getFilename());
+
+        PreferenceTable actualResult = xlsxParser.parseMultipartFile(multipartFile);
+
+        assertThat(actualResult)
+                .isNotNull()
+                .satisfies(table -> assertThat(table.getName()).isEqualTo("Mladší lékaři"));
+    }
+
+    @Test
     void errorOpeningInputStream() throws IOException {
         MultipartFile multipartFile = mock(MultipartFile.class);
         when(multipartFile.getInputStream()).thenThrow(IOException.class);

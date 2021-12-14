@@ -18,17 +18,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.ERROR_READING_XLSX_FILE;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_DATE_EXPECTED;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_PERSON_NAME_TOO_LONG;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_PREFERENCE_EXPECTED;
+import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.XLSX_FILE_TABLE_NAME_TOO_LONG;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
 @Slf4j
 public class XlsxParser implements PreferenceTableParser {
 
+    private static final int TABLE_NAME_MAX_LENGTH = 100;
     private static final int PERSON_MAX_LENGTH = 100;
 
     @Override
@@ -39,6 +42,8 @@ public class XlsxParser implements PreferenceTableParser {
         Map<Integer, Date> datesRow = null;
         for (Row row : sheet) {
             if (datesRow == null) {
+                Optional<String> tableName = readTableName(row);
+                tableName.ifPresent(builder::name);
                 datesRow = readDatesRow(row);
             } else {
                 Cell personCell = row.getCell(0);
@@ -70,6 +75,19 @@ public class XlsxParser implements PreferenceTableParser {
             log.error("Failed to parse xlsx file.", e);
             throw new UiMessageException(ERROR_READING_XLSX_FILE);
         }
+    }
+
+    private Optional<String> readTableName(Row row) {
+        Cell tableNameCell = row.getCell(0);
+        if (tableNameCell.getCellType() == CellType.STRING) {
+            String rawName = tableNameCell.getStringCellValue();
+            if (rawName.length() > TABLE_NAME_MAX_LENGTH) {
+                throw new UiMessageException(XLSX_FILE_TABLE_NAME_TOO_LONG, TABLE_NAME_MAX_LENGTH, rawName.length(),
+                        tableNameCell.getRowIndex(), tableNameCell.getColumnIndex());
+            }
+            return Optional.of(rawName);
+        }
+        return Optional.empty();
     }
 
     private Map<Integer, Date> readDatesRow(Row row) {
