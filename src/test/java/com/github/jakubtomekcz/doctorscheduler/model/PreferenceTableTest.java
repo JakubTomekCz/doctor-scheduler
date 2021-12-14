@@ -48,4 +48,14 @@ class PreferenceTableTest {
 
         assertThat(preferenceTable.getDates()).containsExactly(MONDAY, TUESDAY, WEDNESDAY, THURSDAY);
     }
+
+    @Test
+    void nameIsSetCorrectly() {
+        PreferenceTable preferenceTable = PreferenceTable.builder()
+                .name("Simpsons")
+                .put(HOMER, MONDAY, YES)
+                .build();
+
+        assertThat(preferenceTable.getName()).isEqualTo("Simpsons");
+    }
 }
