@@ -87,27 +87,32 @@ public class XlsxParser implements PreferenceTableParser {
                 throw new UiMessageException(XLSX_FILE_TABLE_NAME_TOO_LONG, TABLE_NAME_MAX_LENGTH, rawName.length(),
                         tableNameCell.getRowIndex(), tableNameCell.getColumnIndex());
             }
+            // TODO sanitize HTML input?
             return Optional.of(rawName);
         }
         return Optional.empty();
     }
 
     private Map<Integer, Date> readDatesRow(Row row) {
-        Map<Integer, Date> datesRow = new HashMap<>();
-        for (Cell cell : row) {
-            if (cell.getColumnIndex() == 0) {
-                continue;
-            } else if (cell.getCellType() == CellType.BLANK) {
-                break;
-            } else if (cell.getCellType() == CellType.NUMERIC && isCellDateFormatted(cell)) {
-                Date date = new Date(cell.getDateCellValue());
-                datesRow.put(cell.getColumnIndex(), date);
-            } else {
-                throw new UiMessageException(XLSX_FILE_DATE_EXPECTED,
-                        cell.getRowIndex(), cell.getColumnIndex());
+        Cell cellB = row.getCell(1);
+        if (cellB != null && cellB.getCellType() == CellType.NUMERIC && isCellDateFormatted(cellB)) {
+            Map<Integer, Date> datesRow = new HashMap<>();
+            for (Cell cell : row) {
+                if (cell.getColumnIndex() == 0) {
+                    continue;
+                } else if (cell.getCellType() == CellType.BLANK) {
+                    break;
+                } else if (cell.getCellType() == CellType.NUMERIC && isCellDateFormatted(cell)) {
+                    Date date = new Date(cell.getDateCellValue());
+                    datesRow.put(cell.getColumnIndex(), date);
+                } else {
+                    throw new UiMessageException(XLSX_FILE_DATE_EXPECTED,
+                            cell.getRowIndex(), cell.getColumnIndex());
+                }
             }
+            return datesRow;
         }
-        return datesRow;
+        return null;
     }
 
     private Person validateAndGetPerson(Cell personCell) {

@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
 import static org.hamcrest.Matchers.containsString;
@@ -85,7 +86,8 @@ class MainControllerTest {
         byte[] bytes = {0};
         var multipartFile = new MockMultipartFile("fileToUpload", "file.xlsx", "application/xlsx", bytes);
         PreferenceTable preferenceTable = PreferenceTable.builder().build();
-        doReturn(preferenceTable).when(preferenceTableParserService).parseMultipartFile(multipartFile);
+        List<PreferenceTable> preferenceTables = List.of(preferenceTable);
+        doReturn(preferenceTables).when(preferenceTableParserService).parseMultipartFile(multipartFile);
         doThrow(new UiMessageException(CANNOT_BUILD_SCHEDULE)).when(schedulerService).createSchedule(preferenceTable);
 
 

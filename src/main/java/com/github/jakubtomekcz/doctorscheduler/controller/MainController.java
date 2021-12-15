@@ -34,7 +34,8 @@ public class MainController {
         if (!uploadedFile.isEmpty()) {
             try {
                 List<PreferenceTable> preferenceTables = preferenceTableParserService.parseMultipartFile(uploadedFile);
-                PreferenceTable preferenceTable = preferenceTables.get(0);
+                // TODO
+                PreferenceTable preferenceTable = preferenceTables.size() > 0 ? preferenceTables.get(0) : null;
                 modelAndView.addObject("preferenceTable", preferenceTable);
                 Schedule schedule = schedulerService.createSchedule(preferenceTable);
                 modelAndView.addObject("schedule", schedule);
