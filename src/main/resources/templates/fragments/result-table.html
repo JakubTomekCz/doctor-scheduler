@@ -9,7 +9,7 @@
         </td>
       </tr>
       <tr>
-        <td>&nbsp;</td>
+        <td th:text="${preferenceTable.getName()}">
         <td th:each="date : ${preferenceTable.getDates()}" th:text="${date.format(#locale)}"/>
       </tr>
       </thead>
