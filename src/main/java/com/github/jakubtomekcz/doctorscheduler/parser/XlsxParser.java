@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class XlsxParser implements PreferenceTableParser {
     private static final int PERSON_MAX_LENGTH = 100;
 
     @Override
-    public PreferenceTable parseMultipartFile(MultipartFile multipartFile) {
+    public List<PreferenceTable> parseMultipartFile(MultipartFile multipartFile) {
         Workbook workbook = createWorkBook(multipartFile);
         Sheet sheet = workbook.getSheetAt(0);
         PreferenceTable.Builder builder = PreferenceTable.builder();
@@ -65,7 +66,8 @@ public class XlsxParser implements PreferenceTableParser {
                 }
             }
         }
-        return builder.build();
+        PreferenceTable preferenceTable = builder.build();
+        return List.of(preferenceTable);
     }
 
     private Workbook createWorkBook(MultipartFile multipartFile) {

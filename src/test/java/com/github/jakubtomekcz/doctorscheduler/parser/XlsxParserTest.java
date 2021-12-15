@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.List;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.date;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
@@ -52,10 +53,12 @@ class XlsxParserTest {
     void parseXlsxEnExampleFile() throws IOException {
         MultipartFile multipartFile = mockMultipartFile(ExamplePreferenceTableFile.XSLX_EN.getFilename());
 
-        PreferenceTable actualResult = xlsxParser.parseMultipartFile(multipartFile);
+        List<PreferenceTable> actualResult = xlsxParser.parseMultipartFile(multipartFile);
 
         assertThat(actualResult)
                 .isNotNull()
+                .hasSize(1);
+        assertThat(actualResult.get(0))
                 .satisfies(table -> {
                     assertThat(table.getDates()).hasSize(30);
                     assertThat(table.getPersons())
@@ -70,10 +73,12 @@ class XlsxParserTest {
     void parseXlsxCzExampleFile() throws IOException {
         MultipartFile multipartFile = mockMultipartFile(ExamplePreferenceTableFile.XSLX_CZ.getFilename());
 
-        PreferenceTable actualResult = xlsxParser.parseMultipartFile(multipartFile);
+        List<PreferenceTable> actualResult = xlsxParser.parseMultipartFile(multipartFile);
 
         assertThat(actualResult)
                 .isNotNull()
+                .hasSize(1);
+        assertThat(actualResult.get(0))
                 .satisfies(table -> {
                     assertThat(table.getDates()).hasSize(30);
                     assertThat(table.getPersons())
@@ -88,10 +93,9 @@ class XlsxParserTest {
     void parseXlsxCz2TabsExampleFile() throws IOException {
         MultipartFile multipartFile = mockMultipartFile(ExamplePreferenceTableFile.XSLX_2TAB_CZ.getFilename());
 
-        PreferenceTable actualResult = xlsxParser.parseMultipartFile(multipartFile);
+        List<PreferenceTable> actualResult = xlsxParser.parseMultipartFile(multipartFile);
 
-        assertThat(actualResult)
-                .isNotNull()
+        assertThat(actualResult.get(0))
                 .satisfies(table -> assertThat(table.getName()).isEqualTo("Mladší lékaři"));
     }
 

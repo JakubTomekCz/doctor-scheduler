@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.UPLOAD_FILE_TOO_BIG;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.UPLOAD_FILE_UNKNOWN_TYPE;
 
@@ -23,7 +25,7 @@ public class PreferenceTableParserService {
         this.parserFactory = parserFactory;
     }
 
-    public PreferenceTable parseMultipartFile(MultipartFile inputFile) {
+    public List<PreferenceTable> parseMultipartFile(MultipartFile inputFile) {
         checkFileSize(inputFile);
         String filename = inputFile.getOriginalFilename();
         String suffix = filename == null ? "" : getSuffix(inputFile.getOriginalFilename());

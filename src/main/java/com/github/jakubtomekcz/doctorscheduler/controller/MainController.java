@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class MainController {
@@ -31,7 +33,8 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView("index");
         if (!uploadedFile.isEmpty()) {
             try {
-                PreferenceTable preferenceTable = preferenceTableParserService.parseMultipartFile(uploadedFile);
+                List<PreferenceTable> preferenceTables = preferenceTableParserService.parseMultipartFile(uploadedFile);
+                PreferenceTable preferenceTable = preferenceTables.get(0);
                 modelAndView.addObject("preferenceTable", preferenceTable);
                 Schedule schedule = schedulerService.createSchedule(preferenceTable);
                 modelAndView.addObject("schedule", schedule);

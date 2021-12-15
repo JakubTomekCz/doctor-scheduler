@@ -10,6 +10,8 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.UPLOAD_FILE_TOO_BIG;
 import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.UPLOAD_FILE_UNKNOWN_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +31,7 @@ class PreferenceTableParserServiceTest {
     private PreferenceTableParser parser;
 
     @Mock
-    private PreferenceTable preferenceTable;
+    private List<PreferenceTable> preferenceTables;
 
     private PreferenceTableParserService parserService;
 
@@ -42,11 +44,11 @@ class PreferenceTableParserServiceTest {
     void parseMultipartFile() {
         when(multipartFile.getOriginalFilename()).thenReturn("file.xlsx");
         when(parserFactory.getParserForFileExtension("xlsx")).thenReturn(parser);
-        when(parser.parseMultipartFile(multipartFile)).thenReturn(preferenceTable);
+        when(parser.parseMultipartFile(multipartFile)).thenReturn(preferenceTables);
 
-        PreferenceTable actualResult = parserService.parseMultipartFile(multipartFile);
+        List<PreferenceTable> actualResult = parserService.parseMultipartFile(multipartFile);
 
-        assertThat(actualResult).isSameAs(preferenceTable);
+        assertThat(actualResult).isSameAs(preferenceTables);
     }
 
     @Test
