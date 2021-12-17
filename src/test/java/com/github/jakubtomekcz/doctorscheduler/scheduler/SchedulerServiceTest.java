@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
@@ -26,11 +28,11 @@ class SchedulerServiceTest {
     @Test
     void createSchedule() {
         PreferenceTable preferenceTable = PreferenceTable.builder().build();
-        Schedule expectedResult = ScheduleBuilder.forPreferenceTable(preferenceTable).build();
+        Optional<Schedule> expectedResult = Optional.of(ScheduleBuilder.forPreferenceTable(preferenceTable).build());
         doReturn(scheduler).when(schedulerFactory).createScheduler();
         doReturn(expectedResult).when(scheduler).createSchedule(preferenceTable);
 
-        Schedule actualResult = schedulerService.createSchedule(preferenceTable);
+        Optional<Schedule> actualResult = schedulerService.createSchedule(preferenceTable);
 
         assertThat(actualResult).isSameAs(expectedResult);
     }

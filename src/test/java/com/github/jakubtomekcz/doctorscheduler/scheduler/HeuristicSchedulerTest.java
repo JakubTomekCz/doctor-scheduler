@@ -2,7 +2,6 @@ package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants;
-import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.Date;
 import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
@@ -16,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -31,9 +31,7 @@ import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTest
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
-import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class HeuristicSchedulerTest {
 
@@ -48,8 +46,9 @@ class HeuristicSchedulerTest {
             people.forEach(person -> builder.put(person, date, YES));
         }
         PreferenceTable preferenceTable = builder.build();
-        Schedule result = scheduler.createSchedule(preferenceTable);
-        assertThat(result).satisfies(schedule -> {
+        Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
+        assertThat(result).isPresent();
+        assertThat(result.get()).satisfies(schedule -> {
             assertThat(schedule.size()).isEqualTo(32);
             assertThat(schedule.getDates())
                     .isEqualTo(IntStream.rangeClosed(1, 32)
@@ -70,8 +69,9 @@ class HeuristicSchedulerTest {
             people.forEach(person -> builder.put(person, date, YES));
         }
         PreferenceTable preferenceTable = builder.build();
-        Schedule result = scheduler.createSchedule(preferenceTable);
-        assertTwoDaysRestBetweenServiceDays(result);
+        Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
+        assertThat(result).isPresent();
+        assertTwoDaysRestBetweenServiceDays(result.get());
     }
 
     private void assertTwoDaysRestBetweenServiceDays(Schedule schedule) {
@@ -94,14 +94,15 @@ class HeuristicSchedulerTest {
         people.forEach(person -> builder.put(person, WEDNESDAY, person.equals(CARL) ? YES : NO));
         people.forEach(person -> builder.put(person, THURSDAY, person.equals(HOMER) ? YES : NO));
         PreferenceTable preferenceTable = builder.build();
-        Schedule actualResult = scheduler.createSchedule(preferenceTable);
+        Optional<Schedule> actualResult = scheduler.createSchedule(preferenceTable);
         Schedule expectedResult = ScheduleBuilder.forPreferenceTable(preferenceTable)
                 .put(MONDAY, BARNEY)
                 .put(TUESDAY, LENNY)
                 .put(WEDNESDAY, CARL)
                 .put(THURSDAY, HOMER)
                 .build();
-        assertThat(actualResult).isEqualTo(expectedResult);
+        assertThat(actualResult).isPresent();
+        assertThat(actualResult.get()).isEqualTo(expectedResult);
     }
 
     @Test
@@ -113,14 +114,15 @@ class HeuristicSchedulerTest {
         people.forEach(person -> builder.put(person, WEDNESDAY, person.equals(CARL) ? PREFER : YES));
         people.forEach(person -> builder.put(person, THURSDAY, person.equals(HOMER) ? PREFER : YES));
         PreferenceTable preferenceTable = builder.build();
-        Schedule actualResult = scheduler.createSchedule(preferenceTable);
+        Optional<Schedule> actualResult = scheduler.createSchedule(preferenceTable);
         Schedule expectedResult = ScheduleBuilder.forPreferenceTable(preferenceTable)
                 .put(MONDAY, BARNEY)
                 .put(TUESDAY, LENNY)
                 .put(WEDNESDAY, CARL)
                 .put(THURSDAY, HOMER)
                 .build();
-        assertThat(actualResult).isEqualTo(expectedResult);
+        assertThat(actualResult).isPresent();
+        assertThat(actualResult.get()).isEqualTo(expectedResult);
     }
 
     @Test
@@ -132,14 +134,15 @@ class HeuristicSchedulerTest {
             people.forEach(person -> builder.put(person, date, YES));
         }
         PreferenceTable preferenceTable = builder.build();
-        Schedule result = scheduler.createSchedule(preferenceTable);
+        Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(preferenceTable.getDates()).hasSize(32);
-        softly.assertThat(result.getServiceDaysCountForPerson(LENNY)).as("Lenny").isEqualTo(8);
-        softly.assertThat(result.getServiceDaysCountForPerson(CARL)).as("Carl").isEqualTo(8);
-        softly.assertThat(result.getServiceDaysCountForPerson(HOMER)).as("Homer").isEqualTo(8);
-        softly.assertThat(result.getServiceDaysCountForPerson(BARNEY)).as("Barney").isEqualTo(8);
+        softly.assertThat(result).isPresent();
+        softly.assertThat(result.get().getServiceDaysCountForPerson(LENNY)).as("Lenny").isEqualTo(8);
+        softly.assertThat(result.get().getServiceDaysCountForPerson(CARL)).as("Carl").isEqualTo(8);
+        softly.assertThat(result.get().getServiceDaysCountForPerson(HOMER)).as("Homer").isEqualTo(8);
+        softly.assertThat(result.get().getServiceDaysCountForPerson(BARNEY)).as("Barney").isEqualTo(8);
         softly.assertAll();
     }
 
@@ -152,17 +155,17 @@ class HeuristicSchedulerTest {
             people.forEach(person -> builder.put(person, date, PREFER));
         }
         PreferenceTable preferenceTable = builder.build();
-        Schedule result = scheduler.createSchedule(preferenceTable);
-        assertThat(result).satisfies(schedule ->
+        Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
+        assertThat(result).isPresent();
+        assertThat(result.get()).satisfies(schedule ->
                 people.forEach(person -> assertThat(schedule.getServiceDaysCountForPerson(person)).isEqualTo(8)));
     }
 
     @ParameterizedTest
     @MethodSource("impossibleRequirementsMethodSource")
     void impossibleRequirements(PreferenceTable table) {
-        assertThatThrownBy(() -> scheduler.createSchedule(table))
-                .isInstanceOf(UiMessageException.class)
-                .hasFieldOrPropertyWithValue("messageCode", CANNOT_BUILD_SCHEDULE);
+        Optional<Schedule> result = scheduler.createSchedule(table);
+        assertThat(result).isEmpty();
     }
 
     private static Stream<Arguments> impossibleRequirementsMethodSource() {

@@ -19,11 +19,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
-import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -88,7 +87,7 @@ class MainControllerTest {
         PreferenceTable preferenceTable = PreferenceTable.builder().build();
         List<PreferenceTable> preferenceTables = List.of(preferenceTable);
         doReturn(preferenceTables).when(preferenceTableParserService).parseMultipartFile(multipartFile);
-        doThrow(new UiMessageException(CANNOT_BUILD_SCHEDULE)).when(schedulerService).createSchedule(preferenceTable);
+        doReturn(Optional.empty()).when(schedulerService).createSchedule(preferenceTable);
 
 
         mockMvc.perform(multipart("/").file(multipartFile))

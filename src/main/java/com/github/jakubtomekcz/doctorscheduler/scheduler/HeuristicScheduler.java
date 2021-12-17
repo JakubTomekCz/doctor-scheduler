@@ -1,7 +1,6 @@
 package com.github.jakubtomekcz.doctorscheduler.scheduler;
 
 import com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType;
-import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.Date;
 import com.github.jakubtomekcz.doctorscheduler.model.Person;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
@@ -18,7 +17,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
-import static com.github.jakubtomekcz.doctorscheduler.error.UiMessageException.MessageCode.CANNOT_BUILD_SCHEDULE;
 import static java.lang.String.format;
 
 /**
@@ -33,12 +31,11 @@ public class HeuristicScheduler implements Scheduler {
     private int iterationCounter = 0;
 
     @Override
-    public Schedule createSchedule(PreferenceTable preferenceTable) {
+    public Optional<Schedule> createSchedule(PreferenceTable preferenceTable) {
         ScheduleBuilder builder = ScheduleBuilder.forPreferenceTable(preferenceTable);
 
         return findSolutionFor(builder)
-                .map(ScheduleBuilder::build)
-                .orElseThrow(() -> new UiMessageException(CANNOT_BUILD_SCHEDULE));
+                .map(ScheduleBuilder::build);
     }
 
     private Optional<ScheduleBuilder> findSolutionFor(ScheduleBuilder builder) {
