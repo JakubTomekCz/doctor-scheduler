@@ -2,6 +2,7 @@ package com.github.jakubtomekcz.doctorscheduler.controller;
 
 import com.github.jakubtomekcz.doctorscheduler.error.UiMessageException;
 import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTable;
+import com.github.jakubtomekcz.doctorscheduler.model.PreferenceTableWithSchedule;
 import com.github.jakubtomekcz.doctorscheduler.model.Schedule;
 import com.github.jakubtomekcz.doctorscheduler.parser.PreferenceTableParserService;
 import com.github.jakubtomekcz.doctorscheduler.scheduler.SchedulerService;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -37,19 +36,10 @@ public class MainController {
         if (!uploadedFile.isEmpty()) {
             try {
                 List<PreferenceTable> preferenceTables = preferenceTableParserService.parseMultipartFile(uploadedFile);
-                Map<PreferenceTable, Schedule> schedules = new LinkedHashMap<>();
-                for (PreferenceTable preferenceTable : preferenceTables) {
-                    Optional<Schedule> optionalSchedule = schedulerService.createSchedule(preferenceTable);
-                    optionalSchedule.ifPresent(schedule -> schedules.put(preferenceTable, schedule));
-                }
-                modelAndView.addObject("preferenceTables", preferenceTables);
+                List<PreferenceTableWithSchedule> schedules = preferenceTables.stream()
+                        .map(this::mapPreferenceTablesToSchedules)
+                        .toList();
                 modelAndView.addObject("schedules", schedules);
-
-                // TODO remove
-                PreferenceTable preferenceTable = preferenceTables.size() > 0 ? preferenceTables.get(0) : null;
-                modelAndView.addObject("preferenceTable", preferenceTable);
-                Schedule schedule = schedules.get(preferenceTable);
-                modelAndView.addObject("schedule", schedule);
             } catch (UiMessageException e) {
                 String messageCode = e.getMessageCode().getMessageCode();
                 Object[] messageParams = e.getMessageParams();
@@ -59,5 +49,10 @@ public class MainController {
             }
         }
         return modelAndView;
+    }
+
+    private PreferenceTableWithSchedule mapPreferenceTablesToSchedules(PreferenceTable preferenceTable) {
+        Optional<Schedule> optionalSchedule = schedulerService.createSchedule(preferenceTable);
+        return new PreferenceTableWithSchedule(preferenceTable, optionalSchedule.orElse(null));
     }
 }
