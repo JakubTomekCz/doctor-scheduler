@@ -66,8 +66,8 @@
              class="alert alert-danger" role="alert"/>
     </div>
 
-    <div th:if="${schedule != null}">
-        <div th:replace="fragments/schedule :: schedule(schedule = ${schedule})"/>
+    <div th:if="${preferenceTablesWithSchedules != null}">
+        <div th:replace="fragments/combined-schedule :: combined-schedule(preferenceTablesWithSchedules = ${preferenceTablesWithSchedules})"/>
     </div>
 </div>
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<div th:fragment="combined-schedule(preferenceTablesWithSchedules)" th:assert="${preferenceTablesWithSchedules != null}">
+    <div class="container mt-5">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <td colspan="100%">
+                    <h4 th:text="#{table.header.suggested.schedule}"/>
+                </td>
+            </tr>
+            <tr>
+                <td th:text="#{table.header.date}">
+                <td th:each="preferenceTableWithSchedule: ${preferenceTablesWithSchedules}"
+                    th:text="${preferenceTableWithSchedule.getPreferenceTable.getName()}">
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${preferenceTablesWithSchedules.size() > 0}"
+                th:each="date: ${preferenceTablesWithSchedules.get(0).getPreferenceTable.getDates()}">
+                <td th:text="${date.format(#locale)}"/>
+                <td th:each="preferenceTableWithSchedule: ${preferenceTablesWithSchedules}"
+                    th:text="${preferenceTableWithSchedule.getSchedule() != null ?
+                    preferenceTableWithSchedule.getSchedule().get(date).name() : 'N/A'}">
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
