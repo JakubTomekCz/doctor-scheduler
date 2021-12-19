@@ -54,8 +54,9 @@
         </form>
     </div>
 
-    <div th:if="${preferenceTable != null}">
-        <div th:replace="fragments/result-table :: result-table(preferenceTable = ${preferenceTable}, schedule = ${schedule})"/>
+    <div th:each="preferenceTable: ${preferenceTables}">
+        <div th:replace="fragments/preference-table-with-schedule
+        :: preference-table-with-schedule(preferenceTable = ${preferenceTable}, schedule = ${schedules.get(preferenceTable)})"/>
     </div>
 
     <div th:if="${isError == true && preferenceTable!=null && schedule==null}">
