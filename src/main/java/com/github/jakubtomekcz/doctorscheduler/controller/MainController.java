@@ -36,10 +36,10 @@ public class MainController {
         if (!uploadedFile.isEmpty()) {
             try {
                 List<PreferenceTable> preferenceTables = preferenceTableParserService.parseMultipartFile(uploadedFile);
-                List<PreferenceTableWithSchedule> schedules = preferenceTables.stream()
+                List<PreferenceTableWithSchedule> preferenceTablesWithSchedules = preferenceTables.stream()
                         .map(this::mapPreferenceTablesToSchedules)
                         .toList();
-                modelAndView.addObject("schedules", schedules);
+                modelAndView.addObject("preferenceTablesWithSchedules", preferenceTablesWithSchedules);
             } catch (UiMessageException e) {
                 String messageCode = e.getMessageCode().getMessageCode();
                 Object[] messageParams = e.getMessageParams();

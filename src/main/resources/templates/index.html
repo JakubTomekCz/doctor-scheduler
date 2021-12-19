@@ -54,12 +54,12 @@
         </form>
     </div>
 
-    <div th:each="preferenceTable: ${preferenceTables}">
+    <div th:each="preferenceTableWithSchedule: ${preferenceTablesWithSchedules}">
         <div th:replace="fragments/preference-table-with-schedule
-        :: preference-table-with-schedule(preferenceTable = ${preferenceTable}, schedule = ${schedules.get(preferenceTable)})"/>
+        :: preference-table-with-schedule(preferenceTable = ${preferenceTableWithSchedule.preferenceTable}, schedule = ${preferenceTableWithSchedule.schedule})"/>
     </div>
 
-    <div th:if="${isError == true && preferenceTable!=null && schedule==null}">
+    <div th:if="${isError == true}">
         <div th:if="${errorMessageCode != null && errorMessageParams != null}"
              th:text="${#messages.msgWithParams(errorMessageCode, errorMessageParams)}"
              class="alert alert-danger" role="alert"/>
