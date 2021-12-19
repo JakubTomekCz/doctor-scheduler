@@ -1,9 +1,12 @@
 package com.github.jakubtomekcz.doctorscheduler.model;
 
-public record PreferenceTableWithSchedule(PreferenceTable preferenceTable,
-                                          Schedule schedule) {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    public boolean hasSchedule() {
-        return schedule != null;
-    }
+@Getter
+@RequiredArgsConstructor
+public class PreferenceTableWithSchedule {
+
+    private final PreferenceTable preferenceTable;
+    private final Schedule schedule;
 }

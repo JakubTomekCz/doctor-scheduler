@@ -56,7 +56,8 @@
 
     <div th:each="preferenceTableWithSchedule: ${preferenceTablesWithSchedules}">
         <div th:replace="fragments/preference-table-with-schedule
-        :: preference-table-with-schedule(preferenceTable = ${preferenceTableWithSchedule.preferenceTable}, schedule = ${preferenceTableWithSchedule.schedule})"/>
+        :: preference-table-with-schedule(preferenceTable = ${preferenceTableWithSchedule.getPreferenceTable()},
+        schedule = ${preferenceTableWithSchedule.getSchedule()})"/>
     </div>
 
     <div th:if="${isError == true}">
