@@ -58,4 +58,18 @@ class PreferenceTableTest {
 
         assertThat(preferenceTable.getName()).isEqualTo("Simpsons");
     }
+
+    @Test
+    void isEmpty() {
+        assertThat(PreferenceTable.builder().build().isEmpty()).isTrue();
+    }
+
+    @Test
+    void isNotEmpty() {
+        PreferenceTable preferenceTable = PreferenceTable.builder()
+                .put(HOMER, MONDAY, YES)
+                .build();
+
+        assertThat(preferenceTable.isEmpty()).isFalse();
+    }
 }

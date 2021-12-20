@@ -47,6 +47,10 @@ public class PreferenceTable {
                 .toList();
     }
 
+    public boolean isEmpty() {
+        return data.size() == 0;
+    }
+
     public static class Builder {
 
         private String name;

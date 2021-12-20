@@ -95,8 +95,19 @@ class XlsxParserTest {
 
         List<PreferenceTable> actualResult = xlsxParser.parseMultipartFile(multipartFile);
 
+        assertThat(actualResult.size()).isEqualTo(2);
         assertThat(actualResult.get(0))
-                .satisfies(table -> assertThat(table.getName()).isEqualTo("Mladší lékaři"));
+                .satisfies(table -> {
+                    assertThat(table.getName()).isEqualTo("Mladší lékaři");
+                    assertThat(table.getPersons()).hasSize(7);
+                    assertThat(table.getDates()).hasSize(31);
+                });
+        assertThat(actualResult.get(1))
+                .satisfies(table -> {
+                    assertThat(table.getName()).isEqualTo("Starší lékaři");
+                    assertThat(table.getPersons()).hasSize(4);
+                    assertThat(table.getDates()).hasSize(31);
+                });
     }
 
     @Test

@@ -16,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,11 +39,22 @@ public class XlsxParser implements PreferenceTableParser {
 
     @Override
     public List<PreferenceTable> parseMultipartFile(MultipartFile multipartFile) {
+        List<PreferenceTable> preferenceTables = new ArrayList<>();
         Workbook workbook = createWorkBook(multipartFile);
         Sheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.rowIterator();
+        while (rowIterator.hasNext()) {
+            Optional<PreferenceTable> preferenceTable = readPreferenceTable(rowIterator);
+            preferenceTable.ifPresent(preferenceTables::add);
+        }
+        return preferenceTables;
+    }
+
+    private Optional<PreferenceTable> readPreferenceTable(Iterator<Row> rowIterator) {
         PreferenceTable.Builder builder = PreferenceTable.builder();
         Map<Integer, Date> datesRow = null;
-        for (Row row : sheet) {
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
             if (datesRow == null) {
                 Optional<String> tableName = readTableName(row);
                 tableName.ifPresent(builder::name);
@@ -67,7 +80,7 @@ public class XlsxParser implements PreferenceTableParser {
             }
         }
         PreferenceTable preferenceTable = builder.build();
-        return List.of(preferenceTable);
+        return preferenceTable.isEmpty() ? Optional.empty() : Optional.of(preferenceTable);
     }
 
     private Workbook createWorkBook(MultipartFile multipartFile) {
@@ -81,13 +94,12 @@ public class XlsxParser implements PreferenceTableParser {
 
     private Optional<String> readTableName(Row row) {
         Cell tableNameCell = row.getCell(0);
-        if (tableNameCell.getCellType() == CellType.STRING) {
+        if (tableNameCell != null && tableNameCell.getCellType() == CellType.STRING) {
             String rawName = tableNameCell.getStringCellValue();
             if (rawName.length() > TABLE_NAME_MAX_LENGTH) {
                 throw new UiMessageException(XLSX_FILE_TABLE_NAME_TOO_LONG, TABLE_NAME_MAX_LENGTH, rawName.length(),
                         tableNameCell.getRowIndex(), tableNameCell.getColumnIndex());
             }
-            // TODO sanitize HTML input?
             return Optional.of(rawName);
         }
         return Optional.empty();
