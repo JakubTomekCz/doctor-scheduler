@@ -60,7 +60,7 @@
         schedule = ${preferenceTableWithSchedule.getSchedule()})"/>
     </div>
 
-    <div th:if="${preferenceTablesWithSchedules != null}">
+    <div th:if="${preferenceTablesWithSchedules != null && preferenceTablesWithSchedules.size() > 0}">
         <div th:replace="fragments/combined-schedule :: combined-schedule(preferenceTablesWithSchedules = ${preferenceTablesWithSchedules})"/>
     </div>
 </div>
