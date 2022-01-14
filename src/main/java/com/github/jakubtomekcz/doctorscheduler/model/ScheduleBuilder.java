@@ -96,21 +96,21 @@ public class ScheduleBuilder {
     /**
      * Checks if the current schedule satisfies the elementary requirements:
      * <p>
-     * 1. Refusal of service indicated by the {@link PreferenceType#NO} preference must be respected
-     * 2. Each person must have at least two days rest between two service days
+     * 1. Refusal of shift indicated by the {@link PreferenceType#NO} preference must be respected
+     * 2. Each person must have at least two days rest between two shift days
      *
      * @return {@code true} if the requirements above are satisfied
      */
     public boolean isConsistent() {
-        return isRefusalOfServiceRespected() && isThereAlwaysTwoDaysRestAfterService();
+        return isRefusalOfScheduleRespected() && isThereAlwaysTwoDaysRestAfterShift();
     }
 
-    private boolean isRefusalOfServiceRespected() {
+    private boolean isRefusalOfScheduleRespected() {
         return schedule.entrySet().stream()
                 .noneMatch(entry -> preferenceTable.getPreference(entry.getValue(), entry.getKey()) == NO);
     }
 
-    private boolean isThereAlwaysTwoDaysRestAfterService() {
+    private boolean isThereAlwaysTwoDaysRestAfterShift() {
         for (int dateIndex = 0; dateIndex < preferenceTable.getDates().size() - 1; dateIndex++) {
             if (isSamePersonScheduledOnDayIndexes(dateIndex, dateIndex + 1)
                     || dateIndex < preferenceTable.getDates().size() - 2

@@ -8,6 +8,6 @@ Sneezy,YES,YES,PREFER,YES,NO,NO,NO,NO,NO,NO,NO,NO,YES,YES,YES,YES,YES,YES,YES,YE
 Dopey,YES,YES,YES,YES,YES,YES,YES,YES,YES,PREFER,YES,YES,NO,NO,NO,NO,NO,NO,YES,YES,YES,PREFER,YES,YES,NO,NO,YES,YES,YES,YES
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,notes:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,YES,I can have service,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,NO,I cannot have service,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,PREFER,I want to have service,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,YES,I can have shift,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,NO,I cannot have shift,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,PREFER,I want to have shift,,,,,,,,,,,,,,,,,,,,,,,,,,,,

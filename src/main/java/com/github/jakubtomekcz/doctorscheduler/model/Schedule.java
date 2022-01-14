@@ -1,6 +1,5 @@
 package com.github.jakubtomekcz.doctorscheduler.model;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 
@@ -35,8 +34,7 @@ public class Schedule {
         return data.size();
     }
 
-    @VisibleForTesting
-    public int getServiceDaysCountForPerson(Person person) {
+    public int getShiftDaysCountForPerson(Person person) {
         long longCount = data.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(person))
                 .count();

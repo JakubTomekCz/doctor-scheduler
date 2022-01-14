@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ScheduleTest {
 
     @Test
-    void getServiceDaysCountForPerson() {
+    void getShiftDaysCountForPerson() {
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 8; i++) {
             builder.put(LENNY, dDayPlusNDays(i), YES);
@@ -32,10 +32,10 @@ class ScheduleTest {
                 .put(dDayPlusNDays(8), CARL)
                 .build();
         assertThat(schedule).satisfies(s -> {
-            assertThat(s.getServiceDaysCountForPerson(LENNY)).isEqualTo(3);
-            assertThat(s.getServiceDaysCountForPerson(CARL)).isEqualTo(3);
-            assertThat(s.getServiceDaysCountForPerson(HOMER)).isEqualTo(2);
-            assertThat(s.getServiceDaysCountForPerson(person("Marge"))).isEqualTo(0);
+            assertThat(s.getShiftDaysCountForPerson(LENNY)).isEqualTo(3);
+            assertThat(s.getShiftDaysCountForPerson(CARL)).isEqualTo(3);
+            assertThat(s.getShiftDaysCountForPerson(HOMER)).isEqualTo(2);
+            assertThat(s.getShiftDaysCountForPerson(person("Marge"))).isEqualTo(0);
         });
     }
 }

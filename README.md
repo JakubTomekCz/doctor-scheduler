@@ -1,5 +1,5 @@
 # Doctor Scheduler
-Schedule doctors' service days to fit their requirements as much as possible.
+Schedule doctors' shift days to fit their requirements as much as possible.
 
 ## Deployment Tips & Tricks
 Tested on:

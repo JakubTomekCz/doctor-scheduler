@@ -61,7 +61,7 @@ class HeuristicSchedulerTest {
     }
 
     @Test
-    void twoDaysRestBetweenServiceDays() {
+    void twoDaysRestBetweenShiftDays() {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 16; i++) {
@@ -71,10 +71,10 @@ class HeuristicSchedulerTest {
         PreferenceTable preferenceTable = builder.build();
         Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
         assertThat(result).isPresent();
-        assertTwoDaysRestBetweenServiceDays(result.get());
+        assertTwoDaysRestBetweenShiftDays(result.get());
     }
 
-    private void assertTwoDaysRestBetweenServiceDays(Schedule schedule) {
+    private void assertTwoDaysRestBetweenShiftDays(Schedule schedule) {
         List<Person> personsSchedule = schedule.getPersonsOnlySchedule();
         for (int i = 0; i < personsSchedule.size() - 1; i++) {
             assertThat(personsSchedule.get(i)).isNotEqualTo(personsSchedule.get(i + 1));
@@ -126,7 +126,7 @@ class HeuristicSchedulerTest {
     }
 
     @Test
-    void equalDistributionOfServiceDays() {
+    void equalDistributionOfShiftDays() {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
         for (int i = 1; i <= 32; i++) {
@@ -139,10 +139,10 @@ class HeuristicSchedulerTest {
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(preferenceTable.getDates()).hasSize(32);
         softly.assertThat(result).isPresent();
-        softly.assertThat(result.get().getServiceDaysCountForPerson(LENNY)).as("Lenny").isEqualTo(8);
-        softly.assertThat(result.get().getServiceDaysCountForPerson(CARL)).as("Carl").isEqualTo(8);
-        softly.assertThat(result.get().getServiceDaysCountForPerson(HOMER)).as("Homer").isEqualTo(8);
-        softly.assertThat(result.get().getServiceDaysCountForPerson(BARNEY)).as("Barney").isEqualTo(8);
+        softly.assertThat(result.get().getShiftDaysCountForPerson(LENNY)).as("Lenny").isEqualTo(8);
+        softly.assertThat(result.get().getShiftDaysCountForPerson(CARL)).as("Carl").isEqualTo(8);
+        softly.assertThat(result.get().getShiftDaysCountForPerson(HOMER)).as("Homer").isEqualTo(8);
+        softly.assertThat(result.get().getShiftDaysCountForPerson(BARNEY)).as("Barney").isEqualTo(8);
         softly.assertAll();
     }
 
@@ -158,7 +158,7 @@ class HeuristicSchedulerTest {
         Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
         assertThat(result).isPresent();
         assertThat(result.get()).satisfies(schedule ->
-                people.forEach(person -> assertThat(schedule.getServiceDaysCountForPerson(person)).isEqualTo(8)));
+                people.forEach(person -> assertThat(schedule.getShiftDaysCountForPerson(person)).isEqualTo(8)));
     }
 
     @ParameterizedTest

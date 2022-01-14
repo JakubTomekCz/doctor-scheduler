@@ -17,7 +17,7 @@ import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PR
  * 1. candidate that has a preference on this day
  * 1.a prefer the one with fewer preferred days granted so far
  * 1.b prefer the one with fewer preferred days requests among non-assigned dates
- * 2. candidate with the fewer service days assigned
+ * 2. candidate with the fewer shift days assigned
  * <p>
  * Preferred people come first
  * i.e. {@code compare(person1, person2)} should return 1 when {@code person1} comes before {@code person2}
@@ -45,7 +45,7 @@ public class HeuristicCandidatePersonComparator implements Comparator<Person> {
         } else if (person2Preference == PREFER) {
             return 1;
         } else {
-            return serviceDaysAssignedCount(person1) - serviceDaysAssignedCount(person2);
+            return shiftDaysAssignedCount(person1) - shiftDaysAssignedCount(person2);
         }
     }
 
@@ -74,7 +74,7 @@ public class HeuristicCandidatePersonComparator implements Comparator<Person> {
                 .count());
     }
 
-    private int serviceDaysAssignedCount(Person person1) {
+    private int shiftDaysAssignedCount(Person person1) {
         return Math.toIntExact(builder.getSchedule().values().stream()
                 .filter(person1::equals)
                 .count());
