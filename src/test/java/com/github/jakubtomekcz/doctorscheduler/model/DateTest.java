@@ -44,4 +44,40 @@ class DateTest {
 
                 Arguments.of(date("2021-12-01"), Locale.CHINESE, "Wed 01 Dec 2021"));
     }
+
+    @ParameterizedTest
+    @MethodSource("isWeekDayMethodSource")
+    void isWeekDay(Date date, boolean expectedResult) {
+        assertThat(date.isWeekDay()).isEqualTo(expectedResult);
+    }
+
+    private static Stream<Arguments> isWeekDayMethodSource() {
+        return Stream.of(
+                Arguments.of(date("2021-12-01"), true),
+                Arguments.of(date("2021-12-02"), true),
+                Arguments.of(date("2021-12-03"), true),
+                Arguments.of(date("2021-12-04"), false),
+                Arguments.of(date("2021-12-05"), false),
+                Arguments.of(date("2021-12-06"), true),
+                Arguments.of(date("2021-12-07"), true),
+                Arguments.of(date("2021-12-08"), true));
+    }
+
+    @ParameterizedTest
+    @MethodSource("isWeekendDayMethodSource")
+    void isWeekendDay(Date date, boolean expectedResult) {
+        assertThat(date.isWeekendDay()).isEqualTo(expectedResult);
+    }
+
+    private static Stream<Arguments> isWeekendDayMethodSource() {
+        return Stream.of(
+                Arguments.of(date("2021-12-01"), false),
+                Arguments.of(date("2021-12-02"), false),
+                Arguments.of(date("2021-12-03"), false),
+                Arguments.of(date("2021-12-04"), true),
+                Arguments.of(date("2021-12-05"), true),
+                Arguments.of(date("2021-12-06"), false),
+                Arguments.of(date("2021-12-07"), false),
+                Arguments.of(date("2021-12-08"), false));
+    }
 }

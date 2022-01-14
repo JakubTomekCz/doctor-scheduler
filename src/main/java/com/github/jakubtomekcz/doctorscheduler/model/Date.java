@@ -3,7 +3,12 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.ZoneId;
 import java.util.Locale;
+
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
 
 @Slf4j
 public record Date(java.util.Date value) {
@@ -20,6 +25,19 @@ public record Date(java.util.Date value) {
             default:
                 return new SimpleDateFormat(ENGLISH_FORMAT).format(value);
         }
+    }
+
+    public boolean isWeekendDay() {
+        DayOfWeek dayOfWeek = getDayOfWeek();
+        return dayOfWeek == SATURDAY || dayOfWeek == SUNDAY;
+    }
+
+    public boolean isWeekDay() {
+        return !isWeekendDay();
+    }
+
+    private DayOfWeek getDayOfWeek() {
+        return value.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfWeek();
     }
 
     private String czechDayOfTheWeek(java.util.Date value) {
