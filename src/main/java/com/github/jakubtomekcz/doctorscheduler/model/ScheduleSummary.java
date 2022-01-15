@@ -16,17 +16,24 @@ public class ScheduleSummary {
 
     public static ScheduleSummary of(PreferenceTable preferenceTable, Schedule schedule) {
 
-        var weekDayTotalsBuilder = ImmutableMap.builder();
-        var weekendDayTotalsBuilder = ImmutableMap.builder();
-        var allDayTotalsBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<Person, Integer> weekDayTotalsBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<Person, Integer> weekendDayTotalsBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<Person, Integer> allDayTotalsBuilder = ImmutableMap.builder();
 
         for (Person person : preferenceTable.getPersons()) {
-            // TODO
-            int weekDayCounter = 0;
-            int weekendDayCounter = 0;
-            int allDayCounter = schedule.getShiftDaysCountForPerson(person);
+            int weekDayCount = schedule.getWeekShiftDaysCountForPerson(person);
+            int weekendDayCount = schedule.getWeekendShiftDaysCountForPerson(person);
+            int allDayCount = schedule.getShiftDaysCountForPerson(person);
+
+            weekDayTotalsBuilder.put(person, weekDayCount);
+            weekendDayTotalsBuilder.put(person, weekendDayCount);
+            allDayTotalsBuilder.put(person, allDayCount);
         }
 
-        return null;
+        return ScheduleSummary.builder()
+                .allDayTotals(allDayTotalsBuilder.build())
+                .weekDayTotals(weekDayTotalsBuilder.build())
+                .weekendDayTotals(weekendDayTotalsBuilder.build())
+                .build();
     }
 }
