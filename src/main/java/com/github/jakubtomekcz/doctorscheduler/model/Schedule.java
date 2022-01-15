@@ -40,4 +40,20 @@ public class Schedule {
                 .count();
         return Math.toIntExact(longCount);
     }
+
+    public int getWeekendShiftDaysCountForPerson(Person person) {
+        long longCount = data.entrySet().stream()
+                .filter(entry -> entry.getKey().isWeekendDay())
+                .filter(entry -> entry.getValue().equals(person))
+                .count();
+        return Math.toIntExact(longCount);
+    }
+
+    public int getWeekShiftDaysCountForPerson(Person person) {
+        long longCount = data.entrySet().stream()
+                .filter(entry -> entry.getKey().isWeekDay())
+                .filter(entry -> entry.getValue().equals(person))
+                .count();
+        return Math.toIntExact(longCount);
+    }
 }
