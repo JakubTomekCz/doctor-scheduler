@@ -14,13 +14,13 @@ public class ScheduleSummary {
     private final ImmutableMap<Person, Integer> weekendDayTotals;
     private final ImmutableMap<Person, Integer> allDayTotals;
 
-    public static ScheduleSummary of(PreferenceTable preferenceTable, Schedule schedule) {
+    public static ScheduleSummary of(Schedule schedule) {
 
         ImmutableMap.Builder<Person, Integer> weekDayTotalsBuilder = ImmutableMap.builder();
         ImmutableMap.Builder<Person, Integer> weekendDayTotalsBuilder = ImmutableMap.builder();
         ImmutableMap.Builder<Person, Integer> allDayTotalsBuilder = ImmutableMap.builder();
 
-        for (Person person : preferenceTable.getPersons()) {
+        for (Person person : schedule.getPreferenceTable().getPersons()) {
             int weekDayCount = schedule.getWeekShiftDaysCountForPerson(person);
             int weekendDayCount = schedule.getWeekendShiftDaysCountForPerson(person);
             int allDayCount = schedule.getShiftDaysCountForPerson(person);

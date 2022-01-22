@@ -26,7 +26,7 @@ class ScheduleSummaryTest {
                 .put(dDayPlusNDays(8), CARL)
                 .build();
 
-        ScheduleSummary scheduleSummary = ScheduleSummary.of(preferenceTable, schedule);
+        ScheduleSummary scheduleSummary = ScheduleSummary.of(schedule);
 
         assertThat(scheduleSummary.getWeekDayTotals())
                 .isEqualTo(ImmutableMap.of(
@@ -49,7 +49,7 @@ class ScheduleSummaryTest {
                 .put(dDayPlusNDays(8), CARL)
                 .build();
 
-        ScheduleSummary scheduleSummary = ScheduleSummary.of(preferenceTable, schedule);
+        ScheduleSummary scheduleSummary = ScheduleSummary.of(schedule);
 
         assertThat(scheduleSummary.getWeekendDayTotals())
                 .isEqualTo(ImmutableMap.of(
@@ -72,7 +72,7 @@ class ScheduleSummaryTest {
                 .put(dDayPlusNDays(8), CARL)
                 .build();
 
-        ScheduleSummary scheduleSummary = ScheduleSummary.of(preferenceTable, schedule);
+        ScheduleSummary scheduleSummary = ScheduleSummary.of(schedule);
 
         assertThat(scheduleSummary.getAllDayTotals())
                 .isEqualTo(ImmutableMap.of(
