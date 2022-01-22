@@ -2,18 +2,20 @@ package com.github.jakubtomekcz.doctorscheduler.model;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 @EqualsAndHashCode
 public class Schedule {
 
-    /**
-     * date -> person
-     */
+    private final PreferenceTable preferenceTable;
+
     private final ImmutableMap<Date, Person> data;
 
-    Schedule(ImmutableMap<Date, Person> data) {
+    Schedule(PreferenceTable preferenceTable, ImmutableMap<Date, Person> data) {
+        this.preferenceTable = preferenceTable;
         this.data = data;
     }
 

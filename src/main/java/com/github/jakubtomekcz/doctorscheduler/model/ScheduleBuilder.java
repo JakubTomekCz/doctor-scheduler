@@ -74,7 +74,7 @@ public class ScheduleBuilder {
             }
             builder.put(date, schedule.get(date));
         });
-        return new Schedule(builder.build());
+        return new Schedule(preferenceTable, builder.build());
     }
 
     /**
