@@ -14,9 +14,12 @@ public class Schedule {
 
     private final ImmutableMap<Date, Person> data;
 
+    private final ScheduleSummary summary;
+
     Schedule(PreferenceTable preferenceTable, ImmutableMap<Date, Person> data) {
         this.preferenceTable = preferenceTable;
         this.data = data;
+        this.summary = ScheduleSummary.of(this);
     }
 
     public Person get(Date date) {
