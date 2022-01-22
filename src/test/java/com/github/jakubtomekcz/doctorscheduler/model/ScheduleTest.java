@@ -16,13 +16,8 @@ class ScheduleTest {
 
     @Test
     void getShiftDaysCountForPerson() {
-        PreferenceTable.Builder builder = PreferenceTable.builder();
-        for (int i = 1; i <= 8; i++) {
-            builder.put(LENNY, dDayPlusNDays(i), YES);
-            builder.put(CARL, dDayPlusNDays(i), YES);
-            builder.put(HOMER, dDayPlusNDays(i), YES);
-        }
-        Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
+        PreferenceTable preferenceTable = mockPreferenceTable();
+        Schedule schedule = ScheduleBuilder.forPreferenceTable(preferenceTable)
                 .put(dDayPlusNDays(1), LENNY)
                 .put(dDayPlusNDays(2), CARL)
                 .put(dDayPlusNDays(3), HOMER)
@@ -43,13 +38,8 @@ class ScheduleTest {
 
     @Test
     void getWeekendShiftDaysCountForPerson() {
-        PreferenceTable.Builder builder = PreferenceTable.builder();
-        for (int i = 1; i <= 8; i++) {
-            builder.put(LENNY, dDayPlusNDays(i), YES);
-            builder.put(CARL, dDayPlusNDays(i), YES);
-            builder.put(HOMER, dDayPlusNDays(i), YES);
-        }
-        Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
+        PreferenceTable preferenceTable = mockPreferenceTable();
+        Schedule schedule = ScheduleBuilder.forPreferenceTable(preferenceTable)
                 .put(dDayPlusNDays(1), LENNY)
                 .put(dDayPlusNDays(2), CARL)
                 .put(dDayPlusNDays(3), HOMER)
@@ -70,13 +60,8 @@ class ScheduleTest {
 
     @Test
     void getWeekShiftDaysCountForPerson() {
-        PreferenceTable.Builder builder = PreferenceTable.builder();
-        for (int i = 1; i <= 8; i++) {
-            builder.put(LENNY, dDayPlusNDays(i), YES);
-            builder.put(CARL, dDayPlusNDays(i), YES);
-            builder.put(HOMER, dDayPlusNDays(i), YES);
-        }
-        Schedule schedule = ScheduleBuilder.forPreferenceTable(builder.build())
+        PreferenceTable preferenceTable = mockPreferenceTable();
+        Schedule schedule = ScheduleBuilder.forPreferenceTable(preferenceTable)
                 .put(dDayPlusNDays(1), LENNY)
                 .put(dDayPlusNDays(2), CARL)
                 .put(dDayPlusNDays(3), HOMER)
@@ -93,5 +78,15 @@ class ScheduleTest {
         assertThat(schedule.getWeekShiftDaysCountForPerson(HOMER)).isEqualTo(1);
         assertThat(schedule.getWeekShiftDaysCountForPerson(person("Marge"))).isEqualTo(0);
         softly.assertAll();
+    }
+
+    private PreferenceTable mockPreferenceTable() {
+        PreferenceTable.Builder builder = PreferenceTable.builder();
+        for (int i = 1; i <= 8; i++) {
+            builder.put(LENNY, dDayPlusNDays(i), YES);
+            builder.put(CARL, dDayPlusNDays(i), YES);
+            builder.put(HOMER, dDayPlusNDays(i), YES);
+        }
+        return builder.build();
     }
 }
