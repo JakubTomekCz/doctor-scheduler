@@ -32,6 +32,10 @@
             </tfoot>
         </table>
 
+        <div th:if="${schedule != null}">
+            <div th:replace="fragments/schedule-summary :: schedule-summary(schedule = ${schedule})"/>
+        </div>
+
         <div class="row mb-3" th:if="${schedule == null}">
             <div th:text="#{error.building.schedule}"
                  class="alert alert-danger" role="alert"/>

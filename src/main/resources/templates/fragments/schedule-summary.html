@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<div th:fragment="schedule-summary(schedule)" th:assert="${schedule != null}">
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <td colspan="100%">
+                <h4 th:text="#{table.header.summary}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td th:text="#{table.header.week.days}"/>
+            <td th:text="#{table.header.weekend.days}"/>
+            <td th:text="#{table.header.all.days}"/>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="person : ${schedule.getPreferenceTable.getPersons()}">
+            <td th:text="${person.name()}" class="text-nowrap"/>
+            <td th:text="${schedule.getSummary().getWeekDayTotals().get(person)}"/>
+            <td th:text="${schedule.getSummary().getWeekendDayTotals().get(person)}"/>
+            <td th:text="${schedule.getSummary().getAllDayTotals().get(person)}"/>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
