@@ -147,6 +147,36 @@ class HeuristicSchedulerTest {
     }
 
     @Test
+    void equalDistributionOfWeekendDays() {
+        List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
+        PreferenceTable.Builder builder = PreferenceTable.builder();
+        for (int i = 1; i <= 32; i++) {
+            Date date = dDayPlusNDays(i);
+            for (Person person : people) {
+                // imbalance to make test harder: Lenny prefers weekends x2
+                if (person == LENNY && date.equals(dDayPlusNDays(5))
+                        || person == LENNY && date.equals(dDayPlusNDays(12))) {
+                    builder.put(person, date, PREFER);
+                } else {
+                    builder.put(person, date, YES);
+                }
+            }
+        }
+
+        PreferenceTable preferenceTable = builder.build();
+        Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(preferenceTable.getDates()).hasSize(32);
+        softly.assertThat(result).isPresent();
+        softly.assertThat(result.get().getWeekendShiftDaysCountForPerson(LENNY)).as("Lenny").isEqualTo(2);
+        softly.assertThat(result.get().getWeekendShiftDaysCountForPerson(CARL)).as("Carl").isEqualTo(2);
+        softly.assertThat(result.get().getWeekendShiftDaysCountForPerson(HOMER)).as("Homer").isEqualTo(2);
+        softly.assertThat(result.get().getWeekendShiftDaysCountForPerson(BARNEY)).as("Barney").isEqualTo(2);
+        softly.assertAll();
+    }
+
+    @Test
     void equalDistributionOfPreferredDays() {
         List<Person> people = List.of(LENNY, CARL, HOMER, BARNEY);
         PreferenceTable.Builder builder = PreferenceTable.builder();
