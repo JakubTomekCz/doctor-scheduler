@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
@@ -72,10 +73,38 @@ public class HeuristicScheduler implements Scheduler {
      * Heuristic method of selecting the next date to be assigned a person
      * Priorities:
      * 1. Date with only one possible person
-     * 2. Date where at least one possible person has {@link PreferenceType#PREFER} (prefer fewer)
-     * 3. Other dates, prefer fewer possible persons
+     * 2. Weekend
+     * 3. Date where at least one possible person has {@link PreferenceType#PREFER} (prefer fewer)
+     * 4. Other dates, prefer fewer possible persons
      */
     private Date selectDateToBeAssignedAPerson(ScheduleBuilder builder) {
+        for (Map.Entry<Date, Set<Person>> entry : builder.getAssignablePersons().entrySet()) {
+            Date date = entry.getKey();
+            Set<Person> assignablePersons = entry.getValue();
+
+            if (assignablePersons.size() == 1) {
+                return date;
+            }
+        }
+        return selectDateFromDatesThatAllHaveAssignablePersons(builder);
+    }
+
+    private Date selectDateFromDatesThatAllHaveAssignablePersons(ScheduleBuilder builder) {
+        if (anyWeekendDaysAreStillUnassigned(builder)) {
+            return selectWeekendDateToBeAssignedAPerson(builder);
+        }
+        return selectWeekDateToBeAssignedAPerson(builder);
+    }
+
+    private Date selectWeekendDateToBeAssignedAPerson(ScheduleBuilder builder) {
+        return selectDateToBeAssignedAPersonWithDateFilter(builder, Date::isWeekendDay);
+    }
+
+    private Date selectWeekDateToBeAssignedAPerson(ScheduleBuilder builder) {
+        return selectDateToBeAssignedAPersonWithDateFilter(builder, Date::isWeekDay);
+    }
+
+    private Date selectDateToBeAssignedAPersonWithDateFilter(ScheduleBuilder builder, Predicate<Date> filter) {
 
         Date bestCandidatePreferredByFewestPeople = null;
         int fewestNumberOfPeoplePreferringTheBestCandidate = Integer.MAX_VALUE;
@@ -84,12 +113,11 @@ public class HeuristicScheduler implements Scheduler {
 
         for (Map.Entry<Date, Set<Person>> entry : builder.getAssignablePersons().entrySet()) {
             Date date = entry.getKey();
-            Set<Person> assignablePersons = entry.getValue();
-
-            if (assignablePersons.size() == 1) {
-                return date;
+            if (!filter.test(date)) {
+                continue;
             }
 
+            Set<Person> assignablePersons = entry.getValue();
             int numberOfAssignablePeopleThatPreferThisDay = Math.toIntExact(assignablePersons.stream()
                     .filter(person -> builder.getPreferenceTable().getPreference(person, date) == PREFER)
                     .count());
@@ -107,5 +135,10 @@ public class HeuristicScheduler implements Scheduler {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Failed to find the next date to be assigned a person."));
+    }
+
+    private boolean anyWeekendDaysAreStillUnassigned(ScheduleBuilder builder) {
+        return builder.getAssignablePersons().keySet().stream()
+                .anyMatch(Date::isWeekendDay);
     }
 }
