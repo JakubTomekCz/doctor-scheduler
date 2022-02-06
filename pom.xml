@@ -10,7 +10,7 @@
 
     <groupId>com.github</groupId>
     <artifactId>doctor-scheduler</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14</version>
     <name>Doctor Scheduler</name>
     <description>Schedule doctors' shift days to fit their requirements as much as possible.</description>
 
