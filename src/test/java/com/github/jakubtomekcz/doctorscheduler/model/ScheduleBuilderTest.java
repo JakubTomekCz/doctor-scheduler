@@ -10,6 +10,7 @@ import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTest
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.MONDAY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PersonAndDateTestConstants.TUESDAY;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.NO;
+import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.PREFER;
 import static com.github.jakubtomekcz.doctorscheduler.constant.PreferenceType.YES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -99,6 +100,19 @@ class ScheduleBuilderTest {
 
         assertThatThrownBy(() -> builder.put(TUESDAY, LENNY))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void twoDaysRestCanBeViolatedIfBothArePreferred() {
+        PreferenceTable table = PreferenceTable.builder()
+                .put(LENNY, MONDAY, PREFER)
+                .put(CARL, MONDAY, PREFER)
+                .put(LENNY, TUESDAY, PREFER)
+                .put(CARL, TUESDAY, PREFER)
+                .build();
+        ScheduleBuilder.forPreferenceTable(table)
+                .put(MONDAY, LENNY)
+                .put(TUESDAY, LENNY);
     }
 
     @Test

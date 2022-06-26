@@ -97,7 +97,8 @@ public class ScheduleBuilder {
      * Checks if the current schedule satisfies the elementary requirements:
      * <p>
      * 1. Refusal of shift indicated by the {@link PreferenceType#NO} preference must be respected
-     * 2. Each person must have at least two days rest between two shift days
+     * 2. Each person must have at least two days rest between two shift days unless this person requested both days
+     * by the {@link PreferenceType#PREFER} preference
      *
      * @return {@code true} if the requirements above are satisfied
      */
@@ -112,20 +113,22 @@ public class ScheduleBuilder {
 
     private boolean isThereAlwaysTwoDaysRestAfterShift() {
         for (int dateIndex = 0; dateIndex < preferenceTable.getDates().size() - 1; dateIndex++) {
-            if (isSamePersonScheduledOnDayIndexes(dateIndex, dateIndex + 1)
+            if (isSamePersonScheduledOnDayIndexesAndHeDidntAskForIt(dateIndex, dateIndex + 1)
                     || dateIndex < preferenceTable.getDates().size() - 2
-                    && isSamePersonScheduledOnDayIndexes(dateIndex, dateIndex + 2)) {
+                    && isSamePersonScheduledOnDayIndexesAndHeDidntAskForIt(dateIndex, dateIndex + 2)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isSamePersonScheduledOnDayIndexes(int dateIndex1, int dateIndex2) {
+    private boolean isSamePersonScheduledOnDayIndexesAndHeDidntAskForIt(int dateIndex1, int dateIndex2) {
         List<Date> dates = preferenceTable.getDates();
         return schedule.containsKey(dates.get(dateIndex1))
                 && schedule.containsKey(dates.get(dateIndex2))
-                && schedule.get(dates.get(dateIndex1)).equals(schedule.get(dates.get(dateIndex2)));
+                && schedule.get(dates.get(dateIndex1)).equals(schedule.get(dates.get(dateIndex2)))
+                && (preferenceTable.getPreference(schedule.get(dates.get(dateIndex1)), dates.get(dateIndex1)) != PREFER
+                || preferenceTable.getPreference(schedule.get(dates.get(dateIndex2)), dates.get(dateIndex2)) != PREFER);
     }
 
     private Set<Person> assignablePersonsForDate(PreferenceTable preferenceTable, Date date) {
@@ -143,6 +146,10 @@ public class ScheduleBuilder {
             if (i >= 0 && i < dates.size()) {
                 Date day = dates.get(i);
                 if (assignablePersons.containsKey(day)) {
+                    if (preferenceTable.getPreference(assignedPerson, assignedDate) == PREFER
+                            && preferenceTable.getPreference(assignedPerson, day) == PREFER) {
+                        return;
+                    }
                     assignablePersons.get(day).remove(assignedPerson);
                 }
             }

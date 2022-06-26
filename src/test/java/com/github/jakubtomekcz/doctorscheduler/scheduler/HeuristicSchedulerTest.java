@@ -74,6 +74,22 @@ class HeuristicSchedulerTest {
         assertTwoDaysRestBetweenShiftDays(result.get());
     }
 
+    @Test
+    void twoDaysRestBetweenShiftDaysNotNeededIfBothPreferred() {
+        PreferenceTable.Builder builder = PreferenceTable.builder();
+        for (int i = 1; i <= 16; i++) {
+            Date date = dDayPlusNDays(i);
+            builder.put(LENNY, date, PREFER);
+            builder.put(CARL, date, YES);
+            builder.put(HOMER, date, YES);
+            builder.put(BARNEY, date, YES);
+        }
+        PreferenceTable preferenceTable = builder.build();
+        Optional<Schedule> result = scheduler.createSchedule(preferenceTable);
+        assertThat(result).isPresent();
+        assertThat(result.get().getSummary().getAllDayTotals().get(LENNY)).isEqualTo(16);
+    }
+
     private void assertTwoDaysRestBetweenShiftDays(Schedule schedule) {
         List<Person> personsSchedule = schedule.getPersonsOnlySchedule();
         for (int i = 0; i < personsSchedule.size() - 1; i++) {
